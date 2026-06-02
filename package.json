@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "parse": "tsx src/parse.ts",
-    "diff": "tsx src/diff.ts"
+    "diff": "tsx src/diff.ts",
+    "fetch": "tsx src/fetch-chunk.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,14 +16,16 @@
     "diff": "^9.0.0",
     "esrap": "^2.2.9",
     "file-type": "^22.0.1",
-    "oxc-parser": "^0.132.0",
-    "oxc-resolver": "^11.19.1"
+    "jsdom": "^29.1.1",
+    "oxc-parser": "^0.133.0",
+    "oxc-resolver": "^11.20.0"
   },
   "devDependencies": {
-    "@types/node": "^24.12.4",
-    "oxfmt": "^0.51.0",
-    "oxlint": "^1.66.0",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "^25.9.1",
+    "oxfmt": "^0.52.0",
+    "oxlint": "^1.67.0",
     "oxlint-tsgolint": "^0.23.0",
-    "tsx": "^4.22.3"
+    "tsx": "^4.22.4"
   }
 }
