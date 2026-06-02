@@ -1,0 +1,28 @@
+{
+  "name": "filianislost-canvas-chunks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "parse": "tsx src/parse.ts",
+    "diff": "tsx src/diff.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "diff": "^9.0.0",
+    "esrap": "^2.2.9",
+    "file-type": "^22.0.1",
+    "oxc-parser": "^0.132.0",
+    "oxc-resolver": "^11.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.4",
+    "oxfmt": "^0.51.0",
+    "oxlint": "^1.66.0",
+    "oxlint-tsgolint": "^0.23.0",
+    "tsx": "^4.22.3"
+  }
+}
