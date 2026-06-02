@@ -5,6 +5,6 @@ This repo is not associated with Filian, her mod team, or the site and their tea
 
 ## Contributing
 
-atm the only iportant contributions needed is committing the raw and prettified chunks whenever they change on the site
+atm the only important contributions needed is committing the raw and prettified chunks whenever they change on the site
 
 Any documentation/research into what each part of each chunk does is also appreciated.
