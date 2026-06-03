@@ -1,0 +1,67 @@
+name: Fetch chunks
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run workflow fetch
+        id: fetch
+        run: |
+          pnpm run workflow > workflow-output.txt 2>&1 || true
+          cat workflow-output.txt
+
+          # Extract new chunks count
+          NEW_CHUNKS=$(grep "NEW_CHUNKS=" workflow-output.txt | cut -d'=' -f2 || echo "0")
+          echo "new_chunks=$NEW_CHUNKS" >> $GITHUB_OUTPUT
+
+          # Extract chunk list for commit message
+          CHUNK_LIST=$(awk '/^CHUNKS:/,0' workflow-output.txt | grep -E '^\s+\d{2}-chunk-' | sed 's/^  //' || echo "")
+          echo "chunk_list<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHUNK_LIST" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.fetch.outputs.new_chunks != '0'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add playground/
+
+          # Create commit message
+          COMMIT_MSG="Add ${{ steps.fetch.outputs.new_chunks }} new chunk(s)
+
+          ${{ steps.fetch.outputs.chunk_list }}"
+
+          git commit -m "$COMMIT_MSG"
+          git push
+
+      - name: No new chunks
+        if: steps.fetch.outputs.new_chunks == '0'
+        run: echo "No new chunks found - nothing to commit"

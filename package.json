@@ -6,7 +6,8 @@
   "scripts": {
     "parse": "tsx src/parse.ts",
     "diff": "tsx src/diff.ts",
-    "get-chunk": "tsx src/fetch-chunk.ts"
+    "get-chunk": "tsx src/fetch-chunk.ts",
+    "workflow": "tsx src/workflow-fetch.ts"
   },
   "keywords": [],
   "author": "",
