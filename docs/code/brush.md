@@ -1,7 +1,6 @@
-# `function K2`
+# Brush size
 
-The `K2` function is the function that affects the brush size.
-It originally went by function `Z2`, but has since had its name changed.
+The brush size is controlled by `VG`, formerly known as `R2`|`Z2`.
 
 The function was changed thrice since chunk collection, once to increase minimum brush size, once to taunt people who were looking at the code, and once removing the taunt:
 
