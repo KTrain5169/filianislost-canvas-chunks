@@ -60,20 +60,17 @@ function getExistingChunks(playgroundDir: string): Set<string> {
 }
 
 /**
- * Prettify a JavaScript file using oxfmt
+ * Prettify a JavaScript file using the parse script
  */
 function prettifyFile(inputPath: string, outputPath: string): void {
     console.log(`Prettifying ${inputPath}...`);
 
     try {
-        // Read the file
-        const content = fs.readFileSync(inputPath, 'utf-8');
-
-        // Write to output path
-        fs.writeFileSync(outputPath, content, 'utf-8');
-
-        // Run oxfmt on the output file
-        execSync(`pnpm exec oxfmt ${outputPath}`, { stdio: 'inherit' });
+        // Run parse script via pnpm
+        execSync(`pnpm run parse "${inputPath}" "${outputPath}"`, {
+            stdio: 'inherit',
+            cwd: process.cwd()
+        });
 
         console.log(`✓ Prettified to ${outputPath}`);
     } catch (error) {
