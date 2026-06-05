@@ -1,0 +1,13306 @@
+(() => {
+	var {
+			defineProperty: GJ,
+			getOwnPropertyNames: OG,
+			getOwnPropertyDescriptor: SG
+		} = Object,
+		_G = Object.prototype.hasOwnProperty;
+
+	var qJ = new WeakMap(),
+		yG = ($) => {
+			var Q = qJ.get($), J;
+
+			if (Q) return Q;
+
+			if ((
+				Q = GJ({}, "__esModule", { value: !0 }),
+				$ && typeof $ === "object" || typeof $ === "function"
+			)) OG($).map((Y) => !_G.call(Q, Y) && GJ(Q, Y, { get: () => $[Y], enumerable: !(J = SG($, Y)) || J.enumerable }));
+
+			return (qJ.set($, Q), Q);
+		};
+
+	var vG = ($, Q) => () => (($ && (Q = $($ = 0)), Q));
+	var gG = {};
+	var _5 = "", y5 = "";
+
+	var ZJ = vG(() => {
+		(async function $() {
+			let J = await (await fetch("/.last-bundle")).text(),
+				[Y, q] = J.split(",");
+
+			if (_5 && _5 != Y) location.reload(); else if (y5 && y5 != q) {
+				let K = (await (await fetch("/")).text()).match(/href="(\.\/chunk-[a-z\d]+.css)"/)?.[1],
+					W = document.querySelector("link[rel=stylesheet]");
+
+				if (!K || !W) return (
+					console.error("Couldn't reload stylesheet without reloading..."),
+					location.reload()
+				);
+
+				W.href = `${K}?at=${Date.now()}`;
+			}
+
+			(_5 = Y, y5 = q, setTimeout($, 1000));
+		})();
+	});
+
+	var u = ($, Q) => (Q ?? document).querySelector($),
+		n0 = ($, Q) => (Q ?? document).querySelectorAll($),
+		G1 = ($) => new Promise((Q) => setTimeout(Q, $)),
+		q1 = () => new Promise(($) => setTimeout($, 1)),
+		KJ = ($, Q) => {
+			for (let J in $) {
+				let Y = $[J];
+
+				if (typeof Y == "object" && !Array.isArray(Y) && J in Q) KJ(Y, Q[J]); else if (J.startsWith("data-") && Q.setAttribute) Q.setAttribute(J, Y); else if (J.startsWith("--") && Q.setProperty) Q.setProperty(J, Y); else if (J == "className" && Q.classList) Q.classList.add(Y); else Q[J] = Y;
+			}
+		};
+
+	function G($, ...Q) {
+		let J = $.split(/[.#]/)[0],
+			Y = $.match(/#[^.#]+/)?.[0],
+			q = $.match(/\.[^.#]+/g),
+			Z = document.createElement(J);
+
+		if (Y) Z.id = Y.slice(1);
+		if (q) Z.className = q.map((K) => K.slice(1)).join(" ");
+
+		for (let K of Q.flat(1 / 0)) {
+			if (!K) continue;
+			if (K instanceof HTMLElement || typeof K == "string") Z.append(K); else if (typeof K == "number") Z.append(String(K)); else if (typeof K == "object") KJ(K, Z);
+		}
+
+		return Z;
+	}
+
+	var P$ = !1;
+
+	if (P$) ZJ();
+
+	function FJ($) {
+		let Q = G("textarea", {
+			value: $,
+			style: {
+				position: "fixed",
+				top: "0",
+				left: "0",
+				width: "0",
+				height: "0",
+				opacity: "0"
+			}
+		});
+
+		(
+			document.body.append(Q),
+			Q.focus(),
+			Q.select(),
+			Q.setSelectionRange(0, $.length)
+		);
+
+		try {
+			document.execCommand("copy");
+		} finally {
+			Q.remove();
+		}
+	}
+
+	function v5($) {
+		if (!navigator.clipboard) return FJ($);
+
+		navigator.clipboard.writeText($).catch((Q) => {
+			(console.error(Q), FJ($));
+		});
+	}
+
+	var J$ = ($, Q) => G("button.btn.icon", Q, G("img", {
+			src: `/static/icon/${$}.png`,
+			alt: `${$} icon`,
+			style: { pointerEvents: "none" },
+			draggable: !1
+		})),
+		Z1 = ($) => $.split(/(\[.\])/).map((Q, J) => J % 2 ? G("u", Q.slice(1, -1)) : Q),
+		g5 = ($, Q, J, Y, q) => G(
+			"button.btn.branding",
+			q,
+			{ ariaLabel: Q, style: { backgroundColor: J, color: Y } },
+			G("img", {
+				alt: `${$} icon`,
+				src: `/static/icon/platform/${$}.png`,
+				draggable: !1
+			}),
+			G("span", Q)
+		),
+		K1 = ($, Q) => G(
+			"button.btn.swatch.icon",
+			G("img", {
+				alt: `${$} icon`,
+				src: `/static/icon/${$}.png`,
+				draggable: !1
+			}),
+			Q
+		),
+		F1 = ($, Q) => {
+			return ($.dataset.tooltip = Q, $.classList.add("tooltip"), $);
+		};
+
+	var WJ = ($, Q = 2) => {
+		let J = 10 ** Q, Y = Math.floor($ % 1 * J);
+
+		return [
+			G("span", Math.floor($).toString()),
+			Y >= 0 && G("span", { style: { fontSize: "0.6em" } }, `.${Y}`.replace(/0+$/, ""))
+		];
+	};
+
+	var x5 = !1,
+		Y$ = { options: [] },
+		p5 = () => !!Y$.element;
+
+	function E$() {
+		if (!Y$.element || x5) return;
+
+		(
+			Y$.options = [],
+			Y$.element.remove(),
+			Y$.element = void 0,
+			n0(".ctx").forEach(($) => $.remove())
+		);
+	}
+
+	function jJ($, Q, J) {
+		E$();
+
+		let Y = G("div.ctx");
+
+		(Y$.element = Y, Y$.options = []);
+
+		for (let W of $) {
+			if (!W.label) {
+				Y.append(G("hr"));
+
+				continue;
+			}
+
+			let F = G("div.option", G("span", Z1(W.label)), W.keybindText && G("span", W.keybindText), {
+				ariaLabel: W.label.replace(/[\[\]]/g, ""),
+				onclick(H) {
+					if ((E$(), W.action)) W.action(H);
+				}
+			});
+
+			(Y.append(F), Y$.options.push({ ...W, _element: F }));
+		}
+
+		document.body.append(Y);
+
+		let q = Y.getBoundingClientRect(),
+			Z = Q + q.width > window.innerWidth ? window.innerWidth - q.width : Q,
+			K = J + q.height > window.innerHeight ? window.innerHeight - q.height : J;
+
+		(
+			Y.style.left = `${Z}px`,
+			Y.style.top = `${K}px`,
+			Y$.x = Z,
+			Y$.y = K,
+			x5 = !0,
+			setTimeout(() => x5 = !1)
+		);
+	}
+
+	window.addEventListener("click", E$);
+	window.addEventListener("resize", E$);
+	window.addEventListener("blur", E$);
+
+	window.addEventListener("contextmenu", ($) => {
+		($.preventDefault(), E$());
+	});
+
+	var q0 = [
+			{ hex: "#ffffff", name: "White" },
+			{ hex: "#E8A8A0", name: "Coral" },
+			{ hex: "#F0C8A0", name: "Peach" },
+			{ hex: "#F0DC95", name: "Pale Yellow" },
+			{ hex: "#B8D898", name: "Mint" },
+			{ hex: "#90C8B8", name: "Turquoise" },
+			{ hex: "#9CC0D8", name: "Light Blue" },
+			{ hex: "#A0B0DC", name: "Cornflower" },
+			{ hex: "#B4A0CC", name: "Lavender" },
+			{ hex: "#D0A8C4", name: "Orchid" },
+			{ hex: "#E8B8C4", name: "Soft Pink" },
+			{ hex: "#9FA9A9", name: "Gray" },
+			{ hex: "#C8362C", name: "Red" },
+			{ hex: "#E8851F", name: "Orange" },
+			{ hex: "#E8C420", name: "Yellow" },
+			{ hex: "#5BA833", name: "Green" },
+			{ hex: "#1E8FA8", name: "Cyan" },
+			{ hex: "#2A6FB8", name: "Sky Blue" },
+			{ hex: "#1F4FA8", name: "Blue" },
+			{ hex: "#5B2D8C", name: "Violet" },
+			{ hex: "#A82D6E", name: "Magenta" },
+			{ hex: "#E84A8F", name: "Hot Pink" },
+			{ hex: "#465050", dark: !0, name: "Dark Gray" },
+			{ hex: "#7A2218", dark: !0, name: "Maroon" },
+			{ hex: "#9C5418", dark: !0, name: "Brown" },
+			{ hex: "#A88420", dark: !0, name: "Olive" },
+			{ hex: "#3D6E20", dark: !0, name: "Forest Green" },
+			{ hex: "#155D6E", dark: !0, name: "Dark Teal" },
+			{ hex: "#1A4870", dark: !0, name: "Steel Blue" },
+			{ hex: "#15326E", dark: !0, name: "Navy Blue" },
+			{ hex: "#3A1C5C", dark: !0, name: "Dark Purple" },
+			{ hex: "#6E1C48", dark: !0, name: "Wine" },
+			{ hex: "#9C2E5E", dark: !0, name: "Dark Pink" },
+			{ hex: "#161A1A", dark: !0, name: "Black" }
+		],
+		xG = new Map();
+
+	for (let $ = 0; $ < q0.length; $++) {
+		let Q = q0[$], J = parseInt(Q.hex.slice(1), 16);
+
+		(Q.idx = $, Q.color = J, xG.set(J, $));
+
+		let Y = J >> 16 & 255,
+			q = J >> 8 & 255,
+			Z = J & 255;
+
+		(
+			Q.rgb = [Y, q, Z],
+			Q.u24 = Z << 16 | q << 8 | Y,
+			Q.u32 = 4278190080 | Q.u24
+		);
+	}
+
+	var XJ = 30000, HJ = 15000;
+	var VJ = 1, r = 100;
+
+	var W1 = 60,
+		x0 = 42,
+		b = 6000,
+		D0 = 4200,
+		s$ = 25200000;
+
+	var j1 = 3615,
+		c5 = 24,
+		F0 = 1000,
+		b5 = Math.floor(100),
+		G6 = { SignUp: 2000, TimePassed: 1000, ReferralCode: 1000 };
+
+	var X1 = 4000, H1 = 80;
+	var PJ = 2130706432, A8 = 0.5;
+
+	function t0($, ...Q) {
+		return $.replace(/{(\d)+}/g, (J, Y) => Q[parseInt(Y)] || "[?]");
+	}
+
+	function H0($) {
+		return new Intl.NumberFormat().format($);
+	}
+
+	function V1($) {
+		let Q = ($ / s$ * 100).toFixed(2);
+
+		return `${H0($)} (${Q}%)`;
+	}
+
+	function f5($) {
+		return new Intl.DateTimeFormat(["en"], { timeZone: "UTC", minute: "numeric", second: "2-digit" }).format($);
+	}
+
+	function pG($) {
+		return String.fromCodePoint(...$.toUpperCase().split("").map((Q) => 127397 + Q.charCodeAt(0)));
+	}
+
+	function P1($) {
+		if ($.length != 2) return "-";
+
+		try {
+			let Q = new Intl.DisplayNames(["en"], { type: "region" }).of($);
+
+			return `${pG($)} ${Q || $}`;
+		} catch {
+			return "Unknown";
+		}
+	}
+
+	function RJ($) {
+		if (Date.now() - $ < 86400000) return new Date($).toLocaleTimeString(); else return new Date($).toLocaleDateString();
+	}
+
+	function C8($) {
+		let Q = Math.floor($ / F0);
+
+		return `${Q} spray can${C0(Q)}`;
+	}
+
+	function C0($, Q) {
+		let J = $ == 1 ? "" : "s";
+
+		return Q ? `${H0($)} ${Q}${J}` : J;
+	}
+
+	var cG = /\s|\/|[A-Z].*[A-Z]/,
+		bG = /[A-Z]{2,}(?=[A-Z][a-z]|$)|[A-Z]?[a-z]+|[A-Z]+|\d+/g;
+
+	function fG($) {
+		let Q = $.trim();
+
+		if (Q.length <= 8 && !cG.test(Q)) return Q;
+
+		let J = Q.replace(/'s\b/gi, "").match(bG) || [];
+
+		if (J.length === 1) {
+			let Y = J[0], q = (/^[A-Z]+$/).test(Y) ? 6 : 8;
+
+			return Y.length <= q ? Y : Y[0];
+		}
+
+		return J.map((Y) => (/^\d+$/).test(Y) ? Y : Y[0]).join("");
+	}
+
+	function I$($) {
+		return `[${fG($).slice(0, 6)}]`;
+	}
+
+	var q6 = ($) => Math.floor($ * 10) / 10;
+
+	function R1($) {
+		if ($ == null) return "never";
+
+		let Q = $ - Date.now(),
+			J = new Intl.RelativeTimeFormat(["en"], { numeric: "auto" }),
+			Y = 60000,
+			q = 60 * Y,
+			Z = 24 * q;
+
+		if (Q < q) return J.format(q6(Q / Y), "minute"); else if (Q < Z) return J.format(q6(Q / q), "hour");
+
+		return J.format(q6(Q / Z), "day");
+	}
+
+	var Z0 = {
+		url: {
+			api: "https://filianislost.com",
+			web: "https://filianislost.com",
+			share: "https://filianislost.com/share",
+			ws: "wss://ws.filianislost.com",
+			tileBase: "https://ws.filianislost.com",
+			signalArchive: "https://signal.filianislost.com"
+		},
+		gaMeasurementId: "G-H0TFGRQHK7",
+		canvas: {
+			snapshotInterval: 30000,
+			drawBufferInterval: 500,
+			syncInterval: 100
+		}
+	};
+
+	var M1 = null;
+
+	function w$($) {
+		(
+			Z6(),
+			M1 = G(
+				"div.mod-return",
+				G("button.btn.mod-return-go", `↩ Resume: ${$.label}`, {
+					onclick() {
+						(Z6(), $.reopen());
+					}
+				}),
+				G("button.btn.mod-return-x", "✕", { ariaLabel: "Dismiss", onclick: () => Z6() })
+			),
+			document.body.append(M1)
+		);
+	}
+
+	function Z6() {
+		(M1?.remove(), M1 = null);
+	}
+
+	function i($, Q = "Confirmation", J = "Yes", Y = "No") {
+		return new Promise((q) => {
+			let Z = !1,
+				K = (H) => {
+					if (Z) return;
+
+					(
+						Z = !0,
+						document.removeEventListener("keydown", W, !0),
+						F.remove(),
+						q(H)
+					);
+				},
+				W = (H) => {
+					if (H.key == "Escape") (H.stopPropagation(), K(!1)); else if (H.key == "Enter") (H.stopPropagation(), K(!0));
+				},
+				F = G("div.modal-bg.confirm-bg", G("div.modal-container", G("div.modal-title", G("span", Q), J$("close", { ariaLabel: "Close", onclick: () => K(!1) })), G("div.modal-content", G("div.modal", G("p", $), G("div.btn-container", G("button.btn", J, { onclick: () => K(!0) }), G("button.btn", Y, { onclick: () => K(!1) }))))));
+
+			(
+				F.addEventListener("click", (H) => {
+					if (H.target == F) K(!1);
+				}),
+				document.addEventListener("keydown", W, !0),
+				document.body.append(F)
+			);
+		});
+	}
+
+	var W0 = null,
+		U1 = "",
+		r$ = G("button.btn", "Close", { onclick: x }),
+		R$ = G("div.btn-container", r$);
+
+	function x($ = !1) {
+		if (!W0) return;
+		if (!W0.close($)) return;
+
+		W0 = null;
+	}
+
+	class _ {
+		title;
+		content;
+		bg = G("div.modal-bg");
+		titleElement = G("div.modal-title");
+		container = G("div.modal-container", { role: "dialog" });
+		intervals = [];
+		onCloseCallback = null;
+		lockLevel = 0;
+		open = !1;
+
+		constructor($, Q) {
+			this.title = $;
+			this.content = Q;
+
+			if (W0) x(!0);
+
+			(
+				this.titleElement.append(G("span", $), J$("close", { ariaLabel: "Close Modal", onclick: () => this.close() })),
+				this.bg.append(this.container),
+				this.container.append(this.titleElement, Q),
+				Q.classList.add("modal-content"),
+				u("main").inert = !0,
+				document.body.append(this.bg),
+				document.body.style.overflow = "hidden",
+				U1 = $,
+				W0 = this,
+				this.open = !0
+			);
+		}
+
+		addRunningInterval($, Q, J = !1) {
+			if ((this.intervals.push(setInterval(Q, $)), J)) setTimeout(Q, 1);
+
+			return this;
+		}
+
+		onClose($) {
+			this.onCloseCallback = $;
+		}
+
+		close($ = !1) {
+			if (!this.open) return !0;
+			if (this.lockLevel && !$) return !1;
+
+			if (this.onCloseCallback) {
+				if (this.onCloseCallback() == !1 && !$) return !1;
+			}
+
+			this.open = !1;
+
+			for (let Q of this.intervals) clearInterval(Q);
+
+			return (
+				this.bg.remove(),
+				W0 = null,
+				U1 = "",
+				document.body.style.overflow = "",
+				u("main").inert = !1,
+				!0
+			);
+		}
+	}
+
+	document.addEventListener("keydown", ($) => {
+		if ($.key == "Escape" && W0) x();
+	});
+
+	var uG = /^[\w!#$%&'*.^`|~+-]+$/;
+
+	var dG = ($, Q, J = {}) => {
+			if (!uG.test($)) throw new Error("Invalid cookie name");
+
+			let Y = `${$}=${Q}`;
+
+			if ($.startsWith("__Secure-") && !J.secure) throw new Error("__Secure- Cookie must have Secure attributes");
+
+			if ($.startsWith("__Host-")) {
+				if (!J.secure) throw new Error("__Host- Cookie must have Secure attributes");
+				if (J.path !== "/") throw new Error('__Host- Cookie must have Path attributes with "/"');
+				if (J.domain) throw new Error("__Host- Cookie must not have Domain attributes");
+			}
+
+			for (let q of ["domain", "path"]) if (J[q] && (/[;\r\n]/).test(J[q])) throw new Error(`${q} must not contain ";", "\\r", or "\\n"`);
+
+			if (J && typeof J.maxAge === "number" && J.maxAge >= 0) {
+				if (J.maxAge > 34560000) throw new Error("Cookies Max-Age SHOULD NOT be greater than 400 days (34560000 seconds) in duration.");
+
+				Y += `; Max-Age=${J.maxAge | 0}`;
+			}
+
+			if (J.domain && J.prefix !== "host") Y += `; Domain=${J.domain}`;
+			if (J.path) Y += `; Path=${J.path}`;
+
+			if (J.expires) {
+				if (J.expires.getTime() - Date.now() > 34560000000) throw new Error("Cookies Expires SHOULD NOT be greater than 400 days (34560000 seconds) in the future.");
+
+				Y += `; Expires=${J.expires.toUTCString()}`;
+			}
+
+			if (J.httpOnly) Y += "; HttpOnly";
+			if (J.secure) Y += "; Secure";
+			if (J.sameSite) Y += `; SameSite=${J.sameSite.charAt(0).toUpperCase() + J.sameSite.slice(1)}`;
+			if (J.priority) Y += `; Priority=${J.priority.charAt(0).toUpperCase() + J.priority.slice(1)}`;
+
+			if (J.partitioned) {
+				if (!J.secure) throw new Error("Partitioned Cookie must have Secure attributes");
+
+				Y += "; Partitioned";
+			}
+
+			return Y;
+		},
+		MJ = ($, Q, J) => {
+			return (Q = encodeURIComponent(Q), dG($, Q, J));
+		};
+
+	var UJ = ($, Q) => {
+			return (
+				$ = $.replace(/\/+$/, ""),
+				$ = $ + "/",
+				Q = Q.replace(/^\/+/, ""),
+				$ + Q
+			);
+		},
+		L1 = ($, Q) => {
+			for (let [J, Y] of Object.entries(Q)) {
+				let q = new RegExp("/:" + J + "(?:{[^/]+})?\\??");
+
+				$ = $.replace(q, Y ? `/${Y}` : "");
+			}
+
+			return $;
+		},
+		zJ = ($) => {
+			let Q = new URLSearchParams();
+
+			for (let [J, Y] of Object.entries($)) {
+				if (Y === void 0) continue;
+				if (Array.isArray(Y)) for (let q of Y) Q.append(J, q); else Q.set(J, Y);
+			}
+
+			return Q;
+		},
+		LJ = ($, Q) => {
+			switch (Q) {
+				case "ws":
+					return $.replace(/^http/, "ws");
+
+				case "http":
+					return $.replace(/^ws/, "http");
+			}
+		},
+		l5 = ($) => {
+			if ((/^https?:\/\/[^\/]+?\/index(?=\?|$)/).test($)) return $.replace(/\/index(?=\?|$)/, "/");
+
+			return $.replace(/\/index(?=\?|$)/, "");
+		};
+
+	function z1($) {
+		return typeof $ === "object" && $ !== null && !Array.isArray($);
+	}
+
+	function u5($, Q) {
+		if (!z1($) && !z1(Q)) return Q;
+
+		let J = { ...$ };
+
+		for (let Y in Q) {
+			let q = Q[Y];
+
+			if (z1(J[Y]) && z1(q)) J[Y] = u5(J[Y], q); else J[Y] = q;
+		}
+
+		return J;
+	}
+
+	var DJ = ($, Q) => {
+			return new Proxy(() => {}, {
+				get(Y, q) {
+					if (typeof q !== "string" || q === "then") return;
+
+					return DJ($, [...Q, q]);
+				},
+
+				apply(Y, q, Z) {
+					return $({ path: Q, args: Z });
+				}
+			});
+		},
+		nG = class {
+			url;
+			method;
+			buildSearchParams;
+			queryParams = void 0;
+			pathParams = {};
+			rBody;
+			cType = void 0;
+
+			constructor($, Q, J) {
+				(
+					this.url = $,
+					this.method = Q,
+					this.buildSearchParams = J.buildSearchParams
+				);
+			}
+
+			fetch = async ($, Q) => {
+				if ($) {
+					if ($.query) this.queryParams = this.buildSearchParams($.query);
+
+					if ($.form) {
+						let W = new FormData();
+
+						for (let [F, H] of Object.entries($.form)) {
+							if (H === void 0) continue;
+							if (Array.isArray(H)) for (let j of H) W.append(F, j); else W.append(F, H);
+						}
+
+						this.rBody = W;
+					}
+
+					if ($.json) (
+						this.rBody = JSON.stringify($.json),
+						this.cType = "application/json"
+					);
+
+					if ($.param) this.pathParams = $.param;
+				}
+
+				let J = this.method.toUpperCase(),
+					Y = {
+						...$?.header,
+						...typeof Q?.headers === "function" ? await Q.headers() : Q?.headers
+					};
+
+				if ($?.cookie) {
+					let W = [];
+
+					for (let [F, H] of Object.entries($.cookie)) W.push(MJ(F, H, { path: "/" }));
+
+					Y.Cookie = W.join(",");
+				}
+
+				if (this.cType) Y["Content-Type"] = this.cType;
+
+				let q = new Headers(Y ?? void 0), Z = this.url;
+
+				if ((Z = l5(Z), Z = L1(Z, this.pathParams), this.queryParams)) Z = Z + "?" + this.queryParams.toString();
+
+				J = this.method.toUpperCase();
+
+				let K = !(J === "GET" || J === "HEAD");
+
+				return (Q?.fetch || fetch)(Z, {
+					body: K ? this.rBody : void 0,
+					method: J,
+					headers: q,
+					...Q?.init
+				});
+			};
+		},
+		d5 = ($, Q) => DJ(
+			function J(Y) {
+				let q = Q?.buildSearchParams ?? zJ,
+					Z = [...Y.path],
+					K = Z.slice(-3).reverse();
+
+				if (K[0] === "toString") {
+					if (K[1] === "name") return K[2] || "";
+
+					return J.toString();
+				}
+
+				if (K[0] === "valueOf") {
+					if (K[1] === "name") return K[2] || "";
+
+					return J;
+				}
+
+				let W = "";
+
+				if ((/^\$/).test(K[0])) {
+					let X = Z.pop();
+
+					if (X) W = X.replace(/^\$/, "");
+				}
+
+				let F = Z.join("/"), H = UJ($, F);
+
+				if (W === "url" || W === "path") {
+					let X = H;
+
+					if (Y.args[0]) {
+						if (Y.args[0].param) X = L1(H, Y.args[0].param);
+						if (Y.args[0].query) X = X + "?" + q(Y.args[0].query).toString();
+					}
+
+					if ((X = l5(X), W === "url")) return new URL(X);
+
+					return X.slice($.replace(/\/+$/, "").length).replace(/^\/?/, "/");
+				}
+
+				if (W === "ws") {
+					let X = LJ(Y.args[0] && Y.args[0].param ? L1(H, Y.args[0].param) : H, "ws"),
+						V = new URL(X),
+						L = Y.args[0]?.query;
+
+					if (L) Object.entries(L).forEach(([C, v]) => {
+						if (Array.isArray(v)) v.forEach((O) => V.searchParams.append(C, O)); else V.searchParams.set(C, v);
+					});
+
+					return ((...C) => {
+						if (Q?.webSocket !== void 0 && typeof Q.webSocket === "function") return Q.webSocket(...C);
+
+						return new WebSocket(...C);
+					})(V.toString());
+				}
+
+				let j = new nG(H, W, { buildSearchParams: q });
+
+				if (W) {
+					Q ??= {};
+
+					let X = u5(Q, { ...Y.args[1] });
+
+					return j.fetch(Y.args[0], X);
+				}
+
+				return j;
+			},
+			[]
+		);
+
+	var K6 = { "Content-Type": "application/json" },
+		N = d5(Z0.url.api, { init: { credentials: "same-origin", headers: K6 } }),
+		h$ = () => localStorage.getItem("auth-token");
+
+	function kJ($, Q = 25, J = 0) {
+		return N.mod.users.$get({ query: { q: $, limit: String(Q), offset: String(J) } });
+	}
+
+	function AJ($) {
+		return N.mod.users[":id"].$get({ param: { id: String($) } });
+	}
+
+	function CJ($) {
+		return N.mod.users[":id"].sessions.$get({ param: { id: String($) } });
+	}
+
+	function TJ($, Q, J) {
+		return N.mod.users[":id"].ban.$post({
+			param: { id: String($) },
+			json: {
+				...Q ? { reason: Q } : {},
+				...J ? { duration_seconds: J } : {}
+			}
+		});
+	}
+
+	function o5($) {
+		return N.mod.users[":id"].unban.$post({ param: { id: String($) } });
+	}
+
+	function EJ($, Q, J) {
+		return N.mod.users[":id"].mute.$post({
+			param: { id: String($) },
+			json: {
+				...Q ? { reason: Q } : {},
+				...J ? { duration_seconds: J } : {}
+			}
+		});
+	}
+
+	function n5($) {
+		return N.mod.users[":id"].unmute.$post({ param: { id: String($) } });
+	}
+
+	function t5($, Q) {
+		return N.mod.users[":id"]["leaderboard-exclusion"].$post({ param: { id: String($) }, json: { excluded: Q } });
+	}
+
+	function IJ($) {
+		return N.mod.users[":id"]["delete-strokes"].$post({ param: { id: String($) } });
+	}
+
+	function wJ($, Q = 0) {
+		return N.mod.users[":id"]["owned-pixels"].$get({ param: { id: String($) }, query: { offset: String(Q) } });
+	}
+
+	function hJ($, Q) {
+		return N.mod.users[":id"]["delete-selected-strokes"].$post({ param: { id: String($) }, json: { positions: Q } });
+	}
+
+	function NJ($, Q) {
+		return N.mod.users[":id"]["give-paint"].$post({ param: { id: String($) }, json: { amount: Q } });
+	}
+
+	function mJ($, Q) {
+		return N.mod.users[":id"]["reset-balance"].$post({ param: { id: String($) }, query: { type: Q } });
+	}
+
+	function BJ($, Q) {
+		return N.mod.users[":id"]["give-cursor"].$post({ param: { id: String($) }, json: { cursorId: Q } });
+	}
+
+	function OJ($, Q, J) {
+		return N.mod.users[":id"].message.$post({
+			param: { id: String($) },
+			json: { body: Q, ...J ? { title: J } : {} }
+		});
+	}
+
+	function SJ($, Q, J = !0) {
+		return N.mod.broadcast.$post({ json: { body: $, ...Q ? { title: Q } : {}, createRow: J } });
+	}
+
+	function a5($, Q) {
+		return N.mod.users[":id"].role.$post({ param: { id: String($) }, json: { role: Q } });
+	}
+
+	function _J($ = {}) {
+		return N.mod["review-queue"].$get({
+			query: {
+				...$.status ? { status: $.status } : {},
+				...$.kind ? { kind: $.kind } : {},
+				...$.cursor ? { cursor: $.cursor } : {},
+				...$.limit ? { limit: String($.limit) } : {}
+			}
+		});
+	}
+
+	function yJ($, Q, J) {
+		return N.mod["review-queue"][":id"].resolve.$post({
+			param: { id: String($) },
+			json: { action: Q, ...J ? { notes: J } : {} }
+		});
+	}
+
+	function vJ($, Q) {
+		return N.mod.feedback.$get({ query: { kind: $, offset: Q.toString() } });
+	}
+
+	function gJ($, Q, J) {
+		return N.mod.feedback.resolve.$post({ json: { id: $, action: Q, reply: J } });
+	}
+
+	function xJ() {
+		return N.mod.feedback.counts.$get();
+	}
+
+	function pJ($) {
+		return N.mod.referrals.$get({ query: { offset: $.toString() } });
+	}
+
+	function cJ($) {
+		return N.mod.referredBy[":uid"].$get({ param: { uid: $.toString() } });
+	}
+
+	function s5($, Q) {
+		return N.mod.referrals[":code"].$post({ param: { code: $ }, query: { action: Q } });
+	}
+
+	function bJ($) {
+		return N.mod.clans[":id"].members.$get({ param: { id: $.toString() } });
+	}
+
+	function fJ($) {
+		return N.mod["wipe-canvas"].$post({ json: $ });
+	}
+
+	function D1($) {
+		return N.mod["restore-pixels"].$post({ json: { token: $ } });
+	}
+
+	function lJ($) {
+		return N.mod.tile[":pos"].$get({ param: { pos: String($) } });
+	}
+
+	function uJ($, Q, J, Y) {
+		return N.mod.region.$get({
+			query: { x: String($), y: String(Q), w: String(J), h: String(Y) }
+		});
+	}
+
+	function dJ($) {
+		return N.mod.owners.$post({ json: { positions: $ } });
+	}
+
+	function oJ($, Q = {}) {
+		return N.mod.users[":id"]["paint-history"].$get({
+			param: { id: String($) },
+			query: {
+				...Q.before ? { before: Q.before } : {},
+				...Q.limit ? { limit: String(Q.limit) } : {}
+			}
+		});
+	}
+
+	function nJ($, Q) {
+		return N.mod.users[":id"]["paint-history"][":entryId"].$get({ param: { id: String($), entryId: String(Q) } });
+	}
+
+	function tJ($, Q = {}) {
+		return N.mod.users[":id"]["chat-history"].$get({
+			param: { id: String($) },
+			query: {
+				...Q.before ? { before: Q.before } : {},
+				...Q.limit ? { limit: String(Q.limit) } : {}
+			}
+		});
+	}
+
+	function aJ($ = {}) {
+		return N.mod.audit.$get({
+			query: {
+				...$.action ? { action: $.action } : {},
+				...$.mod_id ? { mod_id: String($.mod_id) } : {},
+				...$.target_id ? { target_id: String($.target_id) } : {},
+				...$.search ? { search: $.search } : {},
+				...$.order ? { order: $.order } : {},
+				...$.before ? { before: $.before } : {},
+				...$.limit ? { limit: String($.limit) } : {}
+			}
+		});
+	}
+
+	function sJ() {
+		return N.mod["bot-sensitivity"].$get();
+	}
+
+	function rJ($) {
+		return N.mod["bot-sensitivity"].$post({ json: { sensitivity: $ } });
+	}
+
+	function iJ() {
+		return N.mod["chat-cooldown"].$get();
+	}
+
+	function eJ($) {
+		return N.mod["chat-cooldown"].$post({ query: { cooldown: $.toString() } });
+	}
+
+	function $7($) {
+		return N.mod["bot-samples"][":userId"].$get({ param: { userId: String($) } });
+	}
+
+	var T8 = null;
+
+	function tG() {
+		if (T8 && T8.isConnected) return T8;
+
+		return (T8 = G("div.toast-container"), document.body.append(T8), T8);
+	}
+
+	function N$($, Q = 3200) {
+		let J = tG(), Y = G("div.toast", G("span", $));
+
+		(
+			J.prepend(Y),
+			requestAnimationFrame(() => Y.classList.add("toast-show")),
+			setTimeout(
+				() => {
+					(
+						Y.classList.remove("toast-show"),
+						setTimeout(() => Y.remove(), 250)
+					);
+				},
+				Q
+			)
+		);
+	}
+
+	function Q7($) {
+		if ($ === null || $ === void 0) return null;
+
+		let Q = $ instanceof Date ? $ : new Date($);
+
+		return Number.isNaN(Q.getTime()) ? null : Q;
+	}
+
+	function p0($) {
+		let Q = Q7($);
+
+		if (!Q) return $ === null || $ === void 0 ? "-" : String($);
+
+		return Q.toLocaleString();
+	}
+
+	var k1 = null;
+
+	function J7() {
+		(k1?.remove(), k1 = null);
+	}
+
+	document.addEventListener("click", J7);
+
+	function I0($, Q) {
+		let J = Q7($);
+
+		if (!J) return G("span", Q ?? p0($));
+
+		let Y = J.toLocaleString(),
+			q = J.toUTCString(),
+			Z = G("time.ts-local.tooltip", {
+				textContent: Q ?? Y,
+				datetime: J.toISOString(),
+				dataset: { tooltip: `UTC: ${q}` },
+				onclick(K) {
+					if ((K.stopPropagation(), k1)) {
+						J7();
+
+						return;
+					}
+
+					let W = G("div.ts-utc-pop", G("div.ts-utc-row", G("span.ts-utc-k", "Local"), Y), G("div.ts-utc-row", G("span.ts-utc-k", "UTC"), q));
+
+					document.body.append(W);
+
+					let F = Z.getBoundingClientRect(),
+						H = W.getBoundingClientRect(),
+						j = Math.min(F.left, window.innerWidth - H.width - 8),
+						X = F.bottom + 4 + H.height > window.innerHeight ? F.top - H.height - 4 : F.bottom + 4;
+
+					(
+						W.style.left = `${Math.max(8, j)}px`,
+						W.style.top = `${Math.max(8, X)}px`,
+						k1 = W
+					);
+				}
+			});
+
+		return Z;
+	}
+
+	var r5 = [
+		{ label: "30 min", seconds: 1800 },
+		{ label: "1 hour", seconds: 3600 },
+		{ label: "6 hours", seconds: 21600 },
+		{ label: "1 day", seconds: 86400 },
+		{ label: "3 days", seconds: 259200 },
+		{ label: "7 days", seconds: 604800 },
+		{ label: "30 days", seconds: 2592000 },
+		{ label: "Permanent", seconds: null }
+	];
+
+	function F6($) {
+		return G("span.mod-role", { dataset: { role: $ } }, $);
+	}
+
+	function A1($, Q = 240) {
+		let J;
+
+		try {
+			J = JSON.stringify($);
+		} catch {
+			J = String($);
+		}
+
+		if (!J) return "{}";
+
+		return J.length > Q ? J.slice(0, Q) + "..." : J;
+	}
+
+	function Y0($) {
+		return G("p.error.noicon", $);
+	}
+
+	async function d($) {
+		try {
+			return await $.text() || `HTTP ${$.status} ${$.statusText}`;
+		} catch {
+			return `HTTP ${$.status} ${$.statusText}`;
+		}
+	}
+
+	function C1($) {
+		let Q = G("button.btn.mod-undo", "Undo", {
+			async onclick() {
+				Q.disabled = !0;
+
+				let J = await D1($);
+
+				if (!J.ok) {
+					(
+						Q.disabled = !1,
+						N$(J.status === 410 ? "The undo window has passed." : "Undo failed.")
+					);
+
+					return;
+				}
+
+				let Y = 0;
+
+				try {
+					Y = (await J.json()).restored ?? 0;
+				} catch {}
+
+				(N$(`Restored ${Y} pixel${Y === 1 ? "" : "s"}.`), x());
+			}
+		});
+
+		return Q;
+	}
+
+	var i5 = 0,
+		T1 = 1,
+		E1 = 2,
+		aG = "#ff3b3b",
+		sG = "rgba(8,8,12,0.75)",
+		G$ = null;
+
+	function rG() {
+		if (G$) return G$;
+
+		return (
+			G$ = G("canvas.ghost-layer", { width: b, height: D0 }),
+			j6.append(G$),
+			G$
+		);
+	}
+
+	function Y7($, Q) {
+		let J = rG(), Y = J.getContext("2d");
+
+		(
+			Y.clearRect(0, 0, J.width, J.height),
+			Y.fillStyle = sG,
+			Y.fillRect(0, 0, J.width, J.height)
+		);
+
+		for (let q = 0; q < $.length; q++) {
+			let { pos: Z, color: K } = $[q],
+				W = Z % b,
+				F = Z / b | 0;
+
+			if (W < 0 || W >= b || F < 0 || F >= D0) continue;
+
+			Y.clearRect(W, F, 1, 1);
+
+			let H = Q[q];
+
+			if (H === E1) (Y.globalAlpha = 0.55, Y.fillStyle = aG); else (
+				Y.globalAlpha = H === T1 ? 0.28 : 1,
+				Y.fillStyle = q0[K]?.hex ?? "#ff00ff"
+			);
+
+			Y.fillRect(W, F, 1, 1);
+		}
+
+		(Y.globalAlpha = 1, J.style.display = "block");
+	}
+
+	function e5() {
+		if (!G$) return;
+
+		(
+			G$.getContext("2d").clearRect(0, 0, G$.width, G$.height),
+			G$.style.display = "none"
+		);
+	}
+
+	function W6($) {
+		if (!$.length) return null;
+
+		let Q = 1 / 0, J = 1 / 0, Y = -1 / 0, q = -1 / 0;
+
+		for (let { pos: Z } of $) {
+			let K = Z % b, W = Z / b | 0;
+
+			if (K < Q) Q = K;
+			if (W < J) J = W;
+			if (K > Y) Y = K;
+			if (W > q) q = W;
+		}
+
+		return { x: Q, y: J, width: Y - Q + 1, height: q - J + 1 };
+	}
+
+	var G7 = 5;
+
+	function I1($) {
+		let Q = new DataView($.buffer, $.byteOffset, $.byteLength),
+			J = $.byteLength / G7 | 0,
+			Y = new Array(J);
+
+		for (let q = 0; q < J; q++) {
+			let Z = q * G7;
+
+			Y[q] = { pos: Q.getUint32(Z, !0), color: $[Z + 4] };
+		}
+
+		return Y;
+	}
+
+	var iG = 48;
+
+	function E8($, Q = iG) {
+		let J = G("canvas.mod-ph-thumb", { width: Q, height: Q }),
+			Y = J.getContext("2d"),
+			q = W6($);
+
+		if (!q) return J;
+
+		let Z = Math.max(1, Math.floor(Math.min(Q / q.width, Q / q.height))),
+			K = Math.floor((Q - q.width * Z) / 2),
+			W = Math.floor((Q - q.height * Z) / 2);
+
+		for (let { pos: F, color: H } of $) {
+			let j = F % b, X = F / b | 0;
+
+			(
+				Y.fillStyle = q0[H]?.hex ?? "#ff00ff",
+				Y.fillRect(K + (j - q.x) * Z, W + (X - q.y) * Z, Z, Z)
+			);
+		}
+
+		return J;
+	}
+
+	var eG = 360;
+
+	function q7($, Q = 0) {
+		if (!$.length) return;
+
+		let J = Math.max(0, Math.min(Q, $.length - 1)),
+			Y = G("span"),
+			q = G("div.mod-carousel-stage"),
+			Z = G("div.mod-carousel-caption"),
+			K = () => {
+				let V = $[J];
+
+				(
+					Y.replaceChildren(`Flagged draws (${J + 1} / ${$.length})`),
+					q.replaceChildren(E8(V.pixels, eG)),
+					Z.replaceChildren(V.label)
+				);
+			},
+			W = (V) => {
+				(J = (J + V + $.length) % $.length, K());
+			},
+			F = () => {
+				(document.removeEventListener("keydown", H, !0), X.remove());
+			},
+			H = (V) => {
+				if (V.key === "Escape") (V.stopPropagation(), F()); else if (V.key === "ArrowLeft") (V.stopPropagation(), W(-1)); else if (V.key === "ArrowRight") (V.stopPropagation(), W(1));
+			},
+			j = $.length > 1,
+			X = G("div.modal-bg.confirm-bg.mod-carousel-bg", G("div.modal-container", G("div.modal-title", Y, J$("close", { ariaLabel: "Close", onclick: F })), G(
+				"div.modal-content",
+				G(
+					"div.mod-carousel",
+					j
+						? G("button.btn.mod-carousel-nav", "Prev", { onclick: () => W(-1) })
+						: "",
+					q,
+					j
+						? G("button.btn.mod-carousel-nav", "Next", { onclick: () => W(1) })
+						: ""
+				),
+				Z
+			)));
+
+		(
+			X.addEventListener("click", (V) => {
+				if (V.target === X) F();
+			}),
+			document.addEventListener("keydown", H, !0),
+			document.body.append(X),
+			K()
+		);
+	}
+
+	var p = {
+		version: 1,
+		lastUsedColors: [],
+		lastBrushSize: 10,
+		seenGuidebook: !1,
+		camera: { x: 0, y: 0, zoom: 0 },
+		a11y: {},
+		flags: {}
+	};
+
+	function $q($) {
+		(
+			console.warn(`Outdated settings (current: ${$.version}, latest: ${p.version}), updating`),
+			$.version = p.version
+		);
+	}
+
+	function Qq() {
+		try {
+			let $ = localStorage.getItem("wall:settings");
+
+			if ($) return JSON.parse($);
+		} catch($) {
+			localStorage.removeItem("wall:settings");
+		}
+	}
+
+	function Jq() {
+		let $ = Qq();
+
+		if (!$) {
+			X6();
+
+			return;
+		}
+
+		if (p.version != $.version) $q($);
+
+		for (let Q in $) p[Q] = $[Q];
+
+		X6();
+	}
+
+	function X6() {
+		(
+			localStorage.setItem("wall:settings", JSON.stringify(p)),
+			$Q = !1
+		);
+	}
+
+	var $Q = !1;
+
+	function m0() {
+		$Q = !0;
+	}
+
+	setInterval(
+		() => {
+			if ($Q) X6();
+		},
+		1000
+	);
+
+	document.addEventListener("blur", X6);
+	window.addEventListener("beforeunload", X6);
+	Jq();
+
+	var Z7 = G("img", {
+			src: b0(0),
+			alt: "⬉",
+			onerror($) {
+				(console.error("Error loading custom cursor", $), H6());
+			}
+		}),
+		QQ = G("div.chat-bubble", G("span", "You")),
+		m$ = G("div.cursor.own-cursor", Z7, { style: { opacity: "0" } });
+
+	function b0($) {
+		return `/static/cursors/generated/${$ || 0}.png`;
+	}
+
+	var h1 = !1, N1 = !1;
+
+	function K7() {
+		if (h1) return;
+
+		(m$.style.opacity = "1", h1 = !0);
+	}
+
+	function Yq() {
+		if (!h1) return;
+
+		(m$.style.opacity = "0", h1 = !1);
+	}
+
+	function H6() {
+		if (N1) return;
+
+		(
+			m$.remove(),
+			document.head.append(G("style.system-cursor", "* { cursor: unset !important }")),
+			N1 = !0
+		);
+	}
+
+	function m1() {
+		if (!N1) return;
+		if (p.a11y.systemCursor) return;
+
+		document.body.prepend(m$);
+
+		let $ = u("style.system-cursor");
+
+		if ($) $.remove();
+
+		N1 = !1;
+	}
+
+	function B1($, Q) {
+		(m$.style.transform = `translate3d(${$}px, ${Q}px, 0)`, K7());
+	}
+
+	document.addEventListener("pointermove", ($) => B1($.x, $.y));
+
+	function F7($) {
+		let Q = $.touches[0];
+
+		if (!Q) return;
+
+		B1(Q.clientX + 16, Q.clientY + 16);
+	}
+
+	document.addEventListener("touchstart", F7);
+	document.addEventListener("touchmove", F7);
+	document.addEventListener("mouseout", ($) => $.relatedTarget || Yq());
+	document.addEventListener("mouseover", K7);
+
+	function I8($) {
+		Z7.src = b0($);
+	}
+
+	var w1 = 0;
+
+	function W7($) {
+		if (p.a11y.hideChatBubbles) return;
+
+		let Q = G("p", $);
+
+		if ((
+			w1++,
+			QQ.append(Q),
+			setTimeout(
+				() => {
+					if ((Q.remove(), w1--, w1 == 0)) QQ.remove();
+				},
+				2000
+			),
+			w1 == 1
+		)) m$.append(QQ);
+	}
+
+	function K0() {
+		if (W0) {
+			(
+				W0.container.inert = !0,
+				W0.content.style.opacity = "0.3",
+				W0.lockLevel++
+			);
+
+			return;
+		}
+
+		new _("Loading...", G("div.loading-modal", "Loading...")).onClose(() => !1);
+	}
+
+	function V6() {
+		if (!W0?.lockLevel) return;
+		if ((W0.lockLevel--, !W0.lockLevel)) (W0.container.inert = !1, W0.content.style.opacity = "");
+	}
+
+	var j7 = 3.141592653589793,
+		P6 = Number.isSafeInteger,
+		JQ = !1;
+
+	function Gq($, Q, J, Y) {
+		return () => {
+			($ |= 0, Q |= 0, J |= 0, Y |= 0);
+
+			let q = ($ + Q | 0) + Y | 0;
+
+			return (
+				Y = Y + 1 | 0,
+				$ = Q ^ Q >>> 9,
+				Q = J + (J << 3) | 0,
+				J = J << 21 | J >>> 11,
+				J = J + q | 0,
+				(q >>> 0) / 4294967296
+			);
+		};
+	}
+
+	var O1 = () => Math.random() * 4294967296 >>> 0,
+		B$ = Gq(O1(), O1(), O1(), O1());
+
+	function X7($) {
+		let Q;
+
+		if ($ < -3.141592653589793) $ += 6.28318531; else if ($ > 3.141592653589793) $ -= 6.28318531;
+		if ($ < 0) if ((Q = 1.27323954 * $ + 0.405284735 * $ * $, Q < 0)) Q = 0.225 * (Q * -Q - Q) + Q; else Q = 0.225 * (Q * Q - Q) + Q; else if ((Q = 1.27323954 * $ - 0.405284735 * $ * $, Q < 0)) Q = 0.225 * (Q * -Q - Q) + Q; else Q = 0.225 * (Q * Q - Q) + Q;
+
+		return Q;
+	}
+
+	function H7($) {
+		let Q;
+
+		if (($ += 1.57079632, $ > 3.141592653589793)) $ -= 6.28318531;
+		if ($ < 0) if ((Q = 1.27323954 * $ + 0.405284735 * $ * $, Q < 0)) Q = 0.225 * (Q * -Q - Q) + Q; else Q = 0.225 * (Q * Q - Q) + Q; else if ((Q = 1.27323954 * $ - 0.405284735 * $ * $, Q < 0)) Q = 0.225 * (Q * -Q - Q) + Q; else Q = 0.225 * (Q * Q - Q) + Q;
+
+		return Q;
+	}
+
+	function R6($) {
+		let Q = $ | 0;
+
+		return (JQ = !0, $ < 0 && $ != Q ? Q - 1 : Q);
+	}
+
+	var V7 = "__wd_site";
+
+	Object.freeze(Math);
+
+	var M6 = (navigator.userAgentData?.platform ?? navigator.platform).toLowerCase().includes("mac"),
+		YQ = M6 ? "⌘" : "Ctrl",
+		f0 = window.matchMedia("(pointer: coarse)").matches;
+
+	function M$() {
+		if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+	}
+
+	function qq($, Q, J) {
+		let Y = B$() * j7 * 2,
+			q = J * B$() ** 0.5,
+			Z = J < 5 ? 1 : 1,
+			K = (B$() - 0.5) * Z,
+			W = (B$() - 0.5) * Z;
+
+		return [R6($ + q * H7(Y) + K), R6(Q + q * X7(Y) + W)];
+	}
+
+	function* P7($, Q, J, Y) {
+		let q = new Set();
+
+		if (J < 2) J = 2;
+
+		for (let Z = 0; Z < Y; Z++) {
+			let K = qq($, Q, J), W = K[1] * b + K[0];
+
+			if (q.has(W)) {
+				Z--;
+
+				continue;
+			}
+
+			(q.add(W), yield K);
+		}
+	}
+
+	function R7($, Q, J, Y) {
+		if ($ == -1) return { steps: 0, points: [] };
+
+		let q = J - $,
+			Z = Y - Q,
+			K = Math.max(Math.abs(q), Math.abs(Z)),
+			W = [];
+
+		for (let F = 0; F < K; F++) W.push([R6($ + q / K * F), R6(Q + Z / K * F)]);
+
+		return { steps: K, points: W };
+	}
+
+	var i$ = G("div.box.paint-bar.tooltip"),
+		M7 = G("span.spray-can-count", "+0"),
+		U7 = G("span.spray-can-extra", "cans"),
+		z7 = G("button.btn.swatch.tooltip.paint-extra-count", M7, U7, {
+			tabIndex: -1,
+			onclick: M$,
+			dataset: { tooltip: "Additional Spray Cans" }
+		});
+
+	function L7($) {
+		let Q = Math.floor($ / F0),
+			J = $ % F0,
+			Y = J / F0 * 100;
+
+		(
+			i$.style.setProperty("--paint-remaining", `${Y}%`),
+			i$.dataset.tooltip = `Paint Remaining: ${Math.round(Y)}% (${H0(J)}px)`,
+			Zq(Q)
+		);
+	}
+
+	function D7($, Q = !1) {
+		(
+			i$.style.setProperty("--color", $),
+			i$.style.setProperty("--color-2", `${$}7F`),
+			i$.classList.toggle("dark", Q)
+		);
+	}
+
+	function Zq($) {
+		(M7.textContent = `+${$}`, U7.textContent = `can${C0($)}`);
+	}
+
+	var q$;
+
+	((Z) => {
+		Z[Z.None = 0] = "None";
+		Z[Z.Spray = 1] = "Spray";
+		Z[Z.Chat = 2] = "Chat";
+		Z[Z.Login = 3] = "Login";
+		Z[Z.Share = 4] = "Share";
+	})(q$ ||= {});
+
+	var R = {
+		connectionId: -1,
+		user: null,
+		token: h$(),
+		selectedColor: q0[0],
+		activeTool: 0,
+		nextRefill: 0,
+		paintRemaining: 0,
+		localPaintIncrement: 0,
+		openAt: 0,
+		clockOffset: 0,
+		cursorX: -1,
+		cursorY: -1,
+		onlinePlayers: 0,
+		onlineViewers: 0,
+		debug: { ping: 0, visibleCursors: 0 },
+		setTool($) {
+			let Q = q$[$];
+
+			(
+				this.activeTool = $,
+				document.documentElement.dataset.tool = Q.toLowerCase()
+			);
+		},
+
+		setUser($) {
+			(this.user = $, I8($.cursor_id || 0));
+		},
+
+		addLocalPaintIncrement($) {
+			(
+				this.localPaintIncrement += $,
+				this.setPaintRemaining(this.paintRemaining)
+			);
+		},
+
+		commitLocalPaint() {
+			let $ = Math.max(0, this.paintRemaining + this.localPaintIncrement);
+
+			(this.localPaintIncrement = 0, this.setPaintRemaining($));
+		},
+
+		setPaintRemaining($) {
+			this.paintRemaining = $;
+
+			let Q = Math.max($ + this.localPaintIncrement - 1, 0);
+
+			if ((L7(Q), Q && U1 == "Out of paint?")) x();
+		},
+
+		sprayCanCount() {
+			return Math.ceil(this.paintRemaining / F0);
+		},
+
+		currentSprayCanSize() {
+			let $ = this.paintRemaining % F0;
+
+			return $ == 0 && this.paintRemaining >= F0 ? F0 : $;
+		}
+	};
+
+	if (P$) window.player = R;
+
+	async function GQ($) {
+		let Q = await N.user.settings.$post({ json: $ });
+
+		if (Q.status != 200) return await Q.text();
+
+		R.setUser(await Q.json());
+	}
+
+	async function U6($) {
+		let Q = await GQ($);
+
+		if (typeof Q == "string") alert(`Could not update user settings: ${Q}`);
+	}
+
+	var qQ = /^[a-z0-9_.-]{3,16}$/, Kq = /^[_.-]+$/;
+
+	function z6($) {
+		if (!$) return "Missing username";
+		if ($.length < 3) return "Must be at least 3 letters long";
+		if ($.length > 16) return "Must not be longer than 16 letters";
+		if (!qQ.test($)) return "Can only contain lowercase letters, digits, underscores, dashes and dots.";
+		if (Kq.test($)) return "This username is blacklisted.";
+	}
+
+	function k7() {
+		let Q = R.user.username,
+			J = !1,
+			Y = G("p.warning"),
+			q = (j, X = "") => {
+				(Y.textContent = j, Y.className = X);
+			},
+			Z = G("input.input.box", {
+				type: "text",
+				placeholder: "Username...",
+				maxLength: 16,
+				value: Q
+			}),
+			K = G("button.btn", "Cancel", {
+				onclick: () => {
+					if (Z.value != Q) {
+						Z.value = Q;
+
+						return;
+					}
+
+					x(!0);
+				}
+			}),
+			W = G("button.btn.primary", "Save");
+
+		requestAnimationFrame(() => {
+			Y.style.maxWidth = Z.offsetWidth + "px";
+		});
+
+		let F = !1;
+
+		function H() {
+			let j = Z.value.replace(/[^a-z0-9_.-]/g, "");
+
+			if (Z.value != j) Z.value = j;
+
+			let X = j != Q, V = z6(j);
+
+			if ((W.disabled = !X || !!V || J, W0)) if ((F = X, F)) W0.lockLevel++; else W0.lockLevel--;
+			if (X && V) q(V, "warning"); else if (Y.className == "warning") q("");
+		}
+
+		return (
+			Z.oninput = H,
+			W.onclick = async () => {
+				if (J) return;
+
+				let j = Z.value;
+
+				if (j == Q) return x(!0);
+
+				if (z6(j)) {
+					H();
+
+					return;
+				}
+
+				if (!await i(`Change your username to "${j}"?`, "Change Username", "Change", "Keep Current")) return;
+
+				(J = !0, q(""), K0(), W0.lockLevel = 1);
+
+				try {
+					let V = await GQ({ username: j });
+
+					if ((V6(), J = !1, typeof V == "string")) {
+						(q(V, "warning"), H());
+
+						return;
+					}
+
+					(
+						Q = R.user?.username ?? j,
+						Z.value = Q,
+						q("Username updated!", "success"),
+						H()
+					);
+				} catch(V) {
+					(
+						V6(),
+						J = !1,
+						q(V?.message || "Something went wrong", "warning"),
+						H()
+					);
+				}
+			},
+			G("div.username-settings", G("h3", "Username"), Z, Y, G("div.btn-container", K, W))
+		);
+	}
+
+	function e($, Q) {
+		new _("Error", G("div.modal.error-modal", G("p.error", $), Q && G("div.details", Q), R$));
+	}
+
+	async function T0($, Q) {
+		if ($.status == 429) {
+			let J = $.headers.get("retry-after");
+
+			e(
+				`Not so fast! Please try again ${J
+					? `in ${C0(Math.round(parseInt(J) / 60), "minute")}`
+					: "a bit later"}`,
+				Q
+			);
+		} else if ($.status == 500) e("Something went wrong on our side, sorry!!!", Q); else {
+			let J = $.headers.get("content-type");
+
+			if (J && J.includes("text/plain")) e(await $.text(), Q); else e(`Something went wrong... (${$.status} ${$.statusText})`, Q);
+		}
+	}
+
+	function A7($, Q, J, Y, q = !1) {
+		return G(
+			"div.clan-server.box",
+			G("img", {
+				src: `https://cdn.discordapp.com/icons/${$}/${Q}.webp?size=128&quality=lossless`,
+				draggable: !1
+			}),
+			G("div.info", G("b", J), G("p", G("span", H0(Y)), " members")),
+			q && G("div.btns", G("button.btn.primary", "Select", {
+				async onclick() {
+					(K0(), await U6({ clanDiscordId: $ }), D6());
+				}
+			}))
+		);
+	}
+
+	function L6($, Q = !1) {
+		return G("div.clan-with-stats", A7($.discord_id, $.icon, $.name, $.stat_member_count, !1), G("div.stats", G("p", G("b", V1($.stat_paint_visible)), " paint visible"), G("p", G("b", H0($.stat_pixels_changed)), " pixels changed"), G("p", G("b", H0($.approx_discord_members || 0)), " discord members"), Q && G("p", "Discord ID: ", G("b", $.discord_id))));
+	}
+
+	async function C7() {
+		K0();
+
+		let $ = await N.user.discordGuilds.$get();
+
+		if (!$.ok) return e("Error loading the Discord Server list", "Make sure you're authenticated via Discord, and allowed us to access your Discord server list!");
+
+		let Q = await $.json();
+
+		new _("Change Clan", G("div.clans-modal", G("p", G("a.link", "Go Back", { onclick: D6 }), { style: { marginBottom: "8px" } }), G("div.list", Q.sort((J, Y) => Y.approximate_member_count - J.approximate_member_count).map((J) => A7(J.id, J.icon, J.name, J.approximate_member_count, !0)), G("button.btn", "Refresh List"))));
+	}
+
+	function Fq() {
+		new _("User > Clan", G("div.clans-modal.no-clan", G("p", "You do not have a clan."), G("p.notice.noicon", "Clans appear next to your name at all times! ", "They're a fun way to represent your favorite streamer, content creator, friend group or any other community!"), "Join a clan to show where you belong, meet other members, climb the leaderboard together, and stand out across the platform.", G("div.btns", G("button.btn", "Cancel", { onclick: x }), G("button.btn", "Select Clan", { onclick: C7 }))));
+	}
+
+	async function D6() {
+		if (!R.user?.discord_id) return e("Sorry, clans are for Discord users only!", `Clans work using Discord servers, so you cannot join any clans if you don't have a Discord account connected.
+
+You can authenticate into your current account if your Discord account has the same E-Mail as your Google account.`);
+
+		if (!R.user.clan) return Fq();
+
+		new _("User > Clan", G("div.clans-modal.current", G("p", "Current Clan"), L6(R.user.clan), G("div.btns", G("button.btn", "Cancel", { onclick: x }), G("button.btn", "Change Clan", { onclick: C7 }), G("button.btn", "Leave Clan", {
+			async onclick() {
+				if (!await i("Are you sure you want to leave your current clan?")) return;
+
+				(K0(), await U6({ clanDiscordId: "0" }), D6());
+			}
+		}))));
+	}
+
+	var ZQ = 0;
+
+	function T7($ = "Message") {
+		let J = G("span", "0/512", { style: { color: "#aaa" } });
+
+		return [
+			G("label", { htmlFor: "f_content" }, $, " (", J, ")"),
+			G("textarea#f_content.input.box", {
+				maxLength: 512,
+				style: { height: "200px" },
+				oninput(Y) {
+					let q = Y.target.value;
+
+					J.textContent = `${q.length}/512`;
+				}
+			})
+		];
+	}
+
+	var S1 = ($) => {
+		let Q = document.getElementById($);
+
+		if (!Q) return "";
+
+		return Q.value.trim();
+	};
+
+	async function E7($, Q, J) {
+		if (!$ || !Q) return;
+
+		K0();
+
+		let Y = await N.user.feedback.$post({ json: { kind: $, content: Q, target: J } });
+
+		if (!Y.ok) return T0(Y, `Could not submit ${$}`);
+
+		(
+			ZQ = Date.now() + 30000,
+			new _($ == "report" ? "Report" : "Feedback", G("div.feedback", G("div.success", `Thank you for your ${$ == "report" ? "report" : "feedback"}!`)))
+		);
+	}
+
+	function I7($) {
+		return G("select#f_type.box.outset.input", { style: { width: "100%" } }, $.map(([Q, J]) => G("option", { value: Q }, J || Q)));
+	}
+
+	function w7($) {
+		if (!R.user) return;
+		if (ZQ > Date.now()) return e("Please wait 30 seconds before reporting someone again.");
+
+		new _("Report User", G(
+			"div.feedback",
+			G("p", "Report ", G("b", $)),
+			G("label", { htmlFor: "f_type" }, "Reason"),
+			I7([
+				"- Please Specify -",
+				"Griefing",
+				"Cheating",
+				"Multiaccounting",
+				"Bad Behaviour",
+				"Botting",
+				"Other"
+			].map((Q) => [Q])),
+			T7("Optional Message"),
+			G("div.btn-container", G("button.btn", "Cancel", { onclick: () => x() }), G("button.btn", "Report", {
+				onclick: () => {
+					let Q = S1("f_type"),
+						J = S1("f_content"),
+						Y = `${Q}|${J}`;
+
+					if (Q[0] == "-") return;
+
+					E7("report", Y, $);
+				}
+			}))
+		));
+	}
+
+	function h7() {
+		if (!R.user) {
+			e("You need to be signed in to send feedback!");
+
+			return;
+		}
+
+		if (ZQ > Date.now()) return e("Please wait 30 seconds before submitting feedback again.");
+
+		new _("Feedback", G(
+			"div.feedback",
+			G("label", { htmlFor: "f_type" }, "Type"),
+			I7([
+				["bug", "Bug Report"],
+				["feedback", "Feedback"],
+				["suggestion", "Feature Suggestion"]
+			]),
+			T7(),
+			G("div.btn-container", G("button.btn", "Cancel", { onclick: () => x() }), G("button.btn", "Submit!", {
+				onclick: () => {
+					E7(S1("f_type"), S1("f_content"));
+				}
+			}))
+		));
+	}
+
+	function N7() {
+		new _("Chat", G("div.chat-modal.nopad", k6, KQ(!0))).onClose(() => {
+			u(".chat-log-wrapper").append(k6);
+		});
+	}
+
+	var _1 = null,
+		m7 = [
+			{
+				id: "x",
+				name: "X (formerly Twitter)",
+				url: "https://x.com/intent/tweet"
+			},
+
+			{
+				id: "bluesky",
+				name: "Bluesky",
+				url: "https://bsky.app/intent/compose"
+			},
+
+			{
+				id: "mastodon",
+				name: "Mastodon",
+				url: "https://mastodon.social/share"
+			},
+
+			{
+				id: "reddit",
+				name: "Reddit",
+				url: "https://www.reddit.com/submit"
+			}
+		];
+
+	function B7($, Q) {
+		let J = new URLSearchParams();
+
+		if ($.name == "Reddit") (J.set("title", "#filianislost"), J.set("url", Q)); else J.set("text", `#filianislost ${Q}`);
+
+		return `${$.url}?${J.toString()}`;
+	}
+
+	async function FQ() {
+		if (_1) return _1;
+
+		K0();
+
+		let $ = await N.user.shareLink.$post();
+
+		if (!$.ok) {
+			T0($, "Could not generate the referral link");
+
+			return;
+		}
+
+		let Q = await $.json();
+
+		return (
+			_1 = Q,
+			setTimeout(
+				() => {
+					_1 = null;
+				},
+				60000
+			),
+			Q
+		);
+	}
+
+	function O7($) {
+		if (!R.user) return "";
+
+		let Q = new URLSearchParams();
+
+		if ((Q.set("c", $.referral.code), $.imageCode)) Q.set("im", $.imageCode);
+		if ($.x && $.y) Q.set("p", `${$.x},${$.y}`);
+
+		return `${Z0.url.share}/${R.user.username}?${Q.toString()}`;
+	}
+
+	var y1 = null;
+
+	function WQ($, Q = !1) {
+		let J = O7($),
+			Y = `Share Website > ${$.imageCode ? "Image" : "Link"}`;
+
+		new _(Y, G(
+			"div.share-modal.link",
+			G("p", Q
+				? "You have already generated an image in the past minute!"
+				: "Here's your link!"),
+			G("span.box.input.link.tooltip", J, {
+				dataset: { tooltip: "Click to copy!" },
+				onclick() {
+					v5(J);
+				}
+			}),
+			$.imageLink && G("img.preview", { src: $.imageLink }),
+			G("p.desc", "Post it on..."),
+			G("div.platforms", m7.map((q) => G(
+				"a.platform.tooltip",
+				{
+					target: "_blank",
+					href: B7(q, `${J}&utm_source=${q.id}`),
+					dataset: { tooltip: q.name }
+				},
+				G("img", {
+					src: `/static/icon/platform/${q.id}.png`,
+					alt: q.name,
+					draggable: !1
+				})
+			))),
+			R$
+		));
+	}
+
+	function Wq() {
+		if (y1) return WQ(y1, !0);
+
+		(R.setTool(4), O$(4), x(!0));
+	}
+
+	async function jQ($) {
+		if ((R.setTool(0), O$(0), a0(), $)) return A6();
+
+		(K0(), S$());
+
+		let { x: Q, y: J, x2: Y, y2: q } = A.viewport,
+			Z = Y - Q,
+			K = q - J,
+			W = Math.floor(Q + Z / 2),
+			F = Math.floor(J + K / 2),
+			H = await N.user.shareCanvas.$post({
+				json: {
+					x: Math.floor(Q),
+					y: Math.floor(J),
+					width: Math.floor(Z) || 1,
+					height: Math.floor(K) || 1
+				}
+			});
+
+		if (!H.ok) return T0(H, "Could not generate the image");
+
+		let { code: j, url: X } = await H.json(),
+			L = { referral: await FQ(), imageCode: j, imageLink: X, x: W, y: F };
+
+		(
+			y1 = L,
+			setTimeout(
+				() => {
+					y1 = null;
+				},
+				60000
+			),
+			x(!0),
+			WQ(L)
+		);
+	}
+
+	async function A6() {
+		let $ = await FQ();
+
+		if (!$) return;
+
+		new _("Share Website", G("div.share-modal", G("p.success", `Every player who signs up with your link will reward you with ${C8(G6.ReferralCode)}!`), G("div.btn-container.vertical", G("button.btn.share", "Share Link", { onclick: () => WQ({ referral: $ }) }), G("button.btn.share", "Share Image", { onclick: () => Wq() }), G("button.btn", "Cancel", { onclick: () => x() })), G("p.desc", `You have invited ${C0($.uses, "user")} so far!`)));
+	}
+
+	function S7() {
+		return new _("Out of paint!", G("div.out-of-paint", G("p.c", G("b", "You have used up some paint, time to submit!")), G("p.c.desc", `You have ${C8(R.paintRemaining + R.localPaintIncrement)} remaining.`), G("p.notice.noicon", "Paint does not get consumed until you submit your changes. Submit your drawing to the canvas, or undo your changes."), G(
+			"div.btn-container",
+			G("button.btn.primary", "Submit", {
+				onclick: async () => {
+					(K0(), await g1(), x(!0));
+				}
+			}),
+			G("button.btn", "Cancel", { onclick: () => x() })
+		)));
+	}
+
+	function v1() {
+		return new _("Out of paint?", G("div.out-of-paint", G("b", "You can share our website to get more paint!"), G("p.success.noicon", `Each invited user will reward you with ${C8(G6.ReferralCode)}!`), G("p.desc", `You can also wait for a refill to get ${C8(G6.TimePassed)}.`, G("br"), "The timer is shown in the bottom bar."), G("div.btn-container.vertical", G("button.btn.share", "Share Website", { onclick: A6 }), r$)));
+	}
+
+	var C6 = [], B0 = [], s0 = [];
+
+	function _7() {
+		(C6.push(s0), s0 = [], B0 = []);
+	}
+
+	function y7() {
+		(C6 = [], B0 = [], s0 = []);
+	}
+
+	function XQ($, Q = !1) {
+		let J = 0;
+
+		for (let Y of $) if (Q) {
+			let q = q0[Y.newColor];
+
+			if (!U0.has(Y.pos)) J++;
+
+			(U0.set(Y.pos, q), e$(Y.pos, q, Y.x, Y.y));
+		} else if (typeof Y.oldColor == "number") {
+			let q = q0[Y.oldColor];
+
+			(U0.set(Y.pos, q), e$(Y.pos, q, Y.x, Y.y));
+		} else {
+			let q = q0[r0[Y.pos]];
+
+			(U0.delete(Y.pos), U$(Y.x, Y.y, q?.u32 ?? 0), J++);
+		}
+
+		return J;
+	}
+
+	function x1() {
+		if (s0.length) {
+			let J = XQ(s0);
+
+			(R.addLocalPaintIncrement(J), B0 = [], B0.push(s0), s0 = []);
+
+			return;
+		}
+
+		if (!C6.length) return;
+
+		let $ = C6.pop(), Q = XQ($);
+
+		(R.addLocalPaintIncrement(+Q), B0.push($));
+	}
+
+	function p1() {
+		if (!B0.length) return;
+
+		let $ = B0.pop(), Q = XQ($, !0);
+
+		(C6.push($), R.addLocalPaintIncrement(-Q));
+	}
+
+	var w8 = G("div.box.outset.status-text.warn"),
+		Q8 = G("div.box.outset.status-text"),
+		$8 = 0,
+		_$ = !1,
+		HQ = 0;
+
+	function a0() {
+		if (R.openAt && Date.now() + R.clockOffset < R.openAt) {
+			if (_$) (w8.textContent = "", _$ = !1);
+
+			(Hq(), HQ = R.activeTool);
+
+			return;
+		}
+
+		if (R.activeTool == 1) jq(HQ != R.activeTool); else if (_$) (w8.textContent = "", _$ = !1);
+		if (R.activeTool == 4) Xq(); else if (R.paintRemaining == 0 && R.nextRefill) Vq(); else if (U0.size || B0.length) Pq(); else v7();
+
+		HQ = R.activeTool;
+	}
+
+	function jq($ = !1) {
+		let Q = A.normalizedZoom <= c1;
+
+		if (Q && (!_$ || $)) (_$ = !0, w8.textContent = "Zoom in to draw!"); else if (_$ && !Q) {
+			(w8.textContent = "", _$ = !1);
+
+			return;
+		}
+	}
+
+	setInterval(a0, 1000);
+
+	function v7() {
+		if ($8 == 0) return;
+
+		(Q8.textContent = "", $8 = 0);
+	}
+
+	function Xq() {
+		(
+			$8 = 4,
+			Q8.replaceChildren(G("div.share-viewport", G("p", "Zoom into the canvas to share your artwork!"), G("div", G("button.btn", "Share", { onclick: () => jQ(!1) }), G("button.btn", "Cancel", { onclick: () => jQ(!0) }))))
+		);
+	}
+
+	function Hq() {
+		let $ = R.openAt - (Date.now() + R.clockOffset);
+
+		(
+			$8 = 5,
+			Q8.replaceChildren(G("div.timer", G("p", "Drawing opens in: "), G("b", f5($))))
+		);
+	}
+
+	function Vq() {
+		let $ = R.nextRefill - Date.now(), Q = f5($);
+
+		if (($8 = 1, $ < 1)) {
+			(R.nextRefill = 0, v7());
+
+			return;
+		}
+
+		Q8.replaceChildren(G("div.timer", G("p", G("a.link", "Out of paint!", { tabIndex: 1, onclick: () => v1() }), " Next refill in: "), G("b", Q)));
+	}
+
+	function Pq() {
+		if ($8 == 2) return;
+
+		(
+			$8 = 2,
+			Q8.replaceChildren(G("p", "Drawing locally - Confirm to submit!"), G("div", G("button.btn.icon.confirm-draw-btn", G("img", { src: "/static/icon/confirm.png", draggable: !1 }), G("span", "Confirm"), { tabIndex: 1, onclick: g1 }), G("button.btn.icon.confirm-draw-btn", G("img", { src: "/static/icon/cancel.png", draggable: !1 }), G("span", "Cancel"), { tabIndex: 1, onclick: g7 })))
+		);
+	}
+
+	var J8 = !1,
+		x7 = 1,
+		VQ = 10,
+		p7 = ["tiny", "small", "medium", "large"],
+		PQ = 2,
+		RQ = ($, Q, J) => G(
+			"button.btn.swatch.icon.tool.tooltip",
+			{
+				id: `tool-${Q}`,
+				dataset: { tooltip: J },
+				onclick: () => O$($)
+			},
+			G("img", { src: `/static/icon/tool/${Q}.png`, draggable: !1 })
+		),
+		h8 = 10,
+		Rq = () => {
+			let $ = G("img", { draggable: !1 }),
+				Q = G("input.tooltip", {
+					type: "range",
+					min: x7,
+					max: VQ,
+					oninput(Y) {
+						let q = Y.target, Z = parseInt(Q.value);
+
+						(
+							q.dataset.tooltip = `Brush Size: ${Z}`,
+							p.lastBrushSize = Z + PQ,
+							J(Z),
+							m0()
+						);
+					}
+				}),
+				J = (Y) => {
+					let q = p7[Math.floor(Y / (VQ + 1) * p7.length)];
+
+					(
+						$.src = `/static/icon/size/${q}.png`,
+						h8 = Y + PQ,
+						Q.value = Y.toString(),
+						Q.dataset.tooltip = `Brush Size: ${Y}`
+					);
+				};
+
+			return (
+				J(Math.min(Math.max(p.lastBrushSize - PQ, x7), VQ)),
+				G("div.container", G("div.popup.box.outset.size-control", G("div.input-container.tooltip", Q)), { onmouseout: () => M$() }, G("button#brush-size-btn.btn.swatch.icon.tooltip", $, { dataset: { tooltip: "Brush Size" } }))
+			);
+		},
+		MQ = {
+			0: RQ(0, "hand", "Hand Tool (H)"),
+			1: RQ(1, "spray", "Draw Tool (B)"),
+			2: RQ(2, "chat", "Open Chat")
+		},
+		c7 = G("div.tools", ...Object.values(MQ)),
+		b7 = G("div.tools", Rq(), F1(
+			K1("tool/preview", {
+				id: "tool-preview",
+				onclick($) {
+					(
+						J8 = !J8,
+						$.target.classList.toggle("active", J8),
+						f7(),
+						M$()
+					);
+				}
+			}),
+			"Compare Mode (M)"
+		));
+
+	function O$($) {
+		if ((M$(), $ == 2)) {
+			N7();
+
+			return;
+		}
+
+		(
+			n0(".tool.active").forEach((J) => J.classList.remove("active")),
+			(MQ[$] ?? MQ[0]).classList.add("active"),
+			R.setTool($),
+			a0()
+		);
+	}
+
+	var b1 = new Map(),
+		r0 = new Uint8Array(s$).fill(255),
+		Mq = r * r;
+
+	class l7 {
+		x;
+		y;
+		pos;
+		canvas = new OffscreenCanvas(r, r);
+		ctx = this.canvas.getContext("2d");
+		im = this.ctx.createImageData(r, r);
+		rgba32 = new Uint32Array(this.im.data.buffer, this.im.data.byteOffset, Mq);
+		worldX;
+		worldY;
+		visible = !1;
+		dirty = !1;
+		misses = 0;
+
+		constructor($, Q, J = $ * x0 + Q) {
+			this.x = $;
+			this.y = Q;
+			this.pos = J;
+
+			(
+				this.worldX = $ * r,
+				this.worldY = Q * r,
+				this.ctx.imageSmoothingEnabled = !1,
+				b1.set(this.pos, this)
+			);
+		}
+
+		unload() {
+			(
+				b1.delete(this.pos),
+				this.canvas.width = 0,
+				this.canvas.height = 0
+			);
+
+			for (let $ in this) this[$] = null;
+		}
+	}
+
+	function u7($, Q) {
+		let J = $ * x0 + Q;
+
+		return b1.get(J) || new l7($, Q, J);
+	}
+
+	function U$($, Q, J) {
+		let Y = Math.floor($ / r),
+			q = Math.floor(Q / r),
+			Z = u7(Y, q),
+			K = $ % r,
+			F = Q % r * r + K;
+
+		(Z.rgba32[F] = J, Z.dirty = !0);
+	}
+
+	function N8($, Q) {
+		if (!P6($) || $ < 0 || $ >= s$) return;
+
+		let J = $ % b,
+			Y = Math.floor($ / b),
+			q = q0[Q],
+			Z = U0.get($);
+
+		if (r0[$] == Q) return;
+		if ((r0[$] = Q, Z && J8)) e$($, Z, J, Y); else if (!Z) if (q) U$(J, Y, q.u32); else U$(J, Y, 0);
+	}
+
+	function d7($, Q) {
+		let J = Q * b + $;
+
+		if (r0[J] == 255) r0[J] = 254;
+
+		return q0[r0[J]];
+	}
+
+	function f1() {
+		if (A.zoom <= 1) return requestAnimationFrame(f1);
+
+		let $ = Math.floor(A.viewport.x / r),
+			Q = Math.floor(A.viewport.y / r),
+			J = Math.floor(A.viewport.x2 / r),
+			Y = Math.floor(A.viewport.y2 / r);
+
+		for (let q = $ - 1; q <= J; q++) for (let Z = Q - 1; Z <= Y; Z++) {
+			let K = u7(q, Z);
+
+			if (K.dirty) (
+				K.ctx.putImageData(K.im, 0, 0),
+				Y8.clearRect(K.worldX, K.worldY, r, r),
+				Y8.drawImage(K.canvas, K.worldX, K.worldY),
+				K.dirty = !1
+			);
+
+			(K.visible = !0, K.misses = 0);
+		}
+
+		for (let q of b1.values()) {
+			if (!q.visible) {
+				if ((q.misses++, q.misses > 120)) q.unload();
+			}
+
+			q.visible = !1;
+		}
+
+		requestAnimationFrame(f1);
+	}
+
+	function Uq($, Q) {
+		let J = Math.imul($, 374761393) + Math.imul(Q, 668265263) | 0;
+
+		return (
+			J = Math.imul(J ^ J >>> 13, 1274126177),
+			J ^= J >>> 16,
+			(J >>> 0) / 4294967296
+		);
+	}
+
+	function o7($, Q) {
+		if (Q >= j1) return !1;
+
+		let J = j1 - c5;
+
+		if (Q < J) return !0;
+
+		let Y = (j1 - Q) / c5;
+
+		return Uq($, Q) < Y;
+	}
+
+	var y$ = [], n7 = null;
+
+	function UQ() {
+		n7?.();
+	}
+
+	var Z$ = {
+		bind($) {
+			(n7 = $, $());
+		},
+
+		get unread() {
+			return y$;
+		},
+
+		get unreadCount() {
+			return y$.length;
+		},
+
+		seed($) {
+			y$.length = 0;
+
+			let Q = $?.unread_notifications;
+
+			if (Q?.length) y$.push(...Q);
+
+			UQ();
+		},
+
+		receive($) {
+			if (y$.some((Q) => Q.id === $.id)) return;
+
+			(
+				y$.unshift({
+					id: $.id,
+					kind: $.kind,
+					title: $.title,
+					body: $.body,
+					data: $.data,
+					createdAt: $.createdAt
+				}),
+				UQ()
+			);
+		},
+
+		async markAllRead() {
+			if (!y$.length) return;
+			if ((y$.length = 0, UQ(), !R.token)) return;
+
+			try {
+				await N.user.notifications.read.$post({ json: {} });
+			} catch {}
+		}
+	};
+
+	function zq($) {
+		let Q = Math.max(0, Math.floor((Date.now() - $) / 1000));
+
+		if (Q < 60) return "just now";
+
+		let J = Math.floor(Q / 60);
+
+		if (J < 60) return `${J}m ago`;
+
+		let Y = Math.floor(J / 60);
+
+		if (Y < 24) return `${Y}h ago`;
+
+		return `${Math.floor(Y / 24)}d ago`;
+	}
+
+	function Lq($) {
+		return G(
+			"div.item.box.outset",
+			G(
+				"div.wrapper",
+				typeof $.data?.cursorId == "number" && G("img", {
+					src: `/static/cursors/generated/${$.data.cursorId}.png`,
+					draggable: !1
+				}),
+				G("div.content", G("div.title", $.title), $.body && G("p.body", $.body))
+			),
+			G("div.time", I0($.createdAt, zq($.createdAt)))
+		);
+	}
+
+	function t7() {
+		let $ = [...Z$.unread];
+
+		return (
+			Z$.markAllRead(),
+			new _("Notifications", G(
+				"div.notifications-modal",
+				$.length
+					? G("div.list", $.map(Lq))
+					: G("p.desc.c", "No notifications."),
+				G("div.btn-container", r$)
+			))
+		);
+	}
+
+	function a7() {
+		let $ = G("span.notif-badge"),
+			Q = G("img", { src: "/static/icon/notif.png", draggable: !1, alt: "bell" }),
+			J = G("button.btn.swatch.tooltip.notif-indicator.icon", Q, $, {
+				dataset: { tooltip: "Notifications" },
+				onclick() {
+					t7();
+				}
+			});
+
+		return (
+			Z$.bind(() => {
+				let Y = Z$.unreadCount;
+
+				if (Y > 0) Q.src = "/static/icon/notif-active.gif"; else Q.src = "/static/icon/notif.png";
+
+				(
+					J.classList.toggle("has-unread", Y > 0),
+					$.textContent = Y > 99 ? "99+" : String(Y),
+					J.dataset.tooltip = Y > 0
+						? `${Y} new notification${Y > 1 ? "s" : ""}`
+						: "Notifications"
+				);
+			}),
+			J
+		);
+	}
+
+	function l1() {
+		new _("Select Color", G("div.color-modal", G("div.colors", q0.map(($) => G("button.btn.swatch.tooltip", {
+			dataset: { tooltip: $.name },
+			style: { backgroundColor: $.hex },
+			onclick() {
+				(G8($), x());
+			}
+		})))));
+	}
+
+	var S0 = [...q0], q8 = G("div.colors.container");
+
+	function d1($) {
+		let Q = S0.indexOf($);
+
+		if (Q > -1) (S0.splice(Q, 1), S0.push($));
+	}
+
+	var u1 = ($) => q0.findIndex((Q) => Q.name == $);
+
+	function Dq() {
+		let $ = p.lastUsedColors;
+
+		if ($.length != S0.length) {
+			let Q = u1("Red"),
+				J = u1("Violet"),
+				Y = q0.slice(Q, J + 1);
+
+			(d1(q0[u1("Gray")]), d1(q0[u1("White")]));
+
+			for (let q of Y) d1(q);
+
+			return;
+		}
+
+		(S0.splice(0), S0.push(...$.map((Q) => q0[Q])));
+	}
+
+	function r7($) {
+		let Q = S0[S0.length - $];
+
+		if (!Q) return;
+
+		G8(Q, !1);
+	}
+
+	function G8($, Q = !0) {
+		if ((D7($.hex, $.dark), R.selectedColor == $)) return;
+		if (S0.indexOf($) > -1 && Q) (d1($), p.lastUsedColors = S0.map((Y) => Y.idx));
+
+		(R.selectedColor = $, zQ());
+	}
+
+	var kq = 54, Aq = 9;
+
+	function s7($) {
+		let Q = getComputedStyle($),
+			J = $.clientWidth - parseFloat(Q.paddingLeft) - parseFloat(Q.paddingRight);
+
+		for (let Y = 0; Y < $.children.length; Y++) {
+			let q = $.children[Y];
+
+			if (q === q8) continue;
+
+			J -= q.getBoundingClientRect().width;
+		}
+
+		return J;
+	}
+
+	function zQ() {
+		let $ = F1(K1("tool/colors", { id: "palette-btn", onclick: l1 }), "Palette");
+
+		q8.replaceChildren($);
+
+		let Q = q8.parentElement, J = Q ? s7(Q) : 0;
+
+		if (J <= 0) {
+			requestAnimationFrame(() => {
+				if (Q && s7(Q) > 0) zQ();
+			});
+
+			return;
+		}
+
+		let Y = Math.floor(J / kq) - 1,
+			q = Math.max(0, Math.min(Aq, Y));
+
+		for (let Z = 0; Z < q; Z++) {
+			let K = S0[S0.length - 1 - Z],
+				W = G("button.btn.swatch.tooltip", {
+					tabIndex: -1,
+					dataset: { tooltip: K.name },
+					style: { backgroundColor: K.hex },
+					onclick() {
+						G8(K, !1);
+					}
+				});
+
+			q8.append(W);
+		}
+	}
+
+	function i7() {
+		(
+			Dq(),
+			G8(S0[S0.length - 1], !1),
+			R.setPaintRemaining(R.paintRemaining)
+		);
+
+		let $ = q8.parentElement;
+
+		if ($) {
+			let Q = -1;
+
+			new ResizeObserver(() => {
+				let J = $.clientWidth;
+
+				if (J === Q) return;
+
+				(Q = J, zQ());
+			}).observe($);
+		}
+	}
+
+	var LQ = G("div.hotbar-container");
+
+	function o1($) {
+		LQ.replaceChildren($);
+	}
+
+	var T6 = G("div.hotbar.main-bar", { role: "toolbar" });
+
+	function e7() {
+		(
+			T6.append(G("div.status-text-container", w8, Q8), G("div.section.left", $2(), G("div#chatbox-divider.divider"), c7, G("div.divider")), G("div.section.middle", i$, z7, a7()), G("div.section.right", G("div.divider"), b7, G("div.divider"), q8)),
+			R.setTool(0),
+			o1(T6),
+			O$(0),
+			i7()
+		);
+	}
+
+	var Q2 = 0,
+		v$ = 0,
+		E6 = !1,
+		J2 = 0,
+		Y2 = 0,
+		G2 = 0,
+		q2 = 0,
+		n1 = !1,
+		Z2 = !1,
+		z$ = new Map(),
+		Cq = 50,
+		Tq = 24,
+		Eq = 16;
+
+	function _0($, Q) {
+		return [
+			Math.max(Math.min(Math.floor(($ - A.rect.left) / A.rect.width * G0.width), G0.width), 0),
+			Math.max(Math.min(Math.floor((Q - A.rect.top) / A.rect.height * G0.height), G0.height), 0)
+		];
+	}
+
+	async function Iq($, Q) {
+		let J = Date.now(),
+			[Y, q] = _0($, Q),
+			{ points: Z } = R7(J2, Y2, Y, q),
+			K = $ - G2,
+			W = Q - q2;
+
+		if ((
+			v$ += Math.sqrt(K * K + W * W) / (J - Q2),
+			Q2 = J,
+			J2 = Y,
+			Y2 = q,
+			!E6
+		)) {
+			(E6 = !0, v$ = 5);
+
+			return;
+		}
+
+		if (v$ > 0) v$ *= 0.8;
+		if (v$ <= 0.001) v$ = 0;
+
+		let F = 1 - v$ / (h8 * 1.1),
+			H = Math.max(h8 * F, 2),
+			j = Math.min(Math.max(Math.floor((H + 1) ** 1.5), 1), 15);
+
+		if (!Z.length) Z.push([Y, q]);
+
+		let X = (h8 - 1) * 0.1, V = 0;
+
+		for (let [L, U] of Z) {
+			let C = P7(L, U, Math.floor(H), j), v = 0, O = 0;
+
+			for (let [M, D] of C) {
+				if (M == L && D == U) O++;
+				if ((v++, !DQ(M, D) && v$ < X)) wq(M, D);
+
+				V++;
+			}
+
+			if (v < 5 || O > 1) n1 = !0;
+		}
+
+		a0();
+	}
+
+	function wq($, Q) {
+		if (Math.random() > 0.5) return;
+
+		let J = z$.get($);
+
+		if (J) J.y = Math.max(J.y, Q); else z$.set($, { y: Q, amount: 0, max: B$() * (h8 * 1.5) });
+		if (z$.size > Cq) z$.delete(z$.keys().next().value);
+	}
+
+	function hq() {
+		if (!z$.size) return;
+
+		let $ = [...z$.entries()],
+			[Q, J] = $[Math.floor(B$() * $.length)];
+
+		if ((DQ(Q, ++J.y), ++J.amount >= J.max)) z$.delete(Q);
+	}
+
+	function K2() {
+		(
+			setInterval(
+				() => {
+					if (l0 && E6) hq();
+				},
+				Tq
+			),
+
+			setInterval(
+				() => {
+					if (l0) (Iq(L$, D$), G2 = L$, q2 = D$); else if (E6) (z$.clear(), E6 = !1);
+				},
+				Eq
+			)
+		);
+	}
+
+	function F2() {
+		n1 = !1;
+	}
+
+	var W2 = !1;
+
+	function j2() {
+		if (W2) return;
+
+		W2 = !0;
+
+		let $ = new _("Update required", G("div.version-mismatch", G("p", "The Wall was just updated and this tab is running an older version. Reload to keep going."), G("p.subtle", "Heads up: anything you've drawn but not submitted will be lost. If a reload doesn't fix it, clear your cache and reload again."), G("div.btn-container", G("button.btn", "Reload now", { onclick: () => location.reload() }))));
+
+		$.lockLevel = 1;
+	}
+
+	async function X2($) {
+		let Q = z6($);
+
+		if (Q) throw new Error(Q);
+
+		let J = await N.user.setup.$post({ json: { username: $ } });
+
+		if (J.status != 200) {
+			let Y = await J.text();
+
+			throw new Error(Y);
+		}
+
+		(
+			localStorage.setItem("auth-token", u0.token),
+			location.reload()
+		);
+	}
+
+	function t1() {
+		let $ = G("p.warning"), Q = "", J = !1;
+
+		new _("Setup", G(
+			"div.welcome-modal",
+			G("p.success", "Welcome to The Wall!"),
+			G("p", "Please choose your username"),
+			G("input.input.box", {
+				type: "text",
+				placeholder: "Username...",
+				maxLength: 16,
+				oninput(Y) {
+					let q = Y.target,
+						Z = q.value.replace(/[^a-z0-9_.-]/g, "");
+
+					if (q.value != Z) q.value = Z;
+
+					Q = Z;
+				}
+			}),
+			G("div.checkbox", G("input#tos_checkbox", { type: "checkbox" }), G("label", { htmlFor: "tos_checkbox" }, G("span", "I've read and agree to the "), G("a.link", "Privacy Policy & ToS", { target: "_blank", href: "/privacy.html" }))),
+			$,
+			G("div.btn-container", G("button.btn", "Confirm", {
+				async onclick() {
+					if (J) return;
+
+					if (!u("input#tos_checkbox")?.checked) {
+						$.textContent = "You need to agree with our Privacy Policy/ToS!";
+
+						return;
+					}
+
+					(K0(), $.textContent = "", J = !0);
+
+					try {
+						await X2(Q);
+					} catch(Y) {
+						($.textContent = Y.message || "Something went wrong", J = !1);
+					}
+
+					V6();
+				}
+			}))
+		)).onClose(() => {
+			return !1;
+		});
+	}
+
+	var r1 = G("p.warning"), m8 = "", i1 = !0, a1 = "";
+
+	function V2() {
+		m8 = "";
+	}
+
+	async function P2() {
+		if (!a1) {
+			let J = await (await N.auth.turnstile.$get()).json();
+
+			if ((a1 = J.sitekey || "none", !J.required || !J.sitekey)) i1 = !1;
+		}
+
+		if (!i1) return;
+
+		let $ = window.turnstile;
+
+		if (!$) return alert("error: Turnstile API didn't load, can't show captcha");
+
+		$.render("#captcha-container", {
+			sitekey: a1,
+			theme: p.a11y.darkTheme ? "dark" : "light",
+			size: "flexible",
+			callback(Q) {
+				(r1.textContent = "", m8 = Q);
+			}
+		});
+	}
+
+	function H2() {
+		if ((r1.textContent = "", i1 && !m8)) return (
+			a1 = "",
+			i1 = !0,
+			P2(),
+			r1.textContent = "You need to complete the captcha!",
+			!0
+		);
+	}
+
+	function Z8($) {
+		(
+			new _("Log In", G(
+				"div.login-modal",
+				$,
+				G("p", "Choose your login method"),
+				G("div#captcha-container", { onmouseenter: H6, onmouseleave: m1 }),
+				g5("discord", "Discord", "#5865F2", "#fff", {
+					ariaLabel: "Authenticate with Discord",
+					onclick() {
+						if (H2()) return;
+
+						s1("discord", "Discord");
+					}
+				}),
+				g5("google", "Google", "#F1F3F4", "#000", {
+					ariaLabel: "Authenticate with Google",
+					onclick() {
+						if (H2()) return;
+
+						s1("google", "Google");
+					}
+				}),
+				r1,
+				Z0.devLogin === !0 && G("button.btn.dev-login", "Dev login (staff)", {
+					ariaLabel: "Dev login",
+					onclick() {
+						s1("dev", "Dev");
+					}
+				}),
+				G("div.btn-container", G("button.btn", "Cancel", { onclick: x }))
+			)),
+			setTimeout(P2, 100)
+		);
+	}
+
+	function R2($) {
+		if (!qQ.test($)) return;
+
+		Z8(G("div.success", G("b", $), " has invited you to The Wall!"));
+	}
+
+	function M2($) {
+		if (!$.is_banned) return;
+
+		(
+			U2(),
+			new _("Oops!", G("div.modal.error-modal", G("p", "You have been banned!"), G("p.error", $.is_banned.reason || "<Reason not specified>"), G("p", "Expires: ", G("b", R1($.is_banned.until))))).onClose(() => !1)
+		);
+	}
+
+	async function kQ() {
+		let $ = h$();
+
+		if (!$) return null;
+
+		K6.Authorization = $;
+
+		let Q = await N.user.me.$get();
+
+		if (Q.status != 200) return !1;
+
+		let J = await Q.json();
+
+		if (!J) return !1;
+
+		return J;
+	}
+
+	async function z2() {
+		let $ = await kQ();
+
+		if ($) {
+			if ((R.token = h$(), R.setUser($), $.is_banned)) return M2($);
+			if ($.is_new) return t1();
+
+			B8();
+
+			return;
+		}
+
+		if ((g$(), $ == !1)) Z8(G("p.warning", "Session expired, please log in again!"));
+	}
+
+	var u0 = { started: !1, status: "", token: "" };
+
+	window.addEventListener("message", ($) => {
+		if (!u0.started) return;
+		if ($.origin != Z0.url.web) return;
+		if ($.data.type == "auth_modal_state") (u0.status = $.data.status, u0.token = $.data.token);
+	});
+
+	function g$() {
+		(
+			K6.Authorization = "",
+			localStorage.removeItem("auth-token"),
+			u0.token = "",
+			R.token = null,
+			R.user = null
+		);
+	}
+
+	function L2() {
+		(g$(), location.reload());
+	}
+
+	async function s1($, Q) {
+		if (!m8) return alert("Missing turnstile token");
+
+		K0();
+
+		let J = await N.auth.login[":provider"].$post({ param: { provider: $ }, json: { turnstileToken: m8 } });
+
+		if ((V2(), !J.ok)) return e("Captcha failed!", await J.text());
+
+		let Y = await J.json(),
+			q = 485,
+			Z = 645,
+			K = window.open(Y.redirectURL, void 0, `popup,width=${q},height=${Z},left=${Math.floor(screen.width / 2 - q / 2)},top=${Math.floor(screen.height / 2 - Z / 2)}`);
+
+		if (!K) {
+			e("Failed to open a pop-up window...", "Make sure you allowed us to open pop-up windows!");
+
+			return;
+		}
+
+		(
+			new _("Auth", G("div", "Authenticating...", G("p.notice.noicon", `A pop-up window should have been opened for you to complete authentication using ${Q}.`, { style: { maxWidth: "600px" } }))).onClose(() => !1),
+			u0.started = !0,
+			Nq(K)
+		);
+	}
+
+	function Nq($) {
+		let Q = setInterval(
+			() => {
+				if ($.closed) (clearInterval(Q), mq());
+			},
+			500
+		);
+	}
+
+	async function mq() {
+		if (!u0.status) {
+			e("Authentication aborted");
+
+			return;
+		}
+
+		if (u0.status != "200") return e("Authentication failed!", `Server responded with error code ${u0.status}`);
+
+		localStorage.setItem("auth-token", u0.token);
+
+		let $ = await kQ();
+
+		if (!$) return (
+			g$(),
+			e("Authentication failed!", "Could not fetch the user after authenticating")
+		);
+
+		if ($.is_new) t1(); else (u0.started = !1, location.reload());
+	}
+
+	var k$ = 256,
+		Bq = Math.max(b, D0),
+		D2 = (() => {
+			let $ = 0;
+
+			while (Math.ceil(Bq / 2 ** $) > k$) $++;
+
+			return $;
+		})();
+
+	var Oq = ($) => Math.ceil(Math.ceil(b / 2 ** $) / k$),
+		Sq = ($) => Math.ceil(Math.ceil(D0 / 2 ** $) / k$);
+
+	function AQ($) {
+		if ($ <= 0) return D2;
+
+		return Math.min(D2, Math.max(0, Math.round(-Math.log2($))));
+	}
+
+	function A2($) {
+		let Q = $.zoom || 0.000001,
+			J = Math.max(0, Math.floor(-$.x / Q)),
+			Y = Math.max(0, Math.floor(-$.y / Q)),
+			q = Math.min(b, Math.ceil((-$.x + $.w) / Q)),
+			Z = Math.min(D0, Math.ceil((-$.y + $.h) / Q));
+
+		return { x0: J, y0: Y, x1: Math.max(J, q), y1: Math.max(Y, Z) };
+	}
+
+	function e1($, Q) {
+		let { x0: J, y0: Y, x1: q, y1: Z } = A2($),
+			K = 2 ** Q,
+			W = Oq(Q),
+			F = Sq(Q),
+			H = Math.max(0, J / K / k$ | 0),
+			j = Math.max(0, Y / K / k$ | 0),
+			X = Math.min(W - 1, (q / K - 1) / k$ | 0),
+			V = Math.min(F - 1, (Z / K - 1) / k$ | 0),
+			L = [];
+
+		for (let U = H; U <= X; U++) for (let C = j; C <= V; C++) L.push([U, C]);
+
+		return L;
+	}
+
+	var k2 = 64;
+
+	function _q($) {
+		let { x0: Q, y0: J, x1: Y, y1: q } = A2($),
+			Z = Q / r | 0,
+			K = (Y - 1) / r | 0,
+			W = J / r | 0,
+			F = (q - 1) / r | 0,
+			H = [];
+
+		for (let V = Z; V <= K; V++) for (let L = W; L <= F; L++) if (V >= 0 && L >= 0 && V < W1 && L < x0) H.push(V * x0 + L);
+
+		if (H.length <= k2) return H;
+
+		let j = (Q + Y) / 2 / r, X = (J + q) / 2 / r;
+
+		return H.map((V) => {
+			let L = V / x0 | 0,
+				U = V % x0,
+				C = L + 0.5 - j,
+				v = U + 0.5 - X;
+
+			return [V, C * C + v * v];
+		}).sort((V, L) => V[1] - L[1]).slice(0, k2).map((V) => V[0]);
+	}
+
+	function yq() {
+		let $ = globalThis.navigator?.connection;
+
+		if (!$) return !1;
+
+		return !!$.saveData || $.effectiveType === "2g" || $.effectiveType === "slow-2g" || $.effectiveType === "3g";
+	}
+
+	var vq = 0.8;
+
+	class CQ {
+		hooks;
+		mode = "overview";
+		lastChunks = "";
+
+		constructor($) {
+			this.hooks = $;
+		}
+
+		update($) {
+			let Q = $.zoom >= vq ? "live" : "overview";
+
+			if (Q !== this.mode) (this.mode = Q, this.hooks.setLayer(Q));
+
+			if (this.mode === "overview") {
+				if (this.lastChunks !== "") (this.hooks.setLiveChunks([]), this.lastChunks = "");
+
+				let J = AQ($.zoom), Y = e1($, J);
+
+				for (let [q, Z] of Y) this.hooks.drawTile(J, q, Z);
+
+				if (!yq() && J > 0) for (let [q, Z] of e1($, J - 1).slice(0, 16)) this.hooks.drawTile(J - 1, q, Z);
+			} else {
+				let J = _q($), Y = J.join(",");
+
+				if (Y !== this.lastChunks) (this.hooks.setLiveChunks(J), this.lastChunks = Y);
+			}
+		}
+	}
+
+	function TQ() {
+		let $ = -A.x / A.zoom,
+			Q = -A.y / A.zoom,
+			J = window.innerWidth / A.zoom,
+			Y = window.innerHeight / A.zoom;
+
+		return {
+			x: Math.max($, 0),
+			y: Math.max(Q, 0),
+			x2: Math.min($ + J, G0.width),
+			y2: Math.min(Q + Y, G0.height),
+			width: J,
+			height: Y
+		};
+	}
+
+	function gq() {
+		let $ = TQ();
+
+		return {
+			x: Math.floor($.x / r),
+			y: Math.floor($.y / r),
+			x2: Math.floor($.x2 / r),
+			y2: Math.floor($.y2 / r),
+			width: Math.floor($.width / r),
+			height: Math.floor($.height / r)
+		};
+	}
+
+	function C2() {
+		let $ = gq(), Q = new Set(), J = 4;
+
+		for (let Y = $.x - 4; Y <= $.x2 + 4; Y++) for (let q = $.y - 4; q <= $.y2 + 4; q++) {
+			if (Y < 0 || q < 0 || Y >= W1 || q >= x0) continue;
+			if (Q.size > 1000) return new Set();
+
+			Q.add(Y * x0 + q);
+		}
+
+		return Q;
+	}
+
+	function EQ($, Q, J = A.viewport) {
+		return $ < J.x || Q < J.y || $ > J.x2 || Q > J.y2;
+	}
+
+	function xq() {
+		let $ = navigator,
+			Q = $.hardwareConcurrency ?? 4,
+			J = $.deviceMemory ?? 4,
+			Y = !!$.connection?.saveData,
+			q = matchMedia?.("(pointer: coarse)")?.matches ?? !1,
+			Z = matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? !1;
+
+		if (Y || Z) return 24;
+		if (q || Q <= 4 || J <= 4) return 40;
+		if (Q >= 8 && J >= 8) return 150;
+
+		return 80;
+	}
+
+	var I2 = xq(),
+		T2 = Math.min(300, Math.round(I2 * 2)),
+		K8 = I2,
+		$5 = 16.7,
+		IQ = performance.now(),
+		E2 = IQ;
+
+	function w2($) {
+		let Q = $ - IQ;
+
+		if ((
+			IQ = $,
+			Q > 0 && Q < 1000 && document.visibilityState === "visible"
+		)) {
+			if (($5 += (Q - $5) * 0.1, $ - E2 > 1000)) {
+				if ((E2 = $, $5 > 22 && K8 > 8)) K8 = Math.max(8, Math.round(K8 * 0.7)); else if ($5 < 13 && K8 < T2) K8 = Math.min(T2, Math.round(K8 * 1.15) + 1);
+			}
+		}
+
+		requestAnimationFrame(w2);
+	}
+
+	requestAnimationFrame(w2);
+
+	function h2() {
+		return K8 | 0;
+	}
+
+	var F8 = new Set(), wQ = -1, N2 = null;
+
+	function m2($) {
+		N2 = new Set($);
+	}
+
+	function B2() {
+		(F8 = new Set(), wQ = -1);
+	}
+
+	function pq($) {
+		if ($.size != F8.size) return !0;
+
+		for (let Q of $) if (!F8.has(Q)) return !0;
+		for (let Q of F8) if (!$.has(Q)) return !0;
+
+		return !1;
+	}
+
+	function O2() {
+		if (!R.user || !k0) return;
+
+		let $ = R.cursorX >= 0 && R.cursorY >= 0,
+			Q = -1,
+			J = -1;
+
+		if ($) {
+			let K = Math.min(R.cursorX, b - 1),
+				W = Math.min(R.cursorY, D0 - 1);
+
+			Q = W * b + K;
+
+			let F = Math.floor(K / r), H = Math.floor(W / r);
+
+			J = F * x0 + H;
+		}
+
+		let Y = N2 ?? C2(), q = pq(Y), Z = S2();
+
+		if (wQ != Q || q || Z) (
+			wQ = Q,
+			F8 = Y,
+			I6(3, {
+				cursorPos: Q,
+				cursorChunk: J,
+				subscribe: q ? [...Y] : void 0,
+				lookupUsers: Z ?? void 0,
+				cursorBudget: h2()
+			})
+		);
+	}
+
+	var OQ = Z0.url?.tileBase?.replace(/\/$/, ""),
+		j8 = !!Z0.url?.ws && !!OQ,
+		SQ = G("img.canvas-snapshot", { draggable: !1, decoding: "async" }),
+		Y5 = G("img.canvas-snapshot", { draggable: !1, decoding: "async" });
+
+	Y5.style.opacity = "0";
+
+	var N6 = G("div.canvas-snapshot-wrap", SQ, Y5);
+
+	if (!j8) N6.style.display = "none";
+
+	var _Q = 400;
+
+	SQ.style.transition = `opacity ${_Q}ms ease-out`;
+	Y5.style.transition = `opacity ${_Q}ms ease-out`;
+
+	var Q5 = SQ,
+		S8 = Y5,
+		G5 = G("div.canvas-tile-grid");
+
+	if (!j8) G5.style.display = "none";
+
+	var W8 = null,
+		q5 = "overview",
+		mQ = 1e4,
+		hQ = !1,
+		_2 = "",
+		y2 = null;
+
+	async function J5() {
+		if (!j8 || hQ || q5 !== "overview" || document.hidden) return;
+
+		hQ = !0;
+
+		try {
+			let $ = await fetch(`${OQ}/snapshot.png`, { cache: "no-cache" });
+
+			if (!$.ok) return;
+
+			let Q = $.headers.get("last-modified") ?? "";
+
+			if (Q && Q === _2) return;
+
+			_2 = Q;
+
+			let J = await $.blob(), Y = URL.createObjectURL(J);
+
+			S8.src = Y;
+
+			try {
+				await S8.decode();
+			} catch {}
+
+			(
+				N6.appendChild(S8),
+				S8.style.opacity = "1",
+				await new Promise((Z) => setTimeout(Z, _Q + 60))
+			);
+
+			let q = y2;
+
+			if ((y2 = Y, Q5.style.opacity = "0", Q5.src = "", q)) URL.revokeObjectURL(q);
+
+			[Q5, S8] = [S8, Q5];
+		} catch {} finally {
+			hQ = !1;
+		}
+	}
+
+	var x$ = new Map(),
+		_8 = new Set(),
+		w6 = new Map(),
+		cq = 8000;
+
+	function x2($, Q, J) {
+		return `${OQ}/tiles/${$}/${Q}/${J}.png?v=${Math.floor(Date.now() / mQ)}`;
+	}
+
+	function BQ($) {
+		if (!j8) return;
+
+		if (q5 === "overview") {
+			if (x$.size) {
+				for (let K of x$.values()) K.remove();
+
+				(x$.clear(), _8.clear());
+			}
+
+			return;
+		}
+
+		let Q = AQ($.zoom),
+			J = k$ * 2 ** Q,
+			Y = e1($, Q),
+			q = new Set();
+
+		for (let [K, W] of Y) {
+			let F = `${Q}/${K}/${W}`;
+
+			if ((q.add(F), !x$.has(F))) {
+				let H = document.createElement("img");
+
+				(
+					H.className = "canvas-tile",
+					H.decoding = "async",
+					H.draggable = !1,
+					H.style.left = `${K * J}px`,
+					H.style.top = `${W * J}px`,
+					H.style.width = `${J}px`,
+					H.style.height = `${J}px`,
+					_8.add(F)
+				);
+
+				let j = setTimeout(
+					() => {
+						if (_8.delete(F)) h6();
+					},
+					cq
+				);
+
+				w6.set(F, j);
+
+				let X = () => {
+					let V = w6.get(F);
+
+					if (V !== void 0) (clearTimeout(V), w6.delete(F));
+
+					_8.delete(F);
+				};
+
+				(
+					H.onload = () => {
+						(
+							H.classList.add("loaded"),
+							H.style.visibility = "",
+							X(),
+							h6()
+						);
+					},
+
+					H.onerror = () => {
+						(H.style.visibility = "hidden", X(), h6());
+					},
+					H.src = x2(Q, K, W),
+					G5.appendChild(H),
+					x$.set(F, H)
+				);
+			}
+		}
+
+		let Z = !1;
+
+		for (let [K, W] of x$) if (!q.has(K)) {
+			(W.remove(), x$.delete(K));
+
+			let F = w6.get(K);
+
+			if (F !== void 0) (clearTimeout(F), w6.delete(K));
+			if (_8.delete(K)) Z = !0;
+		}
+
+		if (Z) h6();
+	}
+
+	function v2() {
+		if (!j8 || q5 !== "live" || document.hidden) return;
+
+		for (let [$, Q] of x$) {
+			let [J, Y, q] = $.split("/").map(Number);
+
+			Q.src = x2(J, Y, q);
+		}
+	}
+
+	var NQ = 0.9, g2 = 1.4;
+
+	function bq($) {
+		if ($ <= NQ) return 1;
+		if ($ >= g2) return 0;
+
+		return 1 - ($ - NQ) / (g2 - NQ);
+	}
+
+	function h6() {
+		if (!W8) return;
+
+		N6.style.opacity = _8.size > 0 ? "1" : String(bq(W8.zoom));
+	}
+
+	var fq = new CQ({
+		async drawTile() {
+			return !0;
+		},
+
+		setLiveChunks($) {
+			m2($);
+		},
+
+		setLayer($) {
+			if ((q5 = $, $ === "overview")) {
+				if ((J5(), W8)) BQ(W8);
+			} else if (W8) BQ(W8);
+		}
+	});
+
+	function p2() {}
+
+	function c2($) {
+		if (!j8) return;
+
+		(W8 = $, fq.update($), BQ($), h6());
+	}
+
+	if (j8) (
+		J5(),
+		setInterval(J5, mQ),
+		setInterval(v2, mQ),
+		document.addEventListener("visibilitychange", () => {
+			if (!document.hidden) (J5(), v2());
+		})
+	);
+
+	var yQ = new Set(), v8 = null, m6 = -1;
+
+	async function lq() {
+		return (await (await N.cursor.data.$get()).json()).map((J) => ({ ...J, ...dq(J), unlocked: yQ.has(J.id) }));
+	}
+
+	async function Z5() {
+		let Q = await (await N.cursor.inventory.$get()).json();
+
+		yQ.clear();
+
+		for (let J of Q.cursors) yQ.add(J);
+
+		v8 = Q;
+	}
+
+	async function p$($) {
+		let Q = await N.cursor.claimCursor.$post({ json: $ });
+
+		if (Q.status != 200) return await Q.text();
+
+		return (await Z5(), null);
+	}
+
+	function uq($, Q, J) {
+		let Y = Math.min(Q, J);
+
+		switch ($) {
+			case "pixels_changed":
+				return `Draw ${J} pixels (${Y}/${J})`;
+
+			case "invites":
+				return `Invite ${J} ${J == 1 ? "person" : "people"} (${Y}/${J})`;
+
+			case "shared":
+				return "Share the canvas to unlock";
+		}
+	}
+
+	function dq($) {
+		let Q = $.unlock;
+
+		if (!Q || Q.kind == "client") return { claimable: !1, tooltip: "You do not own this cursor!" };
+
+		switch (Q.kind) {
+			case "stat":
+				{
+					let J = v8.stats[Q.stat] ?? 0;
+
+					return J >= Q.gte
+						? { claimable: !0, tooltip: "Click to claim!" }
+						: { claimable: !1, tooltip: uq(Q.stat, J, Q.gte) };
+				}
+
+			case "purchase":
+				return v8.coins >= Q.cost
+					? { claimable: !0, tooltip: `Click to buy (${Q.cost} coins)` }
+					: { claimable: !1, tooltip: `Costs ${Q.cost} coins` };
+
+			case "code":
+				return { claimable: !1, tooltip: "Unlocks with a secret code" };
+
+			case "manual":
+				return { claimable: !1, tooltip: "Awarded by moderators" };
+		}
+	}
+
+	function oq($) {
+		let Q = async (Y) => {
+				if ($.unlock?.kind == "purchase") {
+					if (!await i(`Are you sure you want to buy this cursor for ${$.unlock.cost} coins?`)) return;
+				}
+
+				let q = await p$({ cursorId: $.id, code: Y });
+
+				if (q) {
+					e(q, "Could not claim the cursor");
+
+					return;
+				}
+
+				y8();
+			},
+			J = G("div.item.box", {
+				id: `item${$.id}`,
+				onclick() {
+					if ($.unlocked) vQ($); else if ($.claimable) Q();
+				},
+
+				onmouseover: () => {
+					I8($.id);
+				},
+
+				onmouseleave: () => {
+					I8(m6);
+				}
+			});
+
+		if (!$.unlocked) {
+			if ((
+				J.classList.add("tooltip", "locked"),
+				J.dataset.tooltip = $.unlock?.tooltip || $.tooltip,
+				$.claimable
+			)) J.classList.add("claimable");
+
+			if ($.unlock?.kind == "purchase") J.append(G("span.box.cost", `${$.unlock.cost} \uD83E\uDE99`));
+
+			if ($.name == "Cookie Clicker") {
+				let q = G("span.box.cost"), Z = 0;
+
+				(
+					J.classList.add("cookie"),
+					J.dataset.tooltip = "",
+					J.addEventListener("click", async () => {
+						if (Z >= 200) {
+							if (await i("Claim the Cookie Clicker Cursor?")) Q("COOKIE_CLICKER");
+
+							return;
+						}
+
+						(q.textContent = `${++Z} ${"\uD83C\uDF6A"}`, J.append(q));
+					})
+				);
+			}
+		}
+
+		if (p.a11y.devOverlay) J.dataset.tooltip = `id=${$.id} tier=${$.tier} "${$.name}"`;
+
+		return (J.append(G("img", { src: b0($.id), draggable: !1 })), J);
+	}
+
+	function vQ($) {
+		if ($.id == m6) return;
+
+		m6 = $.id;
+
+		let Q = u("#inv-confirm-buttons");
+
+		if ((
+			n0(".inventory .item.active").forEach((J) => J.classList.remove("active")),
+			u(`#item${$.id}`).classList.add("active"),
+			$.id == R.user?.cursor_id
+		)) Q.style.display = "none"; else Q.style.display = "";
+	}
+
+	function nq() {
+		let $ = R.currentSprayCanSize(),
+			Q = Math.floor($ / b5) || 1;
+
+		new _("Coins", G("div.coin-modal", G("p.c", "You have ", WJ(v8.coins), ` coin${C0(v8.coins)}`), G("p.notice", `You can exchange spray cans for coins! Every ${b5} paint is one coin.`), G("p.c", "Your current spray can contains ", G("b", $.toString()), " paint, ", "so you will receive ", G("b", Q.toString()), ` coin${C0($ == 0 ? 0 : Q)}.`), G("div.btn-container", G("button.btn", "Back", { onclick: y8 }), G("button.btn.primary", "Sell Spray Can", {
+			async onclick() {
+				if (R.localPaintIncrement != 0 || B0.length) {
+					e("You cannot sell your current spray can while drawing! Please cancel or submit your local changes.");
+
+					return;
+				}
+
+				if (Q == 0) {
+					e("Empty spray can!");
+
+					return;
+				}
+
+				if (!await i(`Sell your current spray can for ${C0(Q, "coin")}? The remainder will not be lost.`)) return y8();
+
+				K0();
+
+				let Y = await N.cursor.buyCoins.$post();
+
+				if (!Y.ok) {
+					T0(Y);
+
+					return;
+				}
+
+				y8();
+			}
+		}))));
+	}
+
+	async function y8() {
+		if (!R.user) return;
+
+		(K0(), await Z5());
+
+		let $ = await lq(),
+			Q = $.toSorted((J, Y) => Y.unlocked - J.unlocked || Y.tier - J.tier || J.name.localeCompare(Y.name));
+
+		(
+			new _("User > Inventory", G("div.inventory.nopad", G("div.scroll.pad", G("p.notice", "Click on a cursor to select it! It will be shown to all users."), G("br"), G("div.items", Q.map(oq)), G("p", "More cursors coming soon!")), G("div.box.outset.confirm-bar", G("button.btn", "Back", { onclick: () => x() }), G("button.btn", C0(Math.floor(v8.coins), "coin"), { onclick: nq }), G(
+				"div#inv-confirm-buttons",
+				{ style: { display: "none" } },
+				G("button.btn", "Cancel", {
+					onclick() {
+						vQ($[R.user.cursor_id]);
+					}
+				}),
+				G("button.btn.primary", "Change", {
+					async onclick() {
+						(K0(), await U6({ cursorId: m6 }), x(!0));
+					}
+				})
+			)))).onClose(() => {
+				(m6 = -1, I8(R.user.cursor_id));
+			}),
+
+			requestAnimationFrame(() => {
+				vQ($[R.user.cursor_id]);
+			})
+		);
+	}
+
+	window.freeCursor = async ($) => {
+		let Q = await p$({ code: $ });
+
+		if (Q) return (console.warn(`freeCursor: ${Q}`), !1);
+
+		return (console.log("Unlocked! Open the inventory to equip it."), !0);
+
+		let J = "You like looking for secrets, don't you? On an unrelated note, consider checking out the amazing people who made this site: https://yui.dev and https://github.com/brennenawana";
+	};
+
+	var gQ = new Map(), K$ = ($, Q) => gQ.set($, Q);
+
+	K$(0, ($) => {
+		if (typeof $.paintRemaining == "number") (
+			R.nextRefill = $.nextRefillAt || 0,
+			R.setPaintRemaining($.paintRemaining),
+			a0()
+		);
+	});
+
+	K$(8, ($) => {
+		if ((Z$.receive($), $.kind === "cursor_unlock")) Z5();
+	});
+
+	K$(9, () => {});
+	K$(10, () => {});
+
+	K$(3, async ($) => {
+		if ($.users) l2($.users);
+		if ((f2($.cursorOverflow ?? 0), !$.cursors)) return;
+
+		let Q = $.cursors,
+			J = Q instanceof Uint8Array
+				? Q
+				: Q.buffer instanceof Uint8Array ? Q.buffer : new Uint8Array(Q.buffer ?? Q),
+			Y = new DataView(J.buffer, J.byteOffset, J.byteLength);
+
+		for (let q = 0; q + 8 <= J.length; q += 8) {
+			let Z = Y.getUint32(q, !0),
+				K = Y.getUint32(q + 4, !0);
+
+			if ((d2(K, Z, !0), X8 && q % 4000 == 0)) await q1();
+		}
+	});
+
+	K$(5, ($) => u2($.id));
+
+	K$(2, ($) => {
+		(
+			R.connectionId = $.id,
+			$.users.forEach(xQ),
+			R.openAt = $.openAt ?? 0,
+			R.clockOffset = $.now ? $.now - Date.now() : 0,
+			b2()
+		);
+	});
+
+	K$(6, ($) => {
+		if ((
+			o2($.id, $.message, $.pos, $.username, $.clanName, $.isGlobal, $.userId),
+			$.nonce
+		)) return;
+
+		if (!R0.has($.id)) {
+			pQ($.id);
+
+			return;
+		}
+
+		t2(R0.get($.id), $.message);
+	});
+
+	K$(11, ($) => {
+		n2($.userId);
+	});
+
+	K$(7, async ($) => {
+		let Q = 0;
+
+		if ($.pixels) {
+			let J = $.pixels,
+				Y = J instanceof Uint8Array
+					? J
+					: J.buffer instanceof Uint8Array ? J.buffer : new Uint8Array(J.buffer ?? J),
+				q = new DataView(Y.buffer, Y.byteOffset, Y.byteLength);
+
+			for (let Z = 0; Z + 5 <= Y.byteLength; Z += 5) (N8(q.getUint32(Z, !0), q.getUint8(Z + 4)), Q++);
+		}
+
+		if (Q) p2();
+	});
+
+	function a2() {
+		let $ = G("div.list.box.outset", G("div.item.box.online-modal", G("b", R.user?.username || "anonymous", " (you!)")), G("div.item.box.online-modal.online-modal-loading", G("i", "Loading online users…")), {
+				style: {
+					maxHeight: "600px",
+					overflowY: "auto",
+					justifyContent: "unset"
+				}
+			}),
+			Q = new _("Online Users", G("div.leaderboard-modal", G("p.online-modal-count", G("b#online-modal-count", H0(R.onlinePlayers || 1)), " players online"), G("p.online-modal-viewers", G("b#online-modal-viewers", H0(R.onlineViewers || 0)), " watching"), $));
+
+		i2().then((J) => {
+			if (!Q.open) return;
+
+			(
+				tq($, J.users ?? [], J.total ?? 0),
+				r2(J.viewers ?? R.onlineViewers)
+			);
+		}).catch(() => {
+			if (!Q.open) return;
+
+			let J = $.querySelector(".online-modal-loading");
+
+			if (J) J.textContent = "Couldn't load the user list.";
+		});
+	}
+
+	function tq($, Q, J) {
+		let Y = R.user?.username;
+
+		if (Y) Q = Q.filter((j) => j.username !== Y);
+
+		let q = (j) => {
+				let X = R0.get(j.id);
+
+				return !!X && !X.partial && !X.hidden;
+			},
+			Z = [...Q].sort((j, X) => {
+				let V = q(j) ? 0 : 1, L = q(X) ? 0 : 1;
+
+				if (V !== L) return V - L;
+
+				return j.username.localeCompare(X.username);
+			}),
+			K = G("div.item.box.online-modal", G("b", R.user?.username || "anonymous", " (you!)")),
+			W = Z.map((j) => G(
+				"div.item.box.online-modal.online-modal-row.tooltip" + (q(j) ? ".online-modal-visible" : ""),
+				{
+					onclick() {
+						(x(), y0({ connId: j.id, username: j.username }));
+					}
+				},
+				G("b.tooltip", j.username, { dataset: { tooltip: "Click to jump to the user!" } })
+			));
+
+		$.replaceChildren(K, ...W);
+
+		let F = 1 + W.length, H = Math.max(0, J - F);
+
+		if (H > 0) $.append(G("div.item.box.online-modal.online-modal-more", G("i", `+${H0(H)} more online`)));
+	}
+
+	function s2($, Q) {
+		let J = u("#online-modal-count");
+
+		if (J) J.textContent = H0($ || 1);
+		if (Q !== void 0) r2(Q);
+	}
+
+	function r2($) {
+		let Q = u("#online-modal-viewers");
+
+		if (Q) Q.textContent = H0($ || 0);
+	}
+
+	var e2 = 0;
+
+	async function cQ() {
+		if ((clearTimeout(e2), !K5())) return;
+
+		e2 = setTimeout(cQ, HJ);
+
+		let $ = performance.now(),
+			Q = await c$(0, {}, XJ),
+			J = Q.connectedUsers ?? R.onlinePlayers,
+			Y = Q.viewers ?? R.onlineViewers;
+
+		if ((
+			R.onlinePlayers = J,
+			R.onlineViewers = Y,
+			R.debug.ping = performance.now() - $,
+			R.activeTool == 3
+		)) {
+			let q = u("#online-player-counter");
+
+			if (q) q.textContent = H0(J);
+		}
+
+		(s2(J, Y), QY(J, Y), g8());
+	}
+
+	function $Y() {
+		(setInterval(O2, Z0.canvas.syncInterval), B6());
+	}
+
+	var aq = (() => {
+		let $ = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(Uint8Array.prototype), Symbol.toStringTag).get;
+
+		return (Q) => $.call(Q);
+	})();
+
+	function b$($) {
+		return aq($) === "Uint8Array";
+	}
+
+	function H4($) {
+		return typeof $ === "object" && $ != null && Symbol.toStringTag in $ && ($[Symbol.toStringTag] === "ArrayBuffer" || $[Symbol.toStringTag] === "SharedArrayBuffer");
+	}
+
+	function c8($) {
+		return $ instanceof RegExp || Object.prototype.toString.call($) === "[object RegExp]";
+	}
+
+	function V4($) {
+		return typeof $ === "object" && $ != null && Symbol.toStringTag in $ && $[Symbol.toStringTag] === "Map";
+	}
+
+	function b8($) {
+		return $ instanceof Date || Object.prototype.toString.call($) === "[object Date]";
+	}
+
+	function c0($, Q) {
+		return JSON.stringify($, (J, Y) => {
+			if (typeof Y === "bigint") return { $numberLong: `${Y}` }; else if (V4(Y)) return Object.fromEntries(Y);
+
+			return Y;
+		});
+	}
+
+	function sq($) {
+		if ($ != null && typeof $ === "object" && "stylize" in $ && typeof $.stylize === "function") return $.stylize;
+	}
+
+	var P8 = 7,
+		u8 = Symbol.for("@@mdb.bson.version"),
+		y6 = 2147483647,
+		v6 = -2147483648,
+		zY = Math.pow(2, 63) - 1,
+		LY = -Math.pow(2, 63),
+		DY = Math.pow(2, 53),
+		kY = -Math.pow(2, 53),
+		P4 = 1,
+		AY = 2,
+		R4 = 3,
+		CY = 4,
+		M4 = 5,
+		rq = 6,
+		TY = 7,
+		EY = 8,
+		IY = 9,
+		U4 = 10,
+		j5 = 11,
+		iq = 12,
+		z4 = 13,
+		wY = 14,
+		hY = 15,
+		_6 = 16,
+		NY = 17,
+		L4 = 18,
+		mY = 19,
+		BY = 255,
+		OY = 127,
+		eq = 0,
+		D4 = 4,
+		$Z = Object.freeze({
+			double: 1,
+			string: 2,
+			object: 3,
+			array: 4,
+			binData: 5,
+			undefined: 6,
+			objectId: 7,
+			bool: 8,
+			date: 9,
+			null: 10,
+			regex: 11,
+			dbPointer: 12,
+			javascript: 13,
+			symbol: 14,
+			javascriptWithScope: 15,
+			int: 16,
+			timestamp: 17,
+			long: 18,
+			decimal: 19,
+			minKey: -1,
+			maxKey: 127
+		});
+
+	class k extends Error {
+		get bsonError() {
+			return !0;
+		}
+
+		get name() {
+			return "BSONError";
+		}
+
+		constructor($, Q) {
+			super($, Q);
+		}
+
+		static isBSONError($) {
+			return $ != null && typeof $ === "object" && "bsonError" in $ && $.bsonError === !0 && "name" in $ && "message" in $ && "stack" in $;
+		}
+	}
+
+	class R8 extends k {
+		get name() {
+			return "BSONVersionError";
+		}
+
+		constructor() {
+			super(`Unsupported BSON version, bson types must be from bson ${P8}.x.x`);
+		}
+	}
+
+	class X5 extends k {
+		get name() {
+			return "BSONRuntimeError";
+		}
+
+		constructor($) {
+			super($);
+		}
+	}
+
+	class F$ extends k {
+		get name() {
+			return "BSONOffsetError";
+		}
+
+		offset;
+
+		constructor($, Q, J) {
+			super(`${$}. offset: ${Q}`, J);
+			this.offset = Q;
+		}
+	}
+
+	var JY, YY;
+
+	function SY($, Q, J, Y) {
+		if (Y) {
+			JY ??= new TextDecoder("utf8", { fatal: !0 });
+
+			try {
+				return JY.decode($.subarray(Q, J));
+			} catch(q) {
+				throw new k("Invalid UTF-8 string in BSON document", { cause: q });
+			}
+		}
+
+		return (
+			YY ??= new TextDecoder("utf8", { fatal: !1 }),
+			YY.decode($.subarray(Q, J))
+		);
+	}
+
+	function _Y($, Q, J) {
+		if ($.length === 0) return "";
+
+		let Y = J - Q;
+
+		if (Y === 0) return "";
+		if (Y > 20) return null;
+		if (Y === 1 && $[Q] < 128) return String.fromCharCode($[Q]);
+		if (Y === 2 && $[Q] < 128 && $[Q + 1] < 128) return String.fromCharCode($[Q]) + String.fromCharCode($[Q + 1]);
+		if (Y === 3 && $[Q] < 128 && $[Q + 1] < 128 && $[Q + 2] < 128) return String.fromCharCode($[Q]) + String.fromCharCode($[Q + 1]) + String.fromCharCode($[Q + 2]);
+
+		let q = [];
+
+		for (let Z = Q; Z < J; Z++) {
+			let K = $[Z];
+
+			if (K > 127) return null;
+
+			q.push(K);
+		}
+
+		return String.fromCharCode(...q);
+	}
+
+	function QZ($, Q, J) {
+		if (Q.length === 0) return 0;
+		if (Q.length > 25) return null;
+		if ($.length - J < Q.length) return null;
+
+		for (let Y = 0, q = J; Y < Q.length; (Y++, q++)) {
+			let Z = Q.charCodeAt(Y);
+
+			if (Z > 127) return null;
+
+			$[q] = Z;
+		}
+
+		return Q.length;
+	}
+
+	function JZ($) {
+		return o0.fromNumberArray(Array.from({ length: $ }, () => Math.floor(Math.random() * 256)));
+	}
+
+	function YZ($) {
+		return crypto.getRandomValues(o0.allocate($));
+	}
+
+	var GZ = (() => {
+			let { crypto: $ } = globalThis;
+
+			if ($ != null && typeof $.getRandomValues === "function") return YZ; else return JZ;
+		})(),
+		o0 = {
+			isUint8Array: b$,
+			toLocalBufferType($) {
+				if (Buffer.isBuffer($)) return $;
+				if (ArrayBuffer.isView($)) return Buffer.from($.buffer, $.byteOffset, $.byteLength);
+
+				let Q = $?.[Symbol.toStringTag] ?? Object.prototype.toString.call($);
+
+				if (Q === "ArrayBuffer" || Q === "SharedArrayBuffer" || Q === "[object ArrayBuffer]" || Q === "[object SharedArrayBuffer]") return Buffer.from($);
+
+				throw new k("Cannot create Buffer from the passed potentialBuffer.");
+			},
+
+			allocate($) {
+				return Buffer.alloc($);
+			},
+
+			allocateUnsafe($) {
+				return Buffer.allocUnsafe($);
+			},
+
+			compare($, Q) {
+				return o0.toLocalBufferType($).compare(Q);
+			},
+
+			concat($) {
+				return Buffer.concat($);
+			},
+
+			copy($, Q, J, Y, q) {
+				return o0.toLocalBufferType($).copy(Q, J ?? 0, Y ?? 0, q ?? $.length);
+			},
+
+			equals($, Q) {
+				return o0.toLocalBufferType($).equals(Q);
+			},
+
+			fromNumberArray($) {
+				return Buffer.from($);
+			},
+
+			fromBase64($) {
+				return Buffer.from($, "base64");
+			},
+
+			fromUTF8($) {
+				return Buffer.from($, "utf8");
+			},
+
+			toBase64($) {
+				return o0.toLocalBufferType($).toString("base64");
+			},
+
+			fromISO88591($) {
+				return Buffer.from($, "binary");
+			},
+
+			toISO88591($) {
+				return o0.toLocalBufferType($).toString("binary");
+			},
+
+			fromHex($) {
+				return Buffer.from($, "hex");
+			},
+
+			toHex($) {
+				return o0.toLocalBufferType($).toString("hex");
+			},
+
+			toUTF8($, Q, J, Y) {
+				let q = J - Q <= 20 ? _Y($, Q, J) : null;
+
+				if (q != null) return q;
+
+				let Z = o0.toLocalBufferType($).toString("utf8", Q, J);
+
+				if (Y) {
+					for (let K = 0; K < Z.length; K++) if (Z.charCodeAt(K) === 65533) {
+						SY($, Q, J, !0);
+
+						break;
+					}
+				}
+
+				return Z;
+			},
+
+			utf8ByteLength($) {
+				return Buffer.byteLength($, "utf8");
+			},
+
+			encodeUTF8Into($, Q, J) {
+				let Y = QZ($, Q, J);
+
+				if (Y != null) return Y;
+
+				return o0.toLocalBufferType($).write(Q, J, void 0, "utf8");
+			},
+			randomBytes: GZ,
+			swap32($) {
+				return o0.toLocalBufferType($).swap32();
+			}
+		};
+
+	function qZ() {
+		let { navigator: $ } = globalThis;
+
+		return typeof $ === "object" && $.product === "ReactNative";
+	}
+
+	function ZZ($) {
+		if ($ < 0) throw new RangeError(`The argument 'byteLength' is invalid. Received ${$}`);
+
+		return V8.fromNumberArray(Array.from({ length: $ }, () => Math.floor(Math.random() * 256)));
+	}
+
+	var KZ = (() => {
+			let { crypto: $ } = globalThis;
+
+			if ($ != null && typeof $.getRandomValues === "function") return (Q) => {
+				return $.getRandomValues(V8.allocate(Q));
+			}; else {
+				if (qZ()) {
+					let { console: Q } = globalThis;
+
+					Q?.warn?.("BSON: For React Native please polyfill crypto.getRandomValues, e.g. using: https://www.npmjs.com/package/react-native-get-random-values.");
+				}
+
+				return ZZ;
+			}
+		})(),
+		GY = /(\d|[a-f])/i,
+		V8 = {
+			isUint8Array: b$,
+			toLocalBufferType($) {
+				let Q = $?.[Symbol.toStringTag] ?? Object.prototype.toString.call($);
+
+				if (Q === "Uint8Array") return $;
+				if (ArrayBuffer.isView($)) return new Uint8Array($.buffer.slice($.byteOffset, $.byteOffset + $.byteLength));
+				if (Q === "ArrayBuffer" || Q === "SharedArrayBuffer" || Q === "[object ArrayBuffer]" || Q === "[object SharedArrayBuffer]") return new Uint8Array($);
+
+				throw new k("Cannot make a Uint8Array from passed potentialBuffer.");
+			},
+
+			allocate($) {
+				if (typeof $ !== "number") throw new TypeError(`The "size" argument must be of type number. Received ${String($)}`);
+
+				return new Uint8Array($);
+			},
+
+			allocateUnsafe($) {
+				return V8.allocate($);
+			},
+
+			compare($, Q) {
+				if ($ === Q) return 0;
+
+				let J = Math.min($.length, Q.length);
+
+				for (let Y = 0; Y < J; Y++) {
+					if ($[Y] < Q[Y]) return -1;
+					if ($[Y] > Q[Y]) return 1;
+				}
+
+				if ($.length < Q.length) return -1;
+				if ($.length > Q.length) return 1;
+
+				return 0;
+			},
+
+			concat($) {
+				if ($.length === 0) return V8.allocate(0);
+
+				let Q = 0;
+
+				for (let q of $) Q += q.length;
+
+				let J = V8.allocate(Q), Y = 0;
+
+				for (let q of $) (J.set(q, Y), Y += q.length);
+
+				return J;
+			},
+
+			copy($, Q, J, Y, q) {
+				if (q !== void 0 && q < 0) throw new RangeError(`The value of "sourceEnd" is out of range. It must be >= 0. Received ${q}`);
+				if ((q = q ?? $.length, Y !== void 0 && (Y < 0 || Y > q))) throw new RangeError(`The value of "sourceStart" is out of range. It must be >= 0 and <= ${q}. Received ${Y}`);
+				if ((Y = Y ?? 0, J !== void 0 && J < 0)) throw new RangeError(`The value of "targetStart" is out of range. It must be >= 0. Received ${J}`);
+
+				J = J ?? 0;
+
+				let Z = $.subarray(Y, q),
+					K = Math.min(Z.length, Q.length - J);
+
+				if (K <= 0) return 0;
+
+				return (Q.set(Z.subarray(0, K), J), K);
+			},
+
+			equals($, Q) {
+				if ($.byteLength !== Q.byteLength) return !1;
+
+				for (let J = 0; J < $.byteLength; J++) if ($[J] !== Q[J]) return !1;
+
+				return !0;
+			},
+
+			fromNumberArray($) {
+				return Uint8Array.from($);
+			},
+
+			fromBase64($) {
+				return Uint8Array.from(atob($), (Q) => Q.charCodeAt(0));
+			},
+
+			fromUTF8($) {
+				return new TextEncoder().encode($);
+			},
+
+			toBase64($) {
+				return btoa(V8.toISO88591($));
+			},
+
+			fromISO88591($) {
+				return Uint8Array.from($, (Q) => Q.charCodeAt(0) & 255);
+			},
+
+			toISO88591($) {
+				return Array.from(Uint16Array.from($), (Q) => String.fromCharCode(Q)).join("");
+			},
+
+			fromHex($) {
+				let Q = $.length % 2 === 0 ? $ : $.slice(0, $.length - 1),
+					J = [];
+
+				for (let Y = 0; Y < Q.length; Y += 2) {
+					let q = Q[Y], Z = Q[Y + 1];
+
+					if (!GY.test(q)) break;
+					if (!GY.test(Z)) break;
+
+					let K = Number.parseInt(`${q}${Z}`, 16);
+
+					J.push(K);
+				}
+
+				return Uint8Array.from(J);
+			},
+
+			toHex($) {
+				return Array.from($, (Q) => Q.toString(16).padStart(2, "0")).join("");
+			},
+
+			toUTF8($, Q, J, Y) {
+				let q = J - Q <= 20 ? _Y($, Q, J) : null;
+
+				if (q != null) return q;
+
+				return SY($, Q, J, Y);
+			},
+
+			utf8ByteLength($) {
+				return new TextEncoder().encode($).byteLength;
+			},
+
+			encodeUTF8Into($, Q, J) {
+				let Y = new TextEncoder().encode(Q);
+
+				return ($.set(Y, J), Y.byteLength);
+			},
+			randomBytes: KZ,
+			swap32($) {
+				if ($.length % 4 !== 0) throw new RangeError("Buffer size must be a multiple of 32-bits");
+
+				for (let Q = 0; Q < $.length; Q += 4) {
+					let J = $[Q],
+						Y = $[Q + 1],
+						q = $[Q + 2],
+						Z = $[Q + 3];
+
+					($[Q] = Z, $[Q + 1] = q, $[Q + 2] = Y, $[Q + 3] = J);
+				}
+
+				return $;
+			}
+		},
+		FZ = typeof Buffer === "function" && Buffer.prototype?._isBuffer !== !0,
+		z = FZ ? o0 : V8,
+		k4 = Symbol.for("@@mdb.bson.type");
+
+	class v0 {
+		get [k4]() {
+			return this._bsontype;
+		}
+
+		get [u8]() {
+			return P8;
+		}
+
+		[Symbol.for("nodejs.util.inspect.custom")]($, Q, J) {
+			return this.inspect($, Q, J);
+		}
+	}
+
+	var f8 = new Float64Array(1),
+		$0 = new Uint8Array(f8.buffer, 0, 8);
+
+	f8[0] = -1;
+
+	var bQ = $0[7] === 0,
+		f = {
+			isBigEndian: bQ,
+			getNonnegativeInt32LE($, Q) {
+				if ($[Q + 3] > 127) throw new RangeError(`Size cannot be negative at offset: ${Q}`);
+
+				return $[Q] | $[Q + 1] << 8 | $[Q + 2] << 16 | $[Q + 3] << 24;
+			},
+
+			getInt32LE($, Q) {
+				return $[Q] | $[Q + 1] << 8 | $[Q + 2] << 16 | $[Q + 3] << 24;
+			},
+
+			getUint32LE($, Q) {
+				return $[Q] + $[Q + 1] * 256 + $[Q + 2] * 65536 + $[Q + 3] * 16777216;
+			},
+
+			getUint32BE($, Q) {
+				return $[Q + 3] + $[Q + 2] * 256 + $[Q + 1] * 65536 + $[Q] * 16777216;
+			},
+
+			getBigInt64LE($, Q) {
+				let J = BigInt($[Q + 4] + $[Q + 5] * 256 + $[Q + 6] * 65536 + ($[Q + 7] << 24)),
+					Y = BigInt($[Q] + $[Q + 1] * 256 + $[Q + 2] * 65536 + $[Q + 3] * 16777216);
+
+				return (J << 32n) + Y;
+			},
+
+			getFloat64LE: bQ
+				? ($, Q) => {
+					return (
+						$0[7] = $[Q],
+						$0[6] = $[Q + 1],
+						$0[5] = $[Q + 2],
+						$0[4] = $[Q + 3],
+						$0[3] = $[Q + 4],
+						$0[2] = $[Q + 5],
+						$0[1] = $[Q + 6],
+						$0[0] = $[Q + 7],
+						f8[0]
+					);
+				}
+				: ($, Q) => {
+					return (
+						$0[0] = $[Q],
+						$0[1] = $[Q + 1],
+						$0[2] = $[Q + 2],
+						$0[3] = $[Q + 3],
+						$0[4] = $[Q + 4],
+						$0[5] = $[Q + 5],
+						$0[6] = $[Q + 6],
+						$0[7] = $[Q + 7],
+						f8[0]
+					);
+				},
+
+			setInt32BE($, Q, J) {
+				return (
+					$[Q + 3] = J,
+					J >>>= 8,
+					$[Q + 2] = J,
+					J >>>= 8,
+					$[Q + 1] = J,
+					J >>>= 8,
+					$[Q] = J,
+					4
+				);
+			},
+
+			setInt32LE($, Q, J) {
+				return (
+					$[Q] = J,
+					J >>>= 8,
+					$[Q + 1] = J,
+					J >>>= 8,
+					$[Q + 2] = J,
+					J >>>= 8,
+					$[Q + 3] = J,
+					4
+				);
+			},
+
+			setBigInt64LE($, Q, J) {
+				let Y = 0xffffffffn, q = Number(J & Y);
+
+				(
+					$[Q] = q,
+					q >>= 8,
+					$[Q + 1] = q,
+					q >>= 8,
+					$[Q + 2] = q,
+					q >>= 8,
+					$[Q + 3] = q
+				);
+
+				let Z = Number(J >> 32n & Y);
+
+				return (
+					$[Q + 4] = Z,
+					Z >>= 8,
+					$[Q + 5] = Z,
+					Z >>= 8,
+					$[Q + 6] = Z,
+					Z >>= 8,
+					$[Q + 7] = Z,
+					8
+				);
+			},
+
+			setFloat64LE: bQ
+				? ($, Q, J) => {
+					return (
+						f8[0] = J,
+						$[Q] = $0[7],
+						$[Q + 1] = $0[6],
+						$[Q + 2] = $0[5],
+						$[Q + 3] = $0[4],
+						$[Q + 4] = $0[3],
+						$[Q + 5] = $0[2],
+						$[Q + 6] = $0[1],
+						$[Q + 7] = $0[0],
+						8
+					);
+				}
+				: ($, Q, J) => {
+					return (
+						f8[0] = J,
+						$[Q] = $0[0],
+						$[Q + 1] = $0[1],
+						$[Q + 2] = $0[2],
+						$[Q + 3] = $0[3],
+						$[Q + 4] = $0[4],
+						$[Q + 5] = $0[5],
+						$[Q + 6] = $0[6],
+						$[Q + 7] = $0[7],
+						8
+					);
+				}
+		};
+
+	class o extends v0 {
+		get _bsontype() {
+			return "Binary";
+		}
+
+		static BSON_BINARY_SUBTYPE_DEFAULT = 0;
+		static BUFFER_SIZE = 256;
+		static SUBTYPE_DEFAULT = 0;
+		static SUBTYPE_FUNCTION = 1;
+		static SUBTYPE_BYTE_ARRAY = 2;
+		static SUBTYPE_UUID_OLD = 3;
+		static SUBTYPE_UUID = 4;
+		static SUBTYPE_MD5 = 5;
+		static SUBTYPE_ENCRYPTED = 6;
+		static SUBTYPE_COLUMN = 7;
+		static SUBTYPE_SENSITIVE = 8;
+		static SUBTYPE_VECTOR = 9;
+		static SUBTYPE_USER_DEFINED = 128;
+		static VECTOR_TYPE = Object.freeze({ Int8: 3, Float32: 39, PackedBit: 16 });
+		buffer;
+		sub_type;
+		position;
+
+		constructor($, Q) {
+			super();
+
+			if ($ != null && typeof $ === "string" && !ArrayBuffer.isView($) && !H4($) && !Array.isArray($)) throw new k("Binary can only be constructed from Uint8Array or number[]");
+
+			if ((
+				this.sub_type = Q ?? o.BSON_BINARY_SUBTYPE_DEFAULT,
+				$ == null
+			)) (this.buffer = z.allocate(o.BUFFER_SIZE), this.position = 0); else (
+				this.buffer = Array.isArray($) ? z.fromNumberArray($) : z.toLocalBufferType($),
+				this.position = this.buffer.byteLength
+			);
+		}
+
+		put($) {
+			if (typeof $ === "string" && $.length !== 1) throw new k("only accepts single character String"); else if (typeof $ !== "number" && $.length !== 1) throw new k("only accepts single character Uint8Array or Array");
+
+			let Q;
+
+			if (typeof $ === "string") Q = $.charCodeAt(0); else if (typeof $ === "number") Q = $; else Q = $[0];
+			if (Q < 0 || Q > 255) throw new k("only accepts number in a valid unsigned byte range 0-255");
+
+			if (this.buffer.byteLength > this.position) this.buffer[this.position++] = Q; else {
+				let J = z.allocate(o.BUFFER_SIZE + this.buffer.length);
+
+				(
+					J.set(this.buffer, 0),
+					this.buffer = J,
+					this.buffer[this.position++] = Q
+				);
+			}
+		}
+
+		write($, Q) {
+			if ((
+				Q = typeof Q === "number" ? Q : this.position,
+				this.buffer.byteLength < Q + $.length
+			)) {
+				let J = z.allocate(this.buffer.byteLength + $.length);
+
+				(J.set(this.buffer, 0), this.buffer = J);
+			}
+
+			if (ArrayBuffer.isView($)) (
+				this.buffer.set(z.toLocalBufferType($), Q),
+				this.position = Q + $.byteLength > this.position ? Q + $.length : this.position
+			); else if (typeof $ === "string") throw new k("input cannot be string");
+		}
+
+		read($, Q) {
+			Q = Q && Q > 0 ? Q : this.position;
+
+			let J = $ + Q;
+
+			return this.buffer.subarray($, J > this.position ? this.position : J);
+		}
+
+		value() {
+			return this.buffer.length === this.position ? this.buffer : this.buffer.subarray(0, this.position);
+		}
+
+		length() {
+			return this.position;
+		}
+
+		toJSON() {
+			return z.toBase64(this.buffer.subarray(0, this.position));
+		}
+
+		toString($) {
+			if ($ === "hex") return z.toHex(this.buffer.subarray(0, this.position));
+			if ($ === "base64") return z.toBase64(this.buffer.subarray(0, this.position));
+			if ($ === "utf8" || $ === "utf-8") return z.toUTF8(this.buffer, 0, this.position, !1);
+
+			return z.toUTF8(this.buffer, 0, this.position, !1);
+		}
+
+		toExtendedJSON($) {
+			if (($ = $ || {}, this.sub_type === o.SUBTYPE_VECTOR)) A$(this);
+
+			let Q = z.toBase64(this.buffer),
+				J = Number(this.sub_type).toString(16);
+
+			if ($.legacy) return { $binary: Q, $type: J.length === 1 ? "0" + J : J };
+
+			return {
+				$binary: { base64: Q, subType: J.length === 1 ? "0" + J : J }
+			};
+		}
+
+		toUUID() {
+			if (this.sub_type === o.SUBTYPE_UUID) return new w0(this.buffer.subarray(0, this.position));
+
+			throw new k(`Binary sub_type "${this.sub_type}" is not supported for converting to UUID. Only "${o.SUBTYPE_UUID}" is currently supported.`);
+		}
+
+		static createFromHexString($, Q) {
+			return new o(z.fromHex($), Q);
+		}
+
+		static createFromBase64($, Q) {
+			return new o(z.fromBase64($), Q);
+		}
+
+		static fromExtendedJSON($, Q) {
+			Q = Q || {};
+
+			let J, Y;
+
+			if ("$binary" in $) {
+				if (Q.legacy && typeof $.$binary === "string" && "$type" in $) (
+					Y = $.$type ? parseInt($.$type, 16) : 0,
+					J = z.fromBase64($.$binary)
+				); else if (typeof $.$binary !== "string") (
+					Y = $.$binary.subType ? parseInt($.$binary.subType, 16) : 0,
+					J = z.fromBase64($.$binary.base64)
+				);
+			} else if ("$uuid" in $) (Y = 4, J = w0.bytesFromString($.$uuid));
+
+			if (!J) throw new k(`Unexpected Binary Extended JSON format ${JSON.stringify($)}`);
+
+			return Y === D4 ? new w0(J) : new o(J, Y);
+		}
+
+		inspect($, Q, J) {
+			J ??= c0;
+
+			let Y = z.toBase64(this.buffer.subarray(0, this.position)),
+				q = J(Y, Q),
+				Z = J(this.sub_type, Q);
+
+			return `Binary.createFromBase64(${q}, ${Z})`;
+		}
+
+		toInt8Array() {
+			if (this.sub_type !== o.SUBTYPE_VECTOR) throw new k("Binary sub_type is not Vector");
+			if (this.buffer[0] !== o.VECTOR_TYPE.Int8) throw new k("Binary datatype field is not Int8");
+
+			return (
+				A$(this),
+				new Int8Array(this.buffer.buffer.slice(this.buffer.byteOffset + 2, this.buffer.byteOffset + this.position))
+			);
+		}
+
+		toFloat32Array() {
+			if (this.sub_type !== o.SUBTYPE_VECTOR) throw new k("Binary sub_type is not Vector");
+			if (this.buffer[0] !== o.VECTOR_TYPE.Float32) throw new k("Binary datatype field is not Float32");
+
+			A$(this);
+
+			let $ = new Uint8Array(this.buffer.buffer.slice(this.buffer.byteOffset + 2, this.buffer.byteOffset + this.position));
+
+			if (f.isBigEndian) z.swap32($);
+
+			return new Float32Array($.buffer);
+		}
+
+		toPackedBits() {
+			if (this.sub_type !== o.SUBTYPE_VECTOR) throw new k("Binary sub_type is not Vector");
+			if (this.buffer[0] !== o.VECTOR_TYPE.PackedBit) throw new k("Binary datatype field is not packed bit");
+
+			return (
+				A$(this),
+				new Uint8Array(this.buffer.buffer.slice(this.buffer.byteOffset + 2, this.buffer.byteOffset + this.position))
+			);
+		}
+
+		toBits() {
+			if (this.sub_type !== o.SUBTYPE_VECTOR) throw new k("Binary sub_type is not Vector");
+			if (this.buffer[0] !== o.VECTOR_TYPE.PackedBit) throw new k("Binary datatype field is not packed bit");
+
+			A$(this);
+
+			let Q = (this.length() - 2) * 8 - this.buffer[1],
+				J = new Int8Array(Q);
+
+			for (let Y = 0; Y < J.length; Y++) {
+				let q = Y / 8 | 0,
+					Z = this.buffer[q + 2],
+					K = 7 - Y % 8,
+					W = Z >> K & 1;
+
+				J[Y] = W;
+			}
+
+			return J;
+		}
+
+		static fromInt8Array($) {
+			let Q = z.allocate($.byteLength + 2);
+
+			(Q[0] = o.VECTOR_TYPE.Int8, Q[1] = 0);
+
+			let J = new Uint8Array($.buffer, $.byteOffset, $.byteLength);
+
+			Q.set(J, 2);
+
+			let Y = new this(Q, this.SUBTYPE_VECTOR);
+
+			return (A$(Y), Y);
+		}
+
+		static fromFloat32Array($) {
+			let Q = z.allocate($.byteLength + 2);
+
+			(Q[0] = o.VECTOR_TYPE.Float32, Q[1] = 0);
+
+			let J = new Uint8Array($.buffer, $.byteOffset, $.byteLength);
+
+			if ((Q.set(J, 2), f.isBigEndian)) z.swap32(new Uint8Array(Q.buffer, 2));
+
+			let Y = new this(Q, this.SUBTYPE_VECTOR);
+
+			return (A$(Y), Y);
+		}
+
+		static fromPackedBits($, Q = 0) {
+			let J = z.allocate($.byteLength + 2);
+
+			(J[0] = o.VECTOR_TYPE.PackedBit, J[1] = Q, J.set($, 2));
+
+			let Y = new this(J, this.SUBTYPE_VECTOR);
+
+			return (A$(Y), Y);
+		}
+
+		static fromBits($) {
+			let Q = $.length + 7 >>> 3,
+				J = new Uint8Array(Q + 2);
+
+			J[0] = o.VECTOR_TYPE.PackedBit;
+
+			let Y = $.length % 8;
+
+			J[1] = Y === 0 ? 0 : 8 - Y;
+
+			for (let q = 0; q < $.length; q++) {
+				let Z = q >>> 3, K = $[q];
+
+				if (K !== 0 && K !== 1) throw new k(`Invalid bit value at ${q}: must be 0 or 1, found ${$[q]}`);
+				if (K === 0) continue;
+
+				let W = 7 - q % 8;
+
+				J[Z + 2] |= K << W;
+			}
+
+			return new this(J, o.SUBTYPE_VECTOR);
+		}
+	}
+
+	function A$($) {
+		if ($.sub_type !== o.SUBTYPE_VECTOR) return;
+
+		let Q = $.position,
+			J = $.buffer[0],
+			Y = $.buffer[1];
+
+		if ((J === o.VECTOR_TYPE.Float32 || J === o.VECTOR_TYPE.Int8) && Y !== 0) throw new k("Invalid Vector: padding must be zero for int8 and float32 vectors");
+
+		if (J === o.VECTOR_TYPE.Float32) {
+			if (Q !== 0 && Q - 2 !== 0 && (Q - 2) % 4 !== 0) throw new k("Invalid Vector: Float32 vector must contain a multiple of 4 bytes");
+		}
+
+		if (J === o.VECTOR_TYPE.PackedBit && Y !== 0 && Q === 2) throw new k("Invalid Vector: padding must be zero for packed bit vectors that are empty");
+		if (J === o.VECTOR_TYPE.PackedBit && Y > 7) throw new k(`Invalid Vector: padding must be a value between 0 and 7. found: ${Y}`);
+	}
+
+	var fQ = 16,
+		WZ = /^[0-9A-F]{32}$/i,
+		jZ = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
+
+	class w0 extends o {
+		constructor($) {
+			let Q;
+
+			if ($ == null) Q = w0.generate(); else if ($ instanceof w0) Q = z.toLocalBufferType(new Uint8Array($.buffer)); else if (ArrayBuffer.isView($) && $.byteLength === fQ) Q = z.toLocalBufferType($); else if (typeof $ === "string") Q = w0.bytesFromString($); else throw new k("Argument passed in UUID constructor must be a UUID, a 16 byte Buffer or a 32/36 character hex string (dashes excluded/included, format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).");
+
+			super(Q, D4);
+		}
+
+		get id() {
+			return this.buffer;
+		}
+
+		set id($) {
+			this.buffer = $;
+		}
+
+		toHexString($ = !0) {
+			if ($) return [
+				z.toHex(this.buffer.subarray(0, 4)),
+				z.toHex(this.buffer.subarray(4, 6)),
+				z.toHex(this.buffer.subarray(6, 8)),
+				z.toHex(this.buffer.subarray(8, 10)),
+				z.toHex(this.buffer.subarray(10, 16))
+			].join("-");
+
+			return z.toHex(this.buffer);
+		}
+
+		toString($) {
+			if ($ === "hex") return z.toHex(this.id);
+			if ($ === "base64") return z.toBase64(this.id);
+
+			return this.toHexString();
+		}
+
+		toJSON() {
+			return this.toHexString();
+		}
+
+		equals($) {
+			if (!$) return !1;
+			if ($ instanceof w0) return z.equals($.id, this.id);
+
+			try {
+				return z.equals(new w0($).id, this.id);
+			} catch {
+				return !1;
+			}
+		}
+
+		toBinary() {
+			return new o(this.id, o.SUBTYPE_UUID);
+		}
+
+		static generate() {
+			let $ = z.randomBytes(fQ);
+
+			return ($[6] = $[6] & 15 | 64, $[8] = $[8] & 63 | 128, $);
+		}
+
+		static isValid($) {
+			if (!$) return !1;
+			if (typeof $ === "string") return w0.isValidUUIDString($);
+			if (b$($)) return $.byteLength === fQ;
+
+			return $._bsontype === "Binary" && $.sub_type === this.SUBTYPE_UUID && $.buffer.byteLength === 16;
+		}
+
+		static createFromHexString($) {
+			let Q = w0.bytesFromString($);
+
+			return new w0(Q);
+		}
+
+		static createFromBase64($) {
+			return new w0(z.fromBase64($));
+		}
+
+		static bytesFromString($) {
+			if (!w0.isValidUUIDString($)) throw new k("UUID string representation must be 32 hex digits or canonical hyphenated representation");
+
+			return z.fromHex($.replace(/-/g, ""));
+		}
+
+		static isValidUUIDString($) {
+			return WZ.test($) || jZ.test($);
+		}
+
+		inspect($, Q, J) {
+			return (J ??= c0, `new UUID(${J(this.toHexString(), Q)})`);
+		}
+	}
+
+	class l$ extends v0 {
+		get _bsontype() {
+			return "Code";
+		}
+
+		code;
+		scope;
+
+		constructor($, Q) {
+			super();
+			(this.code = $.toString(), this.scope = Q ?? null);
+		}
+
+		toJSON() {
+			if (this.scope != null) return { code: this.code, scope: this.scope };
+
+			return { code: this.code };
+		}
+
+		toExtendedJSON() {
+			if (this.scope) return { $code: this.code, $scope: this.scope };
+
+			return { $code: this.code };
+		}
+
+		static fromExtendedJSON($) {
+			return new l$($.$code, $.$scope);
+		}
+
+		inspect($, Q, J) {
+			J ??= c0;
+
+			let Y = J(this.code, Q),
+				q = Y.includes(`
+`);
+
+			if (this.scope != null) Y += `,${q
+				? `
+`
+				: " "}${J(this.scope, Q)}`;
+
+			let Z = q && this.scope === null;
+
+			return `new Code(${q
+				? `
+`
+				: ""}${Y}${Z
+				? `
+`
+				: ""})`;
+		}
+	}
+
+	function yY($) {
+		return $ != null && typeof $ === "object" && "$id" in $ && $.$id != null && "$ref" in $ && typeof $.$ref === "string" && (!("$db" in $) || ("$db" in $) && typeof $.$db === "string");
+	}
+
+	class T$ extends v0 {
+		get _bsontype() {
+			return "DBRef";
+		}
+
+		collection;
+		oid;
+		db;
+		fields;
+
+		constructor($, Q, J, Y) {
+			super();
+
+			let q = $.split(".");
+
+			if (q.length === 2) (J = q.shift(), $ = q.shift());
+
+			(
+				this.collection = $,
+				this.oid = Q,
+				this.db = J,
+				this.fields = Y || {}
+			);
+		}
+
+		get namespace() {
+			return this.collection;
+		}
+
+		set namespace($) {
+			this.collection = $;
+		}
+
+		toJSON() {
+			let $ = Object.assign({ $ref: this.collection, $id: this.oid }, this.fields);
+
+			if (this.db != null) $.$db = this.db;
+
+			return $;
+		}
+
+		toExtendedJSON($) {
+			$ = $ || {};
+
+			let Q = { $ref: this.collection, $id: this.oid };
+
+			if ($.legacy) return Q;
+			if (this.db) Q.$db = this.db;
+
+			return (Q = Object.assign(Q, this.fields), Q);
+		}
+
+		static fromExtendedJSON($) {
+			let Q = Object.assign({}, $);
+
+			return (
+				delete Q.$ref,
+				delete Q.$id,
+				delete Q.$db,
+				new T$($.$ref, $.$id, $.$db, Q)
+			);
+		}
+
+		inspect($, Q, J) {
+			J ??= c0;
+
+			let Y = [
+				J(this.namespace, Q),
+				J(this.oid, Q),
+				...this.db ? [J(this.db, Q)] : [],
+				...Object.keys(this.fields).length > 0 ? [J(this.fields, Q)] : []
+			];
+
+			return (
+				Y[1] = J === c0 ? `new ObjectId(${Y[1]})` : Y[1],
+				`new DBRef(${Y.join(", ")})`
+			);
+		}
+	}
+
+	function vY($) {
+		if ($ === "") return $;
+
+		let Q = 0, J = $[Q] === "-", Y = $[Q] === "+";
+
+		if (Y || J) Q += 1;
+
+		let q = !1;
+
+		for (; Q < $.length && $[Q] === "0"; ++Q) q = !0;
+
+		if (!q) return Y ? $.slice(1) : $;
+
+		return `${J ? "-" : ""}${$.length === Q ? "0" : $.slice(Q)}`;
+	}
+
+	function XZ($, Q) {
+		Q = Q ?? 10;
+
+		let J = ("0123456789abcdefghijklmnopqrstuvwxyz").slice(0, Q);
+
+		return new RegExp(`[^-+${J}]`, "i").test($) ? !1 : $;
+	}
+
+	var d0 = void 0;
+
+	try {
+		d0 = new WebAssembly.Instance(
+			new WebAssembly.Module(new Uint8Array([
+				0,
+				97,
+				115,
+				109,
+				1,
+				0,
+				0,
+				0,
+				1,
+				13,
+				2,
+				96,
+				0,
+				1,
+				127,
+				96,
+				4,
+				127,
+				127,
+				127,
+				127,
+				1,
+				127,
+				3,
+				7,
+				6,
+				0,
+				1,
+				1,
+				1,
+				1,
+				1,
+				6,
+				6,
+				1,
+				127,
+				1,
+				65,
+				0,
+				11,
+				7,
+				50,
+				6,
+				3,
+				109,
+				117,
+				108,
+				0,
+				1,
+				5,
+				100,
+				105,
+				118,
+				95,
+				115,
+				0,
+				2,
+				5,
+				100,
+				105,
+				118,
+				95,
+				117,
+				0,
+				3,
+				5,
+				114,
+				101,
+				109,
+				95,
+				115,
+				0,
+				4,
+				5,
+				114,
+				101,
+				109,
+				95,
+				117,
+				0,
+				5,
+				8,
+				103,
+				101,
+				116,
+				95,
+				104,
+				105,
+				103,
+				104,
+				0,
+				0,
+				10,
+				191,
+				1,
+				6,
+				4,
+				0,
+				35,
+				0,
+				11,
+				36,
+				1,
+				1,
+				126,
+				32,
+				0,
+				173,
+				32,
+				1,
+				173,
+				66,
+				32,
+				134,
+				132,
+				32,
+				2,
+				173,
+				32,
+				3,
+				173,
+				66,
+				32,
+				134,
+				132,
+				126,
+				34,
+				4,
+				66,
+				32,
+				135,
+				167,
+				36,
+				0,
+				32,
+				4,
+				167,
+				11,
+				36,
+				1,
+				1,
+				126,
+				32,
+				0,
+				173,
+				32,
+				1,
+				173,
+				66,
+				32,
+				134,
+				132,
+				32,
+				2,
+				173,
+				32,
+				3,
+				173,
+				66,
+				32,
+				134,
+				132,
+				127,
+				34,
+				4,
+				66,
+				32,
+				135,
+				167,
+				36,
+				0,
+				32,
+				4,
+				167,
+				11,
+				36,
+				1,
+				1,
+				126,
+				32,
+				0,
+				173,
+				32,
+				1,
+				173,
+				66,
+				32,
+				134,
+				132,
+				32,
+				2,
+				173,
+				32,
+				3,
+				173,
+				66,
+				32,
+				134,
+				132,
+				128,
+				34,
+				4,
+				66,
+				32,
+				135,
+				167,
+				36,
+				0,
+				32,
+				4,
+				167,
+				11,
+				36,
+				1,
+				1,
+				126,
+				32,
+				0,
+				173,
+				32,
+				1,
+				173,
+				66,
+				32,
+				134,
+				132,
+				32,
+				2,
+				173,
+				32,
+				3,
+				173,
+				66,
+				32,
+				134,
+				132,
+				129,
+				34,
+				4,
+				66,
+				32,
+				135,
+				167,
+				36,
+				0,
+				32,
+				4,
+				167,
+				11,
+				36,
+				1,
+				1,
+				126,
+				32,
+				0,
+				173,
+				32,
+				1,
+				173,
+				66,
+				32,
+				134,
+				132,
+				32,
+				2,
+				173,
+				32,
+				3,
+				173,
+				66,
+				32,
+				134,
+				132,
+				130,
+				34,
+				4,
+				66,
+				32,
+				135,
+				167,
+				36,
+				0,
+				32,
+				4,
+				167,
+				11
+			])),
+			{}
+		).exports;
+	} catch {}
+
+	var qY = 65536,
+		HZ = 16777216,
+		l8 = qY * qY,
+		gY = l8 * l8,
+		ZY = gY / 2,
+		KY = {},
+		FY = {},
+		VZ = 20,
+		PZ = /^(\+?0|(\+|-)?[1-9][0-9]*)$/;
+
+	class P extends v0 {
+		get _bsontype() {
+			return "Long";
+		}
+
+		get __isLong__() {
+			return !0;
+		}
+
+		high;
+		low;
+		unsigned;
+
+		constructor($ = 0, Q, J) {
+			super();
+
+			let Y = typeof Q === "boolean" ? Q : Boolean(J),
+				q = typeof Q === "number" ? Q : 0,
+				Z = typeof $ === "string"
+					? P.fromString($, Y)
+					: typeof $ === "bigint"
+						? P.fromBigInt($, Y)
+						: { low: $ | 0, high: q | 0, unsigned: Y };
+
+			(
+				this.low = Z.low,
+				this.high = Z.high,
+				this.unsigned = Z.unsigned
+			);
+		}
+
+		static TWO_PWR_24 = P.fromInt(HZ);
+		static MAX_UNSIGNED_VALUE = P.fromBits(-1, -1, !0);
+		static ZERO = P.fromInt(0);
+		static UZERO = P.fromInt(0, !0);
+		static ONE = P.fromInt(1);
+		static UONE = P.fromInt(1, !0);
+		static NEG_ONE = P.fromInt(-1);
+		static MAX_VALUE = P.fromBits(-1, 2147483647, !1);
+		static MIN_VALUE = P.fromBits(0, -2147483648, !1);
+
+		static fromBits($, Q, J) {
+			return new P($, Q, J);
+		}
+
+		static fromInt($, Q) {
+			let J, Y, q;
+
+			if (Q) {
+				if (($ >>>= 0, q = 0 <= $ && $ < 256)) {
+					if ((Y = FY[$], Y)) return Y;
+				}
+
+				if ((J = P.fromBits($, ($ | 0) < 0 ? -1 : 0, !0), q)) FY[$] = J;
+
+				return J;
+			} else {
+				if (($ |= 0, q = -128 <= $ && $ < 128)) {
+					if ((Y = KY[$], Y)) return Y;
+				}
+
+				if ((J = P.fromBits($, $ < 0 ? -1 : 0, !1), q)) KY[$] = J;
+
+				return J;
+			}
+		}
+
+		static fromNumber($, Q) {
+			if (isNaN($)) return Q ? P.UZERO : P.ZERO;
+
+			if (Q) {
+				if ($ < 0) return P.UZERO;
+				if ($ >= gY) return P.MAX_UNSIGNED_VALUE;
+			} else {
+				if ($ <= -ZY) return P.MIN_VALUE;
+				if ($ + 1 >= ZY) return P.MAX_VALUE;
+			}
+
+			if ($ < 0) return P.fromNumber(-$, Q).neg();
+
+			return P.fromBits($ % l8 | 0, $ / l8 | 0, Q);
+		}
+
+		static fromBigInt($, Q) {
+			let J = 0xffffffffn, Y = 32n;
+
+			return new P(Number($ & J), Number($ >> Y & J), Q);
+		}
+
+		static _fromString($, Q, J) {
+			if ($.length === 0) throw new k("empty string");
+			if (J < 2 || 36 < J) throw new k("radix");
+
+			let Y;
+
+			if ((Y = $.indexOf("-")) > 0) throw new k("interior hyphen"); else if (Y === 0) return P._fromString($.substring(1), Q, J).neg();
+
+			let q = P.fromNumber(Math.pow(J, 8)), Z = P.ZERO;
+
+			for (let K = 0; K < $.length; K += 8) {
+				let W = Math.min(8, $.length - K),
+					F = parseInt($.substring(K, K + W), J);
+
+				if (W < 8) {
+					let H = P.fromNumber(Math.pow(J, W));
+
+					Z = Z.mul(H).add(P.fromNumber(F));
+				} else (Z = Z.mul(q), Z = Z.add(P.fromNumber(F)));
+			}
+
+			return (Z.unsigned = Q, Z);
+		}
+
+		static fromStringStrict($, Q, J) {
+			let Y = !1;
+
+			if (typeof Q === "number") (J = Q, Q = !1); else Y = !!Q;
+			if ((J ??= 10, $.trim() !== $)) throw new k(`Input: '${$}' contains leading and/or trailing whitespace`);
+			if (!XZ($, J)) throw new k(`Input: '${$}' contains invalid characters for radix: ${J}`);
+
+			let q = vY($), Z = P._fromString(q, Y, J);
+
+			if (Z.toString(J).toLowerCase() !== q.toLowerCase()) throw new k(`Input: ${$} is not representable as ${Z.unsigned ? "an unsigned" : "a signed"} 64-bit Long ${J != null ? `with radix: ${J}` : ""}`);
+
+			return Z;
+		}
+
+		static fromString($, Q, J) {
+			let Y = !1;
+
+			if (typeof Q === "number") (J = Q, Q = !1); else Y = !!Q;
+			if ((J ??= 10, $ === "NaN" && J < 24)) return P.ZERO; else if (($ === "Infinity" || $ === "+Infinity" || $ === "-Infinity") && J < 35) return P.ZERO;
+
+			return P._fromString($, Y, J);
+		}
+
+		static fromBytes($, Q, J) {
+			return J ? P.fromBytesLE($, Q) : P.fromBytesBE($, Q);
+		}
+
+		static fromBytesLE($, Q) {
+			return new P($[0] | $[1] << 8 | $[2] << 16 | $[3] << 24, $[4] | $[5] << 8 | $[6] << 16 | $[7] << 24, Q);
+		}
+
+		static fromBytesBE($, Q) {
+			return new P($[4] << 24 | $[5] << 16 | $[6] << 8 | $[7], $[0] << 24 | $[1] << 16 | $[2] << 8 | $[3], Q);
+		}
+
+		static isLong($) {
+			return $ != null && typeof $ === "object" && "__isLong__" in $ && $.__isLong__ === !0;
+		}
+
+		static fromValue($, Q) {
+			if (typeof $ === "number") return P.fromNumber($, Q);
+			if (typeof $ === "string") return P.fromString($, Q);
+
+			return P.fromBits($.low, $.high, typeof Q === "boolean" ? Q : $.unsigned);
+		}
+
+		add($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			let Q = this.high >>> 16,
+				J = this.high & 65535,
+				Y = this.low >>> 16,
+				q = this.low & 65535,
+				Z = $.high >>> 16,
+				K = $.high & 65535,
+				W = $.low >>> 16,
+				F = $.low & 65535,
+				H = 0,
+				j = 0,
+				X = 0,
+				V = 0;
+
+			return (
+				V += q + F,
+				X += V >>> 16,
+				V &= 65535,
+				X += Y + W,
+				j += X >>> 16,
+				X &= 65535,
+				j += J + K,
+				H += j >>> 16,
+				j &= 65535,
+				H += Q + Z,
+				H &= 65535,
+				P.fromBits(X << 16 | V, H << 16 | j, this.unsigned)
+			);
+		}
+
+		and($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			return P.fromBits(this.low & $.low, this.high & $.high, this.unsigned);
+		}
+
+		compare($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+			if (this.eq($)) return 0;
+
+			let Q = this.isNegative(), J = $.isNegative();
+
+			if (Q && !J) return -1;
+			if (!Q && J) return 1;
+			if (!this.unsigned) return this.sub($).isNegative() ? -1 : 1;
+
+			return $.high >>> 0 > this.high >>> 0 || $.high === this.high && $.low >>> 0 > this.low >>> 0 ? -1 : 1;
+		}
+
+		comp($) {
+			return this.compare($);
+		}
+
+		divide($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+			if ($.isZero()) throw new k("division by zero");
+
+			if (d0) {
+				if (!this.unsigned && this.high === -2147483648 && $.low === -1 && $.high === -1) return this;
+
+				let q = (this.unsigned ? d0.div_u : d0.div_s)(this.low, this.high, $.low, $.high);
+
+				return P.fromBits(q, d0.get_high(), this.unsigned);
+			}
+
+			if (this.isZero()) return this.unsigned ? P.UZERO : P.ZERO;
+
+			let Q, J, Y;
+
+			if (!this.unsigned) {
+				if (this.eq(P.MIN_VALUE)) if ($.eq(P.ONE) || $.eq(P.NEG_ONE)) return P.MIN_VALUE; else if ($.eq(P.MIN_VALUE)) return P.ONE; else if ((Q = this.shr(1).div($).shl(1), Q.eq(P.ZERO))) return $.isNegative() ? P.ONE : P.NEG_ONE; else return (J = this.sub($.mul(Q)), Y = Q.add(J.div($)), Y); else if ($.eq(P.MIN_VALUE)) return this.unsigned ? P.UZERO : P.ZERO;
+
+				if (this.isNegative()) {
+					if ($.isNegative()) return this.neg().div($.neg());
+
+					return this.neg().div($).neg();
+				} else if ($.isNegative()) return this.div($.neg()).neg();
+
+				Y = P.ZERO;
+			} else {
+				if (!$.unsigned) $ = $.toUnsigned();
+				if ($.gt(this)) return P.UZERO;
+				if ($.gt(this.shru(1))) return P.UONE;
+
+				Y = P.UZERO;
+			}
+
+			J = this;
+
+			while (J.gte($)) {
+				Q = Math.max(1, Math.floor(J.toNumber() / $.toNumber()));
+
+				let q = Math.ceil(Math.log(Q) / Math.LN2),
+					Z = q <= 48 ? 1 : Math.pow(2, q - 48),
+					K = P.fromNumber(Q),
+					W = K.mul($);
+
+				while (W.isNegative() || W.gt(J)) (Q -= Z, K = P.fromNumber(Q, this.unsigned), W = K.mul($));
+
+				if (K.isZero()) K = P.ONE;
+
+				(Y = Y.add(K), J = J.sub(W));
+			}
+
+			return Y;
+		}
+
+		div($) {
+			return this.divide($);
+		}
+
+		equals($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+			if (this.unsigned !== $.unsigned && this.high >>> 31 === 1 && $.high >>> 31 === 1) return !1;
+
+			return this.high === $.high && this.low === $.low;
+		}
+
+		eq($) {
+			return this.equals($);
+		}
+
+		getHighBits() {
+			return this.high;
+		}
+
+		getHighBitsUnsigned() {
+			return this.high >>> 0;
+		}
+
+		getLowBits() {
+			return this.low;
+		}
+
+		getLowBitsUnsigned() {
+			return this.low >>> 0;
+		}
+
+		getNumBitsAbs() {
+			if (this.isNegative()) return this.eq(P.MIN_VALUE) ? 64 : this.neg().getNumBitsAbs();
+
+			let $ = this.high !== 0 ? this.high : this.low, Q;
+
+			for (Q = 31; Q > 0; Q--) if (($ & 1 << Q) !== 0) break;
+
+			return this.high !== 0 ? Q + 33 : Q + 1;
+		}
+
+		greaterThan($) {
+			return this.comp($) > 0;
+		}
+
+		gt($) {
+			return this.greaterThan($);
+		}
+
+		greaterThanOrEqual($) {
+			return this.comp($) >= 0;
+		}
+
+		gte($) {
+			return this.greaterThanOrEqual($);
+		}
+
+		ge($) {
+			return this.greaterThanOrEqual($);
+		}
+
+		isEven() {
+			return (this.low & 1) === 0;
+		}
+
+		isNegative() {
+			return !this.unsigned && this.high < 0;
+		}
+
+		isOdd() {
+			return (this.low & 1) === 1;
+		}
+
+		isPositive() {
+			return this.unsigned || this.high >= 0;
+		}
+
+		isZero() {
+			return this.high === 0 && this.low === 0;
+		}
+
+		lessThan($) {
+			return this.comp($) < 0;
+		}
+
+		lt($) {
+			return this.lessThan($);
+		}
+
+		lessThanOrEqual($) {
+			return this.comp($) <= 0;
+		}
+
+		lte($) {
+			return this.lessThanOrEqual($);
+		}
+
+		modulo($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			if (d0) {
+				let Q = (this.unsigned ? d0.rem_u : d0.rem_s)(this.low, this.high, $.low, $.high);
+
+				return P.fromBits(Q, d0.get_high(), this.unsigned);
+			}
+
+			return this.sub(this.div($).mul($));
+		}
+
+		mod($) {
+			return this.modulo($);
+		}
+
+		rem($) {
+			return this.modulo($);
+		}
+
+		multiply($) {
+			if (this.isZero()) return P.ZERO;
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			if (d0) {
+				let L = d0.mul(this.low, this.high, $.low, $.high);
+
+				return P.fromBits(L, d0.get_high(), this.unsigned);
+			}
+
+			if ($.isZero()) return P.ZERO;
+			if (this.eq(P.MIN_VALUE)) return $.isOdd() ? P.MIN_VALUE : P.ZERO;
+			if ($.eq(P.MIN_VALUE)) return this.isOdd() ? P.MIN_VALUE : P.ZERO;
+			if (this.isNegative()) if ($.isNegative()) return this.neg().mul($.neg()); else return this.neg().mul($).neg(); else if ($.isNegative()) return this.mul($.neg()).neg();
+			if (this.lt(P.TWO_PWR_24) && $.lt(P.TWO_PWR_24)) return P.fromNumber(this.toNumber() * $.toNumber(), this.unsigned);
+
+			let Q = this.high >>> 16,
+				J = this.high & 65535,
+				Y = this.low >>> 16,
+				q = this.low & 65535,
+				Z = $.high >>> 16,
+				K = $.high & 65535,
+				W = $.low >>> 16,
+				F = $.low & 65535,
+				H = 0,
+				j = 0,
+				X = 0,
+				V = 0;
+
+			return (
+				V += q * F,
+				X += V >>> 16,
+				V &= 65535,
+				X += Y * F,
+				j += X >>> 16,
+				X &= 65535,
+				X += q * W,
+				j += X >>> 16,
+				X &= 65535,
+				j += J * F,
+				H += j >>> 16,
+				j &= 65535,
+				j += Y * W,
+				H += j >>> 16,
+				j &= 65535,
+				j += q * K,
+				H += j >>> 16,
+				j &= 65535,
+				H += Q * F + J * W + Y * K + q * Z,
+				H &= 65535,
+				P.fromBits(X << 16 | V, H << 16 | j, this.unsigned)
+			);
+		}
+
+		mul($) {
+			return this.multiply($);
+		}
+
+		negate() {
+			if (!this.unsigned && this.eq(P.MIN_VALUE)) return P.MIN_VALUE;
+
+			return this.not().add(P.ONE);
+		}
+
+		neg() {
+			return this.negate();
+		}
+
+		not() {
+			return P.fromBits(~this.low, ~this.high, this.unsigned);
+		}
+
+		notEquals($) {
+			return !this.equals($);
+		}
+
+		neq($) {
+			return this.notEquals($);
+		}
+
+		ne($) {
+			return this.notEquals($);
+		}
+
+		or($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			return P.fromBits(this.low | $.low, this.high | $.high, this.unsigned);
+		}
+
+		shiftLeft($) {
+			if (P.isLong($)) $ = $.toInt();
+			if (($ &= 63) === 0) return this; else if ($ < 32) return P.fromBits(this.low << $, this.high << $ | this.low >>> 32 - $, this.unsigned); else return P.fromBits(0, this.low << $ - 32, this.unsigned);
+		}
+
+		shl($) {
+			return this.shiftLeft($);
+		}
+
+		shiftRight($) {
+			if (P.isLong($)) $ = $.toInt();
+			if (($ &= 63) === 0) return this; else if ($ < 32) return P.fromBits(this.low >>> $ | this.high << 32 - $, this.high >> $, this.unsigned); else return P.fromBits(this.high >> $ - 32, this.high >= 0 ? 0 : -1, this.unsigned);
+		}
+
+		shr($) {
+			return this.shiftRight($);
+		}
+
+		shiftRightUnsigned($) {
+			if (P.isLong($)) $ = $.toInt();
+
+			if (($ &= 63, $ === 0)) return this; else {
+				let Q = this.high;
+
+				if ($ < 32) {
+					let J = this.low;
+
+					return P.fromBits(J >>> $ | Q << 32 - $, Q >>> $, this.unsigned);
+				} else if ($ === 32) return P.fromBits(Q, 0, this.unsigned); else return P.fromBits(Q >>> $ - 32, 0, this.unsigned);
+			}
+		}
+
+		shr_u($) {
+			return this.shiftRightUnsigned($);
+		}
+
+		shru($) {
+			return this.shiftRightUnsigned($);
+		}
+
+		subtract($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			return this.add($.neg());
+		}
+
+		sub($) {
+			return this.subtract($);
+		}
+
+		toInt() {
+			return this.unsigned ? this.low >>> 0 : this.low;
+		}
+
+		toNumber() {
+			if (this.unsigned) return (this.high >>> 0) * l8 + (this.low >>> 0);
+
+			return this.high * l8 + (this.low >>> 0);
+		}
+
+		toBigInt() {
+			return BigInt(this.toString());
+		}
+
+		toBytes($) {
+			return $ ? this.toBytesLE() : this.toBytesBE();
+		}
+
+		toBytesLE() {
+			let $ = this.high, Q = this.low;
+
+			return [
+				Q & 255,
+				Q >>> 8 & 255,
+				Q >>> 16 & 255,
+				Q >>> 24,
+				$ & 255,
+				$ >>> 8 & 255,
+				$ >>> 16 & 255,
+				$ >>> 24
+			];
+		}
+
+		toBytesBE() {
+			let $ = this.high, Q = this.low;
+
+			return [
+				$ >>> 24,
+				$ >>> 16 & 255,
+				$ >>> 8 & 255,
+				$ & 255,
+				Q >>> 24,
+				Q >>> 16 & 255,
+				Q >>> 8 & 255,
+				Q & 255
+			];
+		}
+
+		toSigned() {
+			if (!this.unsigned) return this;
+
+			return P.fromBits(this.low, this.high, !1);
+		}
+
+		toString($) {
+			if (($ = $ || 10, $ < 2 || 36 < $)) throw new k("radix");
+			if (this.isZero()) return "0";
+
+			if (this.isNegative()) if (this.eq(P.MIN_VALUE)) {
+				let q = P.fromNumber($),
+					Z = this.div(q),
+					K = Z.mul(q).sub(this);
+
+				return Z.toString($) + K.toInt().toString($);
+			} else return "-" + this.neg().toString($);
+
+			let Q = P.fromNumber(Math.pow($, 6), this.unsigned),
+				J = this,
+				Y = "";
+
+			while (!0) {
+				let q = J.div(Q),
+					K = (J.sub(q.mul(Q)).toInt() >>> 0).toString($);
+
+				if ((J = q, J.isZero())) return K + Y; else {
+					while (K.length < 6) K = "0" + K;
+
+					Y = "" + K + Y;
+				}
+			}
+		}
+
+		toUnsigned() {
+			if (this.unsigned) return this;
+
+			return P.fromBits(this.low, this.high, !0);
+		}
+
+		xor($) {
+			if (!P.isLong($)) $ = P.fromValue($);
+
+			return P.fromBits(this.low ^ $.low, this.high ^ $.high, this.unsigned);
+		}
+
+		eqz() {
+			return this.isZero();
+		}
+
+		le($) {
+			return this.lessThanOrEqual($);
+		}
+
+		toExtendedJSON($) {
+			if ($ && $.relaxed) return this.toNumber();
+
+			return { $numberLong: this.toString() };
+		}
+
+		static fromExtendedJSON($, Q) {
+			let { useBigInt64: J = !1, relaxed: Y = !0 } = { ...Q };
+
+			if ($.$numberLong.length > VZ) throw new k("$numberLong string is too long");
+			if (!PZ.test($.$numberLong)) throw new k(`$numberLong string "${$.$numberLong}" is in an invalid format`);
+
+			if (J) {
+				let Z = BigInt($.$numberLong);
+
+				return BigInt.asIntN(64, Z);
+			}
+
+			let q = P.fromString($.$numberLong);
+
+			if (Y) return q.toNumber();
+
+			return q;
+		}
+
+		inspect($, Q, J) {
+			J ??= c0;
+
+			let Y = J(this.toString(), Q),
+				q = this.unsigned ? `, ${J(this.unsigned, Q)}` : "";
+
+			return `new Long(${Y}${q})`;
+		}
+	}
+
+	var RZ = /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/,
+		MZ = /^(\+|-)?(Infinity|inf)$/i,
+		UZ = /^(\+|-)?NaN$/i,
+		x8 = 6111,
+		O6 = -6176,
+		WY = 6176,
+		jY = 34,
+		lQ = z.fromNumberArray([124, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].reverse()),
+		XY = z.fromNumberArray([248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].reverse()),
+		HY = z.fromNumberArray([120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].reverse()),
+		zZ = /^([-+])?(\d+)?$/,
+		LZ = 31,
+		VY = 16383,
+		DZ = 30,
+		kZ = 31;
+
+	function PY($) {
+		return !isNaN(parseInt($, 10));
+	}
+
+	function AZ($) {
+		let Q = P.fromNumber(1e9), J = P.fromNumber(0);
+
+		if (!$.parts[0] && !$.parts[1] && !$.parts[2] && !$.parts[3]) return { quotient: $, rem: J };
+
+		for (let Y = 0; Y <= 3; Y++) (
+			J = J.shiftLeft(32),
+			J = J.add(new P($.parts[Y], 0)),
+			$.parts[Y] = J.div(Q).low,
+			J = J.modulo(Q)
+		);
+
+		return { quotient: $, rem: J };
+	}
+
+	function CZ($, Q) {
+		if (!$ && !Q) return { high: P.fromNumber(0), low: P.fromNumber(0) };
+
+		let J = $.shiftRightUnsigned(32),
+			Y = new P($.getLowBits(), 0),
+			q = Q.shiftRightUnsigned(32),
+			Z = new P(Q.getLowBits(), 0),
+			K = J.multiply(q),
+			W = J.multiply(Z),
+			F = Y.multiply(q),
+			H = Y.multiply(Z);
+
+		return (
+			K = K.add(W.shiftRightUnsigned(32)),
+			W = new P(W.getLowBits(), 0).add(F).add(H.shiftRightUnsigned(32)),
+			K = K.add(W.shiftRightUnsigned(32)),
+			H = W.shiftLeft(32).add(new P(H.getLowBits(), 0)),
+			{ high: K, low: H }
+		);
+	}
+
+	function TZ($, Q) {
+		let J = $.high >>> 0, Y = Q.high >>> 0;
+
+		if (J < Y) return !0; else if (J === Y) {
+			let q = $.low >>> 0, Z = Q.low >>> 0;
+
+			if (q < Z) return !0;
+		}
+
+		return !1;
+	}
+
+	function i0($, Q) {
+		throw new k(`"${$}" is not a valid Decimal128 string - ${Q}`);
+	}
+
+	class O0 extends v0 {
+		get _bsontype() {
+			return "Decimal128";
+		}
+
+		bytes;
+
+		constructor($) {
+			super();
+
+			if (typeof $ === "string") this.bytes = O0.fromString($).bytes; else if ($ instanceof Uint8Array || b$($)) {
+				if ($.byteLength !== 16) throw new k("Decimal128 must take a Buffer of 16 bytes");
+
+				this.bytes = $;
+			} else throw new k("Decimal128 must take a Buffer or string");
+		}
+
+		static fromString($) {
+			return O0._fromString($, { allowRounding: !1 });
+		}
+
+		static fromStringWithRounding($) {
+			return O0._fromString($, { allowRounding: !0 });
+		}
+
+		static _fromString($, Q) {
+			let J = !1,
+				Y = !1,
+				q = !1,
+				Z = !1,
+				K = 0,
+				W = 0,
+				F = 0,
+				H = 0,
+				j = 0,
+				X = [0],
+				V = 0,
+				L = 0,
+				U = 0,
+				C = 0,
+				v = new P(0, 0),
+				O = new P(0, 0),
+				M = 0,
+				D = 0;
+
+			if ($.length >= 7000) throw new k("" + $ + " not a valid Decimal128 string");
+
+			let y = $.match(RZ),
+				w = $.match(MZ),
+				h = $.match(UZ);
+
+			if (!y && !w && !h || $.length === 0) throw new k("" + $ + " not a valid Decimal128 string");
+
+			if (y) {
+				let E = y[2], S = y[4], n = y[5], J0 = y[6];
+
+				if (S && J0 === void 0) i0($, "missing exponent power");
+				if (S && E === void 0) i0($, "missing exponent base");
+				if (S === void 0 && (n || J0)) i0($, "missing e before exponent");
+			}
+
+			if ($[D] === "+" || $[D] === "-") (Y = !0, J = $[D++] === "-");
+
+			if (!PY($[D]) && $[D] !== ".") {
+				if ($[D] === "i" || $[D] === "I") return new O0(J ? XY : HY); else if ($[D] === "N") return new O0(lQ);
+			}
+
+			while (PY($[D]) || $[D] === ".") {
+				if ($[D] === ".") {
+					if (q) i0($, "contains multiple periods");
+
+					(q = !0, D = D + 1);
+
+					continue;
+				}
+
+				if (V < jY) {
+					if ($[D] !== "0" || Z) {
+						if (!Z) j = W;
+
+						(Z = !0, X[L++] = parseInt($[D], 10), V = V + 1);
+					}
+				}
+
+				if (Z) F = F + 1;
+				if (q) H = H + 1;
+
+				(W = W + 1, D = D + 1);
+			}
+
+			if (q && !W) throw new k("" + $ + " not a valid Decimal128 string");
+
+			if ($[D] === "e" || $[D] === "E") {
+				let E = $.substr(++D).match(zZ);
+
+				if (!E || !E[2]) return new O0(lQ);
+
+				(C = parseInt(E[0], 10), D = D + E[0].length);
+			}
+
+			if ($[D]) return new O0(lQ);
+			if (!V) (X[0] = 0, F = 1, V = 1, K = 0); else if ((U = V - 1, K = F, K !== 1)) while ($[j + K - 1 + Number(Y) + Number(q)] === "0") K = K - 1;
+			if (C <= H && H > C + 16384) C = O6; else C = C - H;
+
+			while (C > x8) {
+				if ((U = U + 1, U >= jY)) {
+					if (K === 0) {
+						C = x8;
+
+						break;
+					}
+
+					i0($, "overflow");
+				}
+
+				C = C - 1;
+			}
+
+			if (Q.allowRounding) {
+				while (C < O6 || V < F) {
+					if (U === 0 && K < V) {
+						(C = O6, K = 0);
+
+						break;
+					}
+
+					if (V < F) F = F - 1; else U = U - 1;
+
+					if (C < x8) C = C + 1; else {
+						if (X.join("").match(/^0+$/)) {
+							C = x8;
+
+							break;
+						}
+
+						i0($, "overflow");
+					}
+				}
+
+				if (U + 1 < K) {
+					let E = W;
+
+					if (q) (j = j + 1, E = E + 1);
+					if (Y) (j = j + 1, E = E + 1);
+
+					let S = parseInt($[j + U + 1], 10), n = 0;
+
+					if (S >= 5) {
+						if ((n = 1, S === 5)) {
+							n = X[U] % 2 === 1 ? 1 : 0;
+
+							for (let J0 = j + U + 2; J0 < E; J0++) if (parseInt($[J0], 10)) {
+								n = 1;
+
+								break;
+							}
+						}
+					}
+
+					if (n) {
+						let J0 = U;
+
+						for (; J0 >= 0; J0--) if (++X[J0] > 9) {
+							if ((X[J0] = 0, J0 === 0)) if (C < x8) (C = C + 1, X[J0] = 1); else return new O0(J ? XY : HY);
+						} else break;
+					}
+				}
+			} else {
+				while (C < O6 || V < F) {
+					if (U === 0) {
+						if (K === 0) {
+							C = O6;
+
+							break;
+						}
+
+						i0($, "exponent underflow");
+					}
+
+					if (V < F) {
+						if ($[F - 1 + Number(Y) + Number(q)] !== "0" && K !== 0) i0($, "inexact rounding");
+
+						F = F - 1;
+					} else {
+						if (X[U] !== 0) i0($, "inexact rounding");
+
+						U = U - 1;
+					}
+
+					if (C < x8) C = C + 1; else i0($, "overflow");
+				}
+
+				if (U + 1 < K) {
+					if (q) j = j + 1;
+					if (Y) j = j + 1;
+					if (parseInt($[j + U + 1], 10) !== 0) i0($, "inexact rounding");
+				}
+			}
+
+			if ((v = P.fromNumber(0), O = P.fromNumber(0), K === 0)) (v = P.fromNumber(0), O = P.fromNumber(0)); else if (U < 17) {
+				let E = 0;
+
+				(O = P.fromNumber(X[E++]), v = new P(0, 0));
+
+				for (; E <= U; E++) (
+					O = O.multiply(P.fromNumber(10)),
+					O = O.add(P.fromNumber(X[E]))
+				);
+			} else {
+				let E = 0;
+
+				v = P.fromNumber(X[E++]);
+
+				for (; E <= U - 17; E++) (
+					v = v.multiply(P.fromNumber(10)),
+					v = v.add(P.fromNumber(X[E]))
+				);
+
+				O = P.fromNumber(X[E++]);
+
+				for (; E <= U; E++) (
+					O = O.multiply(P.fromNumber(10)),
+					O = O.add(P.fromNumber(X[E]))
+				);
+			}
+
+			let T = CZ(v, P.fromString("100000000000000000"));
+
+			if ((T.low = T.low.add(O), TZ(T.low, O))) T.high = T.high.add(P.fromNumber(1));
+
+			M = C + WY;
+
+			let B = { low: P.fromNumber(0), high: P.fromNumber(0) };
+
+			if (T.high.shiftRightUnsigned(49).and(P.fromNumber(1)).equals(P.fromNumber(1))) (
+				B.high = B.high.or(P.fromNumber(3).shiftLeft(61)),
+				B.high = B.high.or(P.fromNumber(M).and(P.fromNumber(16383).shiftLeft(47))),
+				B.high = B.high.or(T.high.and(P.fromNumber(140737488355327)))
+			); else (
+				B.high = B.high.or(P.fromNumber(M & 16383).shiftLeft(49)),
+				B.high = B.high.or(T.high.and(P.fromNumber(562949953421311)))
+			);
+
+			if ((B.low = T.low, J)) B.high = B.high.or(P.fromString("9223372036854775808"));
+
+			let m = z.allocateUnsafe(16);
+
+			return (
+				D = 0,
+				m[D++] = B.low.low & 255,
+				m[D++] = B.low.low >> 8 & 255,
+				m[D++] = B.low.low >> 16 & 255,
+				m[D++] = B.low.low >> 24 & 255,
+				m[D++] = B.low.high & 255,
+				m[D++] = B.low.high >> 8 & 255,
+				m[D++] = B.low.high >> 16 & 255,
+				m[D++] = B.low.high >> 24 & 255,
+				m[D++] = B.high.low & 255,
+				m[D++] = B.high.low >> 8 & 255,
+				m[D++] = B.high.low >> 16 & 255,
+				m[D++] = B.high.low >> 24 & 255,
+				m[D++] = B.high.high & 255,
+				m[D++] = B.high.high >> 8 & 255,
+				m[D++] = B.high.high >> 16 & 255,
+				m[D++] = B.high.high >> 24 & 255,
+				new O0(m)
+			);
+		}
+
+		toString() {
+			let $, Q = 0, J = new Array(36);
+
+			for (let D = 0; D < J.length; D++) J[D] = 0;
+
+			let Y = 0,
+				q = !1,
+				Z,
+				K = { parts: [0, 0, 0, 0] },
+				W,
+				F,
+				H = [];
+
+			Y = 0;
+
+			let j = this.bytes,
+				X = j[Y++] | j[Y++] << 8 | j[Y++] << 16 | j[Y++] << 24,
+				V = j[Y++] | j[Y++] << 8 | j[Y++] << 16 | j[Y++] << 24,
+				L = j[Y++] | j[Y++] << 8 | j[Y++] << 16 | j[Y++] << 24,
+				U = j[Y++] | j[Y++] << 8 | j[Y++] << 16 | j[Y++] << 24;
+
+			if ((
+				Y = 0,
+				({ low: new P(X, V), high: new P(L, U) }).high.lessThan(P.ZERO)
+			)) H.push("-");
+
+			let v = U >> 26 & LZ;
+
+			if (v >> 3 === 3) if (v === DZ) return H.join("") + "Infinity"; else if (v === kZ) return "NaN"; else ($ = U >> 15 & VY, Z = 8 + (U >> 14 & 1)); else (Z = U >> 14 & 7, $ = U >> 17 & VY);
+
+			let O = $ - WY;
+
+			if ((
+				K.parts[0] = (U & 16383) + ((Z & 15) << 14),
+				K.parts[1] = L,
+				K.parts[2] = V,
+				K.parts[3] = X,
+				K.parts[0] === 0 && K.parts[1] === 0 && K.parts[2] === 0 && K.parts[3] === 0
+			)) q = !0; else for (F = 3; F >= 0; F--) {
+				let D = 0, y = AZ(K);
+
+				if ((K = y.quotient, D = y.rem.low, !D)) continue;
+
+				for (W = 8; W >= 0; W--) (J[F * 9 + W] = D % 10, D = Math.floor(D / 10));
+			}
+
+			if (q) (Q = 1, J[Y] = 0); else {
+				Q = 36;
+
+				while (!J[Y]) (Q = Q - 1, Y = Y + 1);
+			}
+
+			let M = Q - 1 + O;
+
+			if (M >= 34 || M <= -7 || O > 0) {
+				if (Q > 34) {
+					if ((H.push("0"), O > 0)) H.push(`E+${O}`); else if (O < 0) H.push(`E${O}`);
+
+					return H.join("");
+				}
+
+				if ((H.push(`${J[Y++]}`), Q = Q - 1, Q)) H.push(".");
+
+				for (let D = 0; D < Q; D++) H.push(`${J[Y++]}`);
+
+				if ((H.push("E"), M > 0)) H.push(`+${M}`); else H.push(`${M}`);
+			} else if (O >= 0) for (let D = 0; D < Q; D++) H.push(`${J[Y++]}`); else {
+				let D = Q + O;
+
+				if (D > 0) for (let y = 0; y < D; y++) H.push(`${J[Y++]}`); else H.push("0");
+
+				H.push(".");
+
+				while (D++ < 0) H.push("0");
+
+				for (let y = 0; y < Q - Math.max(D - 1, 0); y++) H.push(`${J[Y++]}`);
+			}
+
+			return H.join("");
+		}
+
+		toJSON() {
+			return { $numberDecimal: this.toString() };
+		}
+
+		toExtendedJSON() {
+			return { $numberDecimal: this.toString() };
+		}
+
+		static fromExtendedJSON($) {
+			return O0.fromString($.$numberDecimal);
+		}
+
+		inspect($, Q, J) {
+			return (J ??= c0, `new Decimal128(${J(this.toString(), Q)})`);
+		}
+	}
+
+	class e0 extends v0 {
+		get _bsontype() {
+			return "Double";
+		}
+
+		value;
+
+		constructor($) {
+			super();
+
+			if ($ instanceof Number) $ = $.valueOf();
+
+			this.value = +$;
+		}
+
+		static fromString($) {
+			let Q = Number($);
+
+			if ($ === "NaN") return new e0(NaN);
+			if ($ === "Infinity") return new e0(1 / 0);
+			if ($ === "-Infinity") return new e0(-1 / 0);
+			if (!Number.isFinite(Q)) throw new k(`Input: ${$} is not representable as a Double`);
+			if ($.trim() !== $) throw new k(`Input: '${$}' contains whitespace`);
+			if ($ === "") throw new k("Input is an empty string");
+			if ((/[^-0-9.+eE]/).test($)) throw new k(`Input: '${$}' is not in decimal or exponential notation`);
+
+			return new e0(Q);
+		}
+
+		valueOf() {
+			return this.value;
+		}
+
+		toJSON() {
+			return this.value;
+		}
+
+		toString($) {
+			return this.value.toString($);
+		}
+
+		toExtendedJSON($) {
+			if ($ && ($.legacy || $.relaxed && isFinite(this.value))) return this.value;
+			if (Object.is(Math.sign(this.value), -0)) return { $numberDouble: "-0.0" };
+
+			return {
+				$numberDouble: Number.isInteger(this.value) ? this.value.toFixed(1) : this.value.toString()
+			};
+		}
+
+		static fromExtendedJSON($, Q) {
+			let J = parseFloat($.$numberDouble);
+
+			return Q && Q.relaxed ? J : new e0(J);
+		}
+
+		inspect($, Q, J) {
+			return (J ??= c0, `new Double(${J(this.value, Q)})`);
+		}
+	}
+
+	class u$ extends v0 {
+		get _bsontype() {
+			return "Int32";
+		}
+
+		value;
+
+		constructor($) {
+			super();
+
+			if ($ instanceof Number) $ = $.valueOf();
+
+			this.value = +$ | 0;
+		}
+
+		static fromString($) {
+			let Q = vY($), J = Number($);
+
+			if (y6 < J) throw new k(`Input: '${$}' is larger than the maximum value for Int32`); else if (v6 > J) throw new k(`Input: '${$}' is smaller than the minimum value for Int32`); else if (!Number.isSafeInteger(J)) throw new k(`Input: '${$}' is not a safe integer`); else if (J.toString() !== Q) throw new k(`Input: '${$}' is not a valid Int32 string`);
+
+			return new u$(J);
+		}
+
+		valueOf() {
+			return this.value;
+		}
+
+		toString($) {
+			return this.value.toString($);
+		}
+
+		toJSON() {
+			return this.value;
+		}
+
+		toExtendedJSON($) {
+			if ($ && ($.relaxed || $.legacy)) return this.value;
+
+			return { $numberInt: this.value.toString() };
+		}
+
+		static fromExtendedJSON($, Q) {
+			return Q && Q.relaxed ? parseInt($.$numberInt, 10) : new u$($.$numberInt);
+		}
+
+		inspect($, Q, J) {
+			return (J ??= c0, `new Int32(${J(this.value, Q)})`);
+		}
+	}
+
+	class d8 extends v0 {
+		get _bsontype() {
+			return "MaxKey";
+		}
+
+		toExtendedJSON() {
+			return { $maxKey: 1 };
+		}
+
+		static fromExtendedJSON() {
+			return new d8();
+		}
+
+		inspect() {
+			return "new MaxKey()";
+		}
+	}
+
+	class o8 extends v0 {
+		get _bsontype() {
+			return "MinKey";
+		}
+
+		toExtendedJSON() {
+			return { $minKey: 1 };
+		}
+
+		static fromExtendedJSON() {
+			return new o8();
+		}
+
+		inspect() {
+			return "new MinKey()";
+		}
+	}
+
+	var H8 = null, S6 = new WeakMap();
+
+	class j0 extends v0 {
+		get _bsontype() {
+			return "ObjectId";
+		}
+
+		static index = Math.floor(Math.random() * 16777215);
+		static cacheHexString;
+		buffer;
+
+		constructor($) {
+			super();
+
+			let Q;
+
+			if (typeof $ === "object" && $ && "id" in $) {
+				if (typeof $.id !== "string" && !ArrayBuffer.isView($.id)) throw new k("Argument passed in must have an id that is of type string or Buffer");
+				if ("toHexString" in $ && typeof $.toHexString === "function") Q = z.fromHex($.toHexString()); else Q = $.id;
+			} else Q = $;
+
+			if (Q == null) this.buffer = j0.generate(); else if (ArrayBuffer.isView(Q) && Q.byteLength === 12) this.buffer = z.toLocalBufferType(Q); else if (typeof Q === "string") if (j0.validateHexString(Q)) {
+				if ((this.buffer = z.fromHex(Q), j0.cacheHexString)) S6.set(this, Q);
+			} else throw new k("input must be a 24 character hex string, 12 byte Uint8Array, or an integer"); else throw new k("Argument passed in does not match the accepted types");
+		}
+
+		get id() {
+			return this.buffer;
+		}
+
+		set id($) {
+			if ((this.buffer = $, j0.cacheHexString)) S6.set(this, z.toHex($));
+		}
+
+		static validateHexString($) {
+			if ($?.length !== 24) return !1;
+
+			for (let Q = 0; Q < 24; Q++) {
+				let J = $.charCodeAt(Q);
+
+				if (J >= 48 && J <= 57 || J >= 97 && J <= 102 || J >= 65 && J <= 70) continue;
+
+				return !1;
+			}
+
+			return !0;
+		}
+
+		toHexString() {
+			if (j0.cacheHexString) {
+				let Q = S6.get(this);
+
+				if (Q) return Q;
+			}
+
+			let $ = z.toHex(this.id);
+
+			if (j0.cacheHexString) S6.set(this, $);
+
+			return $;
+		}
+
+		static getInc() {
+			return j0.index = (j0.index + 1) % 16777215;
+		}
+
+		static generate($) {
+			if (typeof $ !== "number") $ = Math.floor(Date.now() / 1000);
+
+			let Q = j0.getInc(), J = z.allocateUnsafe(12);
+
+			if ((f.setInt32BE(J, 0, $), H8 === null)) H8 = z.randomBytes(5);
+
+			return (
+				J[4] = H8[0],
+				J[5] = H8[1],
+				J[6] = H8[2],
+				J[7] = H8[3],
+				J[8] = H8[4],
+				J[11] = Q & 255,
+				J[10] = Q >> 8 & 255,
+				J[9] = Q >> 16 & 255,
+				J
+			);
+		}
+
+		toString($) {
+			if ($ === "base64") return z.toBase64(this.id);
+			if ($ === "hex") return this.toHexString();
+
+			return this.toHexString();
+		}
+
+		toJSON() {
+			return this.toHexString();
+		}
+
+		static is($) {
+			return $ != null && typeof $ === "object" && "_bsontype" in $ && $._bsontype === "ObjectId";
+		}
+
+		equals($) {
+			if ($ === void 0 || $ === null) return !1;
+			if (j0.is($)) return this.buffer[11] === $.buffer[11] && z.equals(this.buffer, $.buffer);
+			if (typeof $ === "string") return $.toLowerCase() === this.toHexString();
+
+			if (typeof $ === "object" && typeof $.toHexString === "function") {
+				let Q = $.toHexString(), J = this.toHexString();
+
+				return typeof Q === "string" && Q.toLowerCase() === J;
+			}
+
+			return !1;
+		}
+
+		getTimestamp() {
+			let $ = new Date(),
+				Q = f.getUint32BE(this.buffer, 0);
+
+			return ($.setTime(Math.floor(Q) * 1000), $);
+		}
+
+		static createPk() {
+			return new j0();
+		}
+
+		serializeInto($, Q) {
+			return (
+				$[Q] = this.buffer[0],
+				$[Q + 1] = this.buffer[1],
+				$[Q + 2] = this.buffer[2],
+				$[Q + 3] = this.buffer[3],
+				$[Q + 4] = this.buffer[4],
+				$[Q + 5] = this.buffer[5],
+				$[Q + 6] = this.buffer[6],
+				$[Q + 7] = this.buffer[7],
+				$[Q + 8] = this.buffer[8],
+				$[Q + 9] = this.buffer[9],
+				$[Q + 10] = this.buffer[10],
+				$[Q + 11] = this.buffer[11],
+				12
+			);
+		}
+
+		static createFromTime($) {
+			let Q = z.allocate(12);
+
+			for (let J = 11; J >= 4; J--) Q[J] = 0;
+
+			return (f.setInt32BE(Q, 0, $), new j0(Q));
+		}
+
+		static createFromHexString($) {
+			if ($?.length !== 24) throw new k("hex string must be 24 characters");
+
+			return new j0(z.fromHex($));
+		}
+
+		static createFromBase64($) {
+			if ($?.length !== 16) throw new k("base64 string must be 16 characters");
+
+			return new j0(z.fromBase64($));
+		}
+
+		static isValid($) {
+			if ($ == null) return !1;
+			if (typeof $ === "string") return j0.validateHexString($);
+
+			try {
+				return (new j0($), !0);
+			} catch {
+				return !1;
+			}
+		}
+
+		toExtendedJSON() {
+			if (this.toHexString) return { $oid: this.toHexString() };
+
+			return { $oid: this.toString("hex") };
+		}
+
+		static fromExtendedJSON($) {
+			return new j0($.$oid);
+		}
+
+		isCached() {
+			return j0.cacheHexString && S6.has(this);
+		}
+
+		inspect($, Q, J) {
+			return (J ??= c0, `new ObjectId(${J(this.toHexString(), Q)})`);
+		}
+	}
+
+	function F5($, Q, J) {
+		let Y = 5;
+
+		if (Array.isArray($)) for (let q = 0; q < $.length; q++) Y += RY(q.toString(), $[q], Q, !0, J); else {
+			if (typeof $?.toBSON === "function") $ = $.toBSON();
+
+			for (let q of Object.keys($)) Y += RY(q, $[q], Q, !1, J);
+		}
+
+		return Y;
+	}
+
+	function RY($, Q, J = !1, Y = !1, q = !1) {
+		if (typeof Q?.toBSON === "function") Q = Q.toBSON();
+
+		switch (typeof Q) {
+			case "string":
+				return 1 + z.utf8ByteLength($) + 1 + 4 + z.utf8ByteLength(Q) + 1;
+
+			case "number":
+				if (Math.floor(Q) === Q && Q >= kY && Q <= DY) if (Q >= v6 && Q <= y6) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 5; else return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 9; else return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 9;
+
+			case "undefined":
+				if (Y || !q) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1;
+				return 0;
+
+			case "boolean":
+				return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 2;
+
+			case "object":
+				if (Q != null && typeof Q._bsontype === "string" && Q[u8] !== P8) throw new R8(); else if (Q == null || Q._bsontype === "MinKey" || Q._bsontype === "MaxKey") return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1; else if (Q._bsontype === "ObjectId") return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 13; else if (Q instanceof Date || b8(Q)) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 9; else if (ArrayBuffer.isView(Q) || Q instanceof ArrayBuffer || H4(Q)) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 6 + Q.byteLength; else if (Q._bsontype === "Long" || Q._bsontype === "Double" || Q._bsontype === "Timestamp") return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 9; else if (Q._bsontype === "Decimal128") return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 17; else if (Q._bsontype === "Code") if (Q.scope != null && Object.keys(Q.scope).length > 0) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1 + 4 + 4 + z.utf8ByteLength(Q.code.toString()) + 1 + F5(Q.scope, J, q); else return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1 + 4 + z.utf8ByteLength(Q.code.toString()) + 1; else if (Q._bsontype === "Binary") {
+					let Z = Q;
+
+					if (Z.sub_type === o.SUBTYPE_BYTE_ARRAY) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + (Z.position + 1 + 4 + 1 + 4); else return ($ != null ? z.utf8ByteLength($) + 1 : 0) + (Z.position + 1 + 4 + 1);
+				} else if (Q._bsontype === "Symbol") return ($ != null ? z.utf8ByteLength($) + 1 : 0) + z.utf8ByteLength(Q.value) + 4 + 1 + 1; else if (Q._bsontype === "DBRef") {
+					let Z = Object.assign({ $ref: Q.collection, $id: Q.oid }, Q.fields);
+
+					if (Q.db != null) Z.$db = Q.db;
+
+					return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1 + F5(Z, J, q);
+				} else if (Q instanceof RegExp || c8(Q)) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1 + z.utf8ByteLength(Q.source) + 1 + (Q.global ? 1 : 0) + (Q.ignoreCase ? 1 : 0) + (Q.multiline ? 1 : 0) + 1; else if (Q._bsontype === "BSONRegExp") return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1 + z.utf8ByteLength(Q.pattern) + 1 + z.utf8ByteLength(Q.options) + 1; else return ($ != null ? z.utf8ByteLength($) + 1 : 0) + F5(Q, J, q) + 1;
+
+			case "function":
+				if (J) return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 1 + 4 + z.utf8ByteLength(Q.toString()) + 1;
+				return 0;
+
+			case "bigint":
+				return ($ != null ? z.utf8ByteLength($) + 1 : 0) + 9;
+
+			case "symbol":
+				return 0;
+
+			default:
+				throw new k(`Unrecognized JS type: ${typeof Q}`);
+		}
+	}
+
+	function EZ($) {
+		return $.split("").sort().join("");
+	}
+
+	class $$ extends v0 {
+		get _bsontype() {
+			return "BSONRegExp";
+		}
+
+		pattern;
+		options;
+
+		constructor($, Q) {
+			super();
+
+			if ((
+				this.pattern = $,
+				this.options = EZ(Q ?? ""),
+				this.pattern.indexOf("\x00") !== -1
+			)) throw new k(`BSON Regex patterns cannot contain null bytes, found: ${JSON.stringify(this.pattern)}`);
+
+			if (this.options.indexOf("\x00") !== -1) throw new k(`BSON Regex options cannot contain null bytes, found: ${JSON.stringify(this.options)}`);
+
+			for (let J = 0; J < this.options.length; J++) if (!(this.options[J] === "i" || this.options[J] === "m" || this.options[J] === "x" || this.options[J] === "l" || this.options[J] === "s" || this.options[J] === "u")) throw new k(`The regular expression option [${this.options[J]}] is not supported`);
+		}
+
+		static parseOptions($) {
+			return $ ? $.split("").sort().join("") : "";
+		}
+
+		toExtendedJSON($) {
+			if (($ = $ || {}, $.legacy)) return { $regex: this.pattern, $options: this.options };
+
+			return {
+				$regularExpression: { pattern: this.pattern, options: this.options }
+			};
+		}
+
+		static fromExtendedJSON($) {
+			if ("$regex" in $) if (typeof $.$regex !== "string") {
+				if ($.$regex._bsontype === "BSONRegExp") return $;
+			} else return new $$($.$regex, $$.parseOptions($.$options));
+
+			if ("$regularExpression" in $) return new $$($.$regularExpression.pattern, $$.parseOptions($.$regularExpression.options));
+
+			throw new k(`Unexpected BSONRegExp EJSON object form: ${JSON.stringify($)}`);
+		}
+
+		inspect($, Q, J) {
+			let Y = sq(Q) ?? ((K) => K);
+
+			J ??= c0;
+
+			let q = Y(J(this.pattern), "regexp"),
+				Z = Y(J(this.options), "regexp");
+
+			return `new BSONRegExp(${q}, ${Z})`;
+		}
+	}
+
+	class n8 extends v0 {
+		get _bsontype() {
+			return "BSONSymbol";
+		}
+
+		value;
+
+		constructor($) {
+			super();
+			this.value = $;
+		}
+
+		valueOf() {
+			return this.value;
+		}
+
+		toString() {
+			return this.value;
+		}
+
+		toJSON() {
+			return this.value;
+		}
+
+		toExtendedJSON() {
+			return { $symbol: this.value };
+		}
+
+		static fromExtendedJSON($) {
+			return new n8($.$symbol);
+		}
+
+		inspect($, Q, J) {
+			return (J ??= c0, `new BSONSymbol(${J(this.value, Q)})`);
+		}
+	}
+
+	var IZ = P;
+
+	class W$ extends IZ {
+		get _bsontype() {
+			return "Timestamp";
+		}
+
+		get [k4]() {
+			return "Timestamp";
+		}
+
+		static MAX_VALUE = P.MAX_UNSIGNED_VALUE;
+
+		get i() {
+			return this.low >>> 0;
+		}
+
+		get t() {
+			return this.high >>> 0;
+		}
+
+		constructor($) {
+			if ($ == null) super(0, 0, !0); else if (typeof $ === "bigint") super($, !0); else if (P.isLong($)) super($.low, $.high, !0); else if (typeof $ === "object" && "t" in $ && "i" in $) {
+				if (typeof $.t !== "number" && (typeof $.t !== "object" || $.t._bsontype !== "Int32")) throw new k("Timestamp constructed from { t, i } must provide t as a number");
+				if (typeof $.i !== "number" && (typeof $.i !== "object" || $.i._bsontype !== "Int32")) throw new k("Timestamp constructed from { t, i } must provide i as a number");
+
+				let Q = Number($.t), J = Number($.i);
+
+				if (Q < 0 || Number.isNaN(Q)) throw new k("Timestamp constructed from { t, i } must provide a positive t");
+				if (J < 0 || Number.isNaN(J)) throw new k("Timestamp constructed from { t, i } must provide a positive i");
+				if (Q > 4294967295) throw new k("Timestamp constructed from { t, i } must provide t equal or less than uint32 max");
+				if (J > 4294967295) throw new k("Timestamp constructed from { t, i } must provide i equal or less than uint32 max");
+
+				super(J, Q, !0);
+			} else throw new k("A Timestamp can only be constructed with: bigint, Long, or { t: number; i: number }");
+		}
+
+		toJSON() {
+			return { $timestamp: this.toString() };
+		}
+
+		static fromInt($) {
+			return new W$(P.fromInt($, !0));
+		}
+
+		static fromNumber($) {
+			return new W$(P.fromNumber($, !0));
+		}
+
+		static fromBits($, Q) {
+			return new W$({ i: $, t: Q });
+		}
+
+		static fromString($, Q) {
+			return new W$(P.fromString($, !0, Q));
+		}
+
+		toExtendedJSON() {
+			return { $timestamp: { t: this.t, i: this.i } };
+		}
+
+		static fromExtendedJSON($) {
+			let Q = P.isLong($.$timestamp.i) ? $.$timestamp.i.getLowBitsUnsigned() : $.$timestamp.i,
+				J = P.isLong($.$timestamp.t) ? $.$timestamp.t.getLowBitsUnsigned() : $.$timestamp.t;
+
+			return new W$({ t: J, i: Q });
+		}
+
+		inspect($, Q, J) {
+			J ??= c0;
+
+			let Y = J(this.t, Q), q = J(this.i, Q);
+
+			return `new Timestamp({ t: ${Y}, i: ${q} })`;
+		}
+	}
+
+	var wZ = P.fromNumber(DY), hZ = P.fromNumber(kY);
+
+	function xY($, Q, J) {
+		Q = Q == null ? {} : Q;
+
+		let Y = Q && Q.index ? Q.index : 0,
+			q = f.getInt32LE($, Y);
+
+		if (q < 5) throw new k(`bson size must be >= 5, is ${q}`);
+		if (Q.allowObjectSmallerThanBufferSize && $.length < q) throw new k(`buffer length ${$.length} must be >= bson size ${q}`);
+		if (!Q.allowObjectSmallerThanBufferSize && $.length !== q) throw new k(`buffer length ${$.length} must === bson size ${q}`);
+		if (q + Y > $.byteLength) throw new k(`(bson size ${q} + options.index ${Y} must be <= buffer length ${$.byteLength})`);
+		if ($[Y + q - 1] !== 0) throw new k("One object, sized correctly, with a spot for an EOO, but the EOO isn't 0x00");
+
+		return W5($, Y, Q, J);
+	}
+
+	var NZ = /^\$ref$|^\$id$|^\$db$/;
+
+	function W5($, Q, J, Y = !1) {
+		let q = J.fieldsAsRaw == null ? null : J.fieldsAsRaw,
+			Z = J.raw == null ? !1 : J.raw,
+			K = typeof J.bsonRegExp === "boolean" ? J.bsonRegExp : !1,
+			W = J.promoteBuffers ?? !1,
+			F = J.promoteLongs ?? !0,
+			H = J.promoteValues ?? !0,
+			j = J.useBigInt64 ?? !1;
+
+		if (j && !H) throw new k("Must either request bigint or Long for int64 deserialization");
+		if (j && !F) throw new k("Must either request bigint or Long for int64 deserialization");
+
+		let X = J.validation == null ? { utf8: !0 } : J.validation,
+			V = !0,
+			L,
+			U,
+			C = X.utf8;
+
+		if (typeof C === "boolean") L = C; else {
+			V = !1;
+
+			let w = Object.keys(C).map(function (h) {
+				return C[h];
+			});
+
+			if (w.length === 0) throw new k("UTF-8 validation setting cannot be empty");
+			if (typeof w[0] !== "boolean") throw new k("Invalid UTF-8 validation option, must specify boolean values");
+			if ((L = w[0], !w.every((h) => h === L))) throw new k("Invalid UTF-8 validation option - keys must be all true or all false");
+		}
+
+		if (!V) {
+			U = new Set();
+
+			for (let w of Object.keys(C)) U.add(w);
+		}
+
+		let v = Q;
+
+		if ($.length < 5) throw new k("corrupt bson message < 5 bytes long");
+
+		let O = f.getInt32LE($, Q);
+
+		if ((Q += 4, O < 5 || O > $.length)) throw new k("corrupt bson message");
+
+		let M = Y ? [] : {}, D = 0, y = Y ? !1 : null;
+
+		while (!0) {
+			let w = $[Q++];
+
+			if (w === 0) break;
+
+			let h = Q;
+
+			while ($[h] !== 0 && h < $.length) h++;
+
+			if (h >= $.byteLength) throw new k("Bad BSON Document: illegal CString");
+
+			let T = Y ? D++ : z.toUTF8($, Q, h, !1), B = !0;
+
+			if (V || U?.has(T)) B = L; else B = !L;
+			if (y !== !1 && T[0] === "$") y = NZ.test(T);
+
+			let m;
+
+			if ((Q = h + 1, w === AY)) {
+				let E = f.getInt32LE($, Q);
+
+				if ((Q += 4, E <= 0 || E > $.length - Q || $[Q + E - 1] !== 0)) throw new k("bad string length in bson");
+
+				(m = z.toUTF8($, Q, Q + E - 1, B), Q = Q + E);
+			} else if (w === TY) {
+				let E = z.allocateUnsafe(12);
+
+				for (let S = 0; S < 12; S++) E[S] = $[Q + S];
+
+				(m = new j0(E), Q = Q + 12);
+			} else if (w === _6 && H === !1) (m = new u$(f.getInt32LE($, Q)), Q += 4); else if (w === _6) (m = f.getInt32LE($, Q), Q += 4); else if (w === P4) {
+				if ((m = f.getFloat64LE($, Q), Q += 8, H === !1)) m = new e0(m);
+			} else if (w === IY) {
+				let E = f.getInt32LE($, Q),
+					S = f.getInt32LE($, Q + 4);
+
+				(Q += 8, m = new Date(new P(E, S).toNumber()));
+			} else if (w === EY) {
+				if ($[Q] !== 0 && $[Q] !== 1) throw new k("illegal boolean type value");
+
+				m = $[Q++] === 1;
+			} else if (w === R4) {
+				let E = Q, S = f.getInt32LE($, Q);
+
+				if (S <= 0 || S > $.length - Q) throw new k("bad embedded document length in bson");
+
+				if (Z) m = $.subarray(Q, Q + S); else {
+					let n = J;
+
+					if (!V) n = { ...J, validation: { utf8: B } };
+
+					m = W5($, E, n, !1);
+				}
+
+				Q = Q + S;
+			} else if (w === CY) {
+				let E = Q,
+					S = f.getInt32LE($, Q),
+					n = J,
+					J0 = Q + S;
+
+				if (q && q[T]) n = { ...J, raw: !0 };
+				if (!V) n = { ...n, validation: { utf8: B } };
+				if ((m = W5($, E, n, !0), Q = Q + S, $[Q - 1] !== 0)) throw new k("invalid array terminator byte");
+				if (Q !== J0) throw new k("corrupted array bson");
+			} else if (w === rq) m = void 0; else if (w === U4) m = null; else if (w === L4) if (j) (m = f.getBigInt64LE($, Q), Q += 8); else {
+				let E = f.getInt32LE($, Q),
+					S = f.getInt32LE($, Q + 4);
+
+				Q += 8;
+
+				let n = new P(E, S);
+
+				if (F && H === !0) m = n.lessThanOrEqual(wZ) && n.greaterThanOrEqual(hZ) ? n.toNumber() : n; else m = n;
+			} else if (w === mY) {
+				let E = z.allocateUnsafe(16);
+
+				for (let S = 0; S < 16; S++) E[S] = $[Q + S];
+
+				(Q = Q + 16, m = new O0(E));
+			} else if (w === M4) {
+				let E = f.getInt32LE($, Q);
+
+				Q += 4;
+
+				let S = E, n = $[Q++];
+
+				if (E < 0) throw new k("Negative binary type element size found");
+				if (E > $.byteLength) throw new k("Binary type size larger than document size");
+
+				if (n === o.SUBTYPE_BYTE_ARRAY) {
+					if ((E = f.getInt32LE($, Q), Q += 4, E < 0)) throw new k("Negative binary type element size found for subtype 0x02");
+					if (E > S - 4) throw new k("Binary type with subtype 0x02 contains too long binary size");
+					if (E < S - 4) throw new k("Binary type with subtype 0x02 contains too short binary size");
+				}
+
+				if (W && H) m = z.toLocalBufferType($.subarray(Q, Q + E)); else if ((
+					m = new o($.subarray(Q, Q + E), n),
+					n === D4 && w0.isValid(m)
+				)) m = m.toUUID();
+
+				Q = Q + E;
+			} else if (w === j5 && K === !1) {
+				h = Q;
+
+				while ($[h] !== 0 && h < $.length) h++;
+
+				if (h >= $.length) throw new k("Bad BSON Document: illegal CString");
+
+				let E = z.toUTF8($, Q, h, !1);
+
+				(Q = h + 1, h = Q);
+
+				while ($[h] !== 0 && h < $.length) h++;
+
+				if (h >= $.length) throw new k("Bad BSON Document: illegal CString");
+
+				let S = z.toUTF8($, Q, h, !1);
+
+				Q = h + 1;
+
+				let n = new Array(S.length);
+
+				for (h = 0; h < S.length; h++) switch (S[h]) {
+					case "m":
+						n[h] = "m";
+						break;
+
+					case "s":
+						n[h] = "g";
+						break;
+
+					case "i":
+						n[h] = "i";
+						break;
+				}
+
+				m = new RegExp(E, n.join(""));
+			} else if (w === j5 && K === !0) {
+				h = Q;
+
+				while ($[h] !== 0 && h < $.length) h++;
+
+				if (h >= $.length) throw new k("Bad BSON Document: illegal CString");
+
+				let E = z.toUTF8($, Q, h, !1);
+
+				(Q = h + 1, h = Q);
+
+				while ($[h] !== 0 && h < $.length) h++;
+
+				if (h >= $.length) throw new k("Bad BSON Document: illegal CString");
+
+				let S = z.toUTF8($, Q, h, !1);
+
+				(Q = h + 1, m = new $$(E, S));
+			} else if (w === wY) {
+				let E = f.getInt32LE($, Q);
+
+				if ((Q += 4, E <= 0 || E > $.length - Q || $[Q + E - 1] !== 0)) throw new k("bad string length in bson");
+
+				let S = z.toUTF8($, Q, Q + E - 1, B);
+
+				(m = H ? S : new n8(S), Q = Q + E);
+			} else if (w === NY) (
+				m = new W$({ i: f.getUint32LE($, Q), t: f.getUint32LE($, Q + 4) }),
+				Q += 8
+			); else if (w === BY) m = new o8(); else if (w === OY) m = new d8(); else if (w === z4) {
+				let E = f.getInt32LE($, Q);
+
+				if ((Q += 4, E <= 0 || E > $.length - Q || $[Q + E - 1] !== 0)) throw new k("bad string length in bson");
+
+				let S = z.toUTF8($, Q, Q + E - 1, B);
+
+				(m = new l$(S), Q = Q + E);
+			} else if (w === hY) {
+				let E = f.getInt32LE($, Q);
+
+				if ((Q += 4, E < 13)) throw new k("code_w_scope total size shorter minimum expected length");
+
+				let S = f.getInt32LE($, Q);
+
+				if ((Q += 4, S <= 0 || S > $.length - Q || $[Q + S - 1] !== 0)) throw new k("bad string length in bson");
+
+				let n = z.toUTF8($, Q, Q + S - 1, B);
+
+				Q = Q + S;
+
+				let J0 = Q,
+					l = f.getInt32LE($, Q),
+					Q0 = W5($, J0, J, !1);
+
+				if ((Q = Q + l, E < 8 + l + S)) throw new k("code_w_scope total size is too short, truncating scope");
+				if (E > 8 + l + S) throw new k("code_w_scope total size is too long, clips outer document");
+
+				m = new l$(n, Q0);
+			} else if (w === iq) {
+				let E = f.getInt32LE($, Q);
+
+				if ((Q += 4, E <= 0 || E > $.length - Q || $[Q + E - 1] !== 0)) throw new k("bad string length in bson");
+
+				let S = z.toUTF8($, Q, Q + E - 1, B);
+
+				Q = Q + E;
+
+				let n = z.allocateUnsafe(12);
+
+				for (let l = 0; l < 12; l++) n[l] = $[Q + l];
+
+				let J0 = new j0(n);
+
+				(Q = Q + 12, m = new T$(S, J0));
+			} else throw new k(`Detected unknown BSON type ${w.toString(16)} for fieldname "${T}"`);
+
+			if (T === "__proto__") Object.defineProperty(M, T, { value: m, writable: !0, enumerable: !0, configurable: !0 }); else M[T] = m;
+		}
+
+		if (O !== Q - v) {
+			if (Y) throw new k("corrupt array bson");
+
+			throw new k("corrupt object bson");
+		}
+
+		if (!y) return M;
+
+		if (yY(M)) {
+			let w = Object.assign({}, M);
+
+			return (
+				delete w.$ref,
+				delete w.$id,
+				delete w.$db,
+				new T$(M.$ref, M.$id, M.$db, w)
+			);
+		}
+
+		return M;
+	}
+
+	var H5 = /\x00/,
+		MY = new Set(["$db", "$ref", "$id", "$clusterTime"]);
+
+	function uQ($, Q, J, Y) {
+		$[Y++] = AY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q + 1, $[Y - 1] = 0);
+
+		let Z = z.encodeUTF8Into($, J, Y + 4);
+
+		return (f.setInt32LE($, Y, Z + 1), Y = Y + 4 + Z, $[Y++] = 0, Y);
+	}
+
+	function dQ($, Q, J, Y) {
+		let Z = !Object.is(J, -0) && Number.isSafeInteger(J) && J <= y6 && J >= v6 ? _6 : P4;
+
+		$[Y++] = Z;
+
+		let K = z.encodeUTF8Into($, Q, Y);
+
+		if ((Y = Y + K, $[Y++] = 0, Z === _6)) Y += f.setInt32LE($, Y, J); else Y += f.setFloat64LE($, Y, J);
+
+		return Y;
+	}
+
+	function oQ($, Q, J, Y) {
+		$[Y++] = L4;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y += q, $[Y++] = 0, Y += f.setBigInt64LE($, Y, J), Y);
+	}
+
+	function p8($, Q, J, Y) {
+		$[Y++] = U4;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y = Y + q, $[Y++] = 0, Y);
+	}
+
+	function nQ($, Q, J, Y) {
+		$[Y++] = EY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y = Y + q, $[Y++] = 0, $[Y++] = J ? 1 : 0, Y);
+	}
+
+	function tQ($, Q, J, Y) {
+		$[Y++] = IY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		let Z = P.fromNumber(J.getTime()),
+			K = Z.getLowBits(),
+			W = Z.getHighBits();
+
+		return (Y += f.setInt32LE($, Y, K), Y += f.setInt32LE($, Y, W), Y);
+	}
+
+	function aQ($, Q, J, Y) {
+		$[Y++] = j5;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		if ((
+			Y = Y + q,
+			$[Y++] = 0,
+			J.source && J.source.match(H5) != null
+		)) throw new k("value " + J.source + " must not contain null bytes");
+
+		if ((
+			Y = Y + z.encodeUTF8Into($, J.source, Y),
+			$[Y++] = 0,
+			J.ignoreCase
+		)) $[Y++] = 105;
+
+		if (J.global) $[Y++] = 115;
+		if (J.multiline) $[Y++] = 109;
+
+		return ($[Y++] = 0, Y);
+	}
+
+	function sQ($, Q, J, Y) {
+		$[Y++] = j5;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		if ((Y = Y + q, $[Y++] = 0, J.pattern.match(H5) != null)) throw new k("pattern " + J.pattern + " must not contain null bytes");
+
+		(Y = Y + z.encodeUTF8Into($, J.pattern, Y), $[Y++] = 0);
+
+		let Z = J.options.split("").sort().join("");
+
+		return (Y = Y + z.encodeUTF8Into($, Z, Y), $[Y++] = 0, Y);
+	}
+
+	function rQ($, Q, J, Y) {
+		if (J === null) $[Y++] = U4; else if (J._bsontype === "MinKey") $[Y++] = BY; else $[Y++] = OY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y = Y + q, $[Y++] = 0, Y);
+	}
+
+	function iQ($, Q, J, Y) {
+		$[Y++] = TY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y = Y + q, $[Y++] = 0, Y += J.serializeInto($, Y), Y);
+	}
+
+	function eQ($, Q, J, Y) {
+		$[Y++] = M4;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		let Z = J.length;
+
+		if ((Y += f.setInt32LE($, Y, Z), $[Y++] = eq, Z <= 16)) for (let K = 0; K < Z; K++) $[Y + K] = J[K]; else $.set(J, Y);
+
+		return (Y = Y + Z, Y);
+	}
+
+	function $4($, Q, J, Y, q, Z, K, W, F) {
+		if (F.has(J)) throw new k("Cannot convert circular structure to BSON");
+
+		(F.add(J), $[Y++] = Array.isArray(J) ? CY : R4);
+
+		let H = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + H, $[Y++] = 0);
+
+		let j = g6($, J, q, Y, Z + 1, K, W, F);
+
+		return (F.delete(J), j);
+	}
+
+	function Q4($, Q, J, Y) {
+		$[Y++] = mY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		for (let Z = 0; Z < 16; Z++) $[Y + Z] = J.bytes[Z];
+
+		return Y + 16;
+	}
+
+	function J4($, Q, J, Y) {
+		$[Y++] = J._bsontype === "Long" ? L4 : NY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		let Z = J.getLowBits(), K = J.getHighBits();
+
+		return (Y += f.setInt32LE($, Y, Z), Y += f.setInt32LE($, Y, K), Y);
+	}
+
+	function Y4($, Q, J, Y) {
+		(J = J.valueOf(), $[Y++] = _6);
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y = Y + q, $[Y++] = 0, Y += f.setInt32LE($, Y, J), Y);
+	}
+
+	function G4($, Q, J, Y) {
+		$[Y++] = P4;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		return (Y = Y + q, $[Y++] = 0, Y += f.setFloat64LE($, Y, J.value), Y);
+	}
+
+	function q4($, Q, J, Y) {
+		$[Y++] = z4;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		let Z = J.toString(),
+			K = z.encodeUTF8Into($, Z, Y + 4) + 1;
+
+		return (f.setInt32LE($, Y, K), Y = Y + 4 + K - 1, $[Y++] = 0, Y);
+	}
+
+	function Z4($, Q, J, Y, q = !1, Z = 0, K = !1, W = !0, F) {
+		if (J.scope && typeof J.scope === "object") {
+			$[Y++] = hY;
+
+			let H = z.encodeUTF8Into($, Q, Y);
+
+			(Y = Y + H, $[Y++] = 0);
+
+			let j = Y, X = J.code;
+
+			Y = Y + 4;
+
+			let V = z.encodeUTF8Into($, X, Y + 4) + 1;
+
+			(f.setInt32LE($, Y, V), $[Y + 4 + V - 1] = 0, Y = Y + V + 4);
+
+			let L = g6($, J.scope, q, Y, Z + 1, K, W, F);
+
+			Y = L - 1;
+
+			let U = L - j;
+
+			(j += f.setInt32LE($, j, U), $[Y++] = 0);
+		} else {
+			$[Y++] = z4;
+
+			let H = z.encodeUTF8Into($, Q, Y);
+
+			(Y = Y + H, $[Y++] = 0);
+
+			let j = J.code.toString(),
+				X = z.encodeUTF8Into($, j, Y + 4) + 1;
+
+			(f.setInt32LE($, Y, X), Y = Y + 4 + X - 1, $[Y++] = 0);
+		}
+
+		return Y;
+	}
+
+	function K4($, Q, J, Y) {
+		$[Y++] = M4;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		let { buffer: Z, position: K } = J;
+
+		if (J.sub_type === o.SUBTYPE_BYTE_ARRAY) K = K + 4;
+
+		if ((
+			Y += f.setInt32LE($, Y, K),
+			$[Y++] = J.sub_type,
+			J.sub_type === o.SUBTYPE_BYTE_ARRAY
+		)) (K = K - 4, Y += f.setInt32LE($, Y, K));
+
+		if (J.sub_type === o.SUBTYPE_VECTOR) A$(J);
+		if (K <= 16) for (let W = 0; W < K; W++) $[Y + W] = Z[W]; else $.set(Z, Y);
+
+		return (Y = Y + J.position, Y);
+	}
+
+	function F4($, Q, J, Y) {
+		$[Y++] = wY;
+
+		let q = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + q, $[Y++] = 0);
+
+		let Z = z.encodeUTF8Into($, J.value, Y + 4) + 1;
+
+		return (f.setInt32LE($, Y, Z), Y = Y + 4 + Z - 1, $[Y++] = 0, Y);
+	}
+
+	function W4($, Q, J, Y, q, Z, K) {
+		$[Y++] = R4;
+
+		let W = z.encodeUTF8Into($, Q, Y);
+
+		(Y = Y + W, $[Y++] = 0);
+
+		let F = Y,
+			H = { $ref: J.collection || J.namespace, $id: J.oid };
+
+		if (J.db != null) H.$db = J.db;
+
+		H = Object.assign(H, J.fields);
+
+		let j = g6($, H, !1, Y, q + 1, Z, !0, K),
+			X = j - F;
+
+		return (F += f.setInt32LE($, Y, X), j);
+	}
+
+	function g6($, Q, J, Y, q, Z, K, W) {
+		if (W == null) {
+			if (Q == null) return ($[0] = 5, $[1] = 0, $[2] = 0, $[3] = 0, $[4] = 0, 5);
+			if (Array.isArray(Q)) throw new k("serialize does not support an array as the root input");
+			if (typeof Q !== "object") throw new k("serialize does not support non-object as the root input"); else if ("_bsontype" in Q && typeof Q._bsontype === "string") throw new k("BSON types cannot be serialized as a document"); else if (b8(Q) || c8(Q) || b$(Q) || H4(Q)) throw new k("date, regexp, typedarray, and arraybuffer cannot be BSON documents");
+
+			W = new Set();
+		}
+
+		W.add(Q);
+
+		let F = Y + 4;
+
+		if (Array.isArray(Q)) for (let j = 0; j < Q.length; j++) {
+			let X = `${j}`, V = Q[j];
+
+			if (typeof V?.toBSON === "function") V = V.toBSON();
+
+			let L = typeof V;
+
+			if (V === void 0) F = p8($, X, V, F); else if (V === null) F = p8($, X, V, F); else if (L === "string") F = uQ($, X, V, F); else if (L === "number") F = dQ($, X, V, F); else if (L === "bigint") F = oQ($, X, V, F); else if (L === "boolean") F = nQ($, X, V, F); else if (L === "object" && V._bsontype == null) if (V instanceof Date || b8(V)) F = tQ($, X, V, F); else if (V instanceof Uint8Array || b$(V)) F = eQ($, X, V, F); else if (V instanceof RegExp || c8(V)) F = aQ($, X, V, F); else F = $4($, X, V, F, J, q, Z, K, W); else if (L === "object") {
+				if (V[u8] !== P8) throw new R8(); else if (V._bsontype === "ObjectId") F = iQ($, X, V, F); else if (V._bsontype === "Decimal128") F = Q4($, X, V, F); else if (V._bsontype === "Long" || V._bsontype === "Timestamp") F = J4($, X, V, F); else if (V._bsontype === "Double") F = G4($, X, V, F); else if (V._bsontype === "Code") F = Z4($, X, V, F, J, q, Z, K, W); else if (V._bsontype === "Binary") F = K4($, X, V, F); else if (V._bsontype === "BSONSymbol") F = F4($, X, V, F); else if (V._bsontype === "DBRef") F = W4($, X, V, F, q, Z, W); else if (V._bsontype === "BSONRegExp") F = sQ($, X, V, F); else if (V._bsontype === "Int32") F = Y4($, X, V, F); else if (V._bsontype === "MinKey" || V._bsontype === "MaxKey") F = rQ($, X, V, F); else if (typeof V._bsontype !== "undefined") throw new k(`Unrecognized or invalid _bsontype: ${String(V._bsontype)}`);
+			} else if (L === "function" && Z) F = q4($, X, V, F);
+		} else if (Q instanceof Map || V4(Q)) {
+			let j = Q.entries(), X = !1;
+
+			while (!X) {
+				let V = j.next();
+
+				if ((X = !!V.done, X)) continue;
+
+				let L = V.value ? V.value[0] : void 0,
+					U = V.value ? V.value[1] : void 0;
+
+				if (typeof U?.toBSON === "function") U = U.toBSON();
+
+				let C = typeof U;
+
+				if (typeof L === "string" && !MY.has(L)) {
+					if (L.match(H5) != null) throw new k("key " + L + " must not contain null bytes");
+
+					if (J) {
+						if (L[0] === "$") throw new k("key " + L + " must not start with '$'"); else if (L.includes(".")) throw new k("key " + L + " must not contain '.'");
+					}
+				}
+
+				if (U === void 0) {
+					if (K === !1) F = p8($, L, U, F);
+				} else if (U === null) F = p8($, L, U, F); else if (C === "string") F = uQ($, L, U, F); else if (C === "number") F = dQ($, L, U, F); else if (C === "bigint") F = oQ($, L, U, F); else if (C === "boolean") F = nQ($, L, U, F); else if (C === "object" && U._bsontype == null) if (U instanceof Date || b8(U)) F = tQ($, L, U, F); else if (U instanceof Uint8Array || b$(U)) F = eQ($, L, U, F); else if (U instanceof RegExp || c8(U)) F = aQ($, L, U, F); else F = $4($, L, U, F, J, q, Z, K, W); else if (C === "object") {
+					if (U[u8] !== P8) throw new R8(); else if (U._bsontype === "ObjectId") F = iQ($, L, U, F); else if (U._bsontype === "Decimal128") F = Q4($, L, U, F); else if (U._bsontype === "Long" || U._bsontype === "Timestamp") F = J4($, L, U, F); else if (U._bsontype === "Double") F = G4($, L, U, F); else if (U._bsontype === "Code") F = Z4($, L, U, F, J, q, Z, K, W); else if (U._bsontype === "Binary") F = K4($, L, U, F); else if (U._bsontype === "BSONSymbol") F = F4($, L, U, F); else if (U._bsontype === "DBRef") F = W4($, L, U, F, q, Z, W); else if (U._bsontype === "BSONRegExp") F = sQ($, L, U, F); else if (U._bsontype === "Int32") F = Y4($, L, U, F); else if (U._bsontype === "MinKey" || U._bsontype === "MaxKey") F = rQ($, L, U, F); else if (typeof U._bsontype !== "undefined") throw new k(`Unrecognized or invalid _bsontype: ${String(U._bsontype)}`);
+				} else if (C === "function" && Z) F = q4($, L, U, F);
+			}
+		} else {
+			if (typeof Q?.toBSON === "function") {
+				if ((Q = Q.toBSON(), Q != null && typeof Q !== "object")) throw new k("toBSON function did not return an object");
+			}
+
+			for (let j of Object.keys(Q)) {
+				let X = Q[j];
+
+				if (typeof X?.toBSON === "function") X = X.toBSON();
+
+				let V = typeof X;
+
+				if (typeof j === "string" && !MY.has(j)) {
+					if (j.match(H5) != null) throw new k("key " + j + " must not contain null bytes");
+
+					if (J) {
+						if (j[0] === "$") throw new k("key " + j + " must not start with '$'"); else if (j.includes(".")) throw new k("key " + j + " must not contain '.'");
+					}
+				}
+
+				if (X === void 0) {
+					if (K === !1) F = p8($, j, X, F);
+				} else if (X === null) F = p8($, j, X, F); else if (V === "string") F = uQ($, j, X, F); else if (V === "number") F = dQ($, j, X, F); else if (V === "bigint") F = oQ($, j, X, F); else if (V === "boolean") F = nQ($, j, X, F); else if (V === "object" && X._bsontype == null) if (X instanceof Date || b8(X)) F = tQ($, j, X, F); else if (X instanceof Uint8Array || b$(X)) F = eQ($, j, X, F); else if (X instanceof RegExp || c8(X)) F = aQ($, j, X, F); else F = $4($, j, X, F, J, q, Z, K, W); else if (V === "object") {
+					if (X[u8] !== P8) throw new R8(); else if (X._bsontype === "ObjectId") F = iQ($, j, X, F); else if (X._bsontype === "Decimal128") F = Q4($, j, X, F); else if (X._bsontype === "Long" || X._bsontype === "Timestamp") F = J4($, j, X, F); else if (X._bsontype === "Double") F = G4($, j, X, F); else if (X._bsontype === "Code") F = Z4($, j, X, F, J, q, Z, K, W); else if (X._bsontype === "Binary") F = K4($, j, X, F); else if (X._bsontype === "BSONSymbol") F = F4($, j, X, F); else if (X._bsontype === "DBRef") F = W4($, j, X, F, q, Z, W); else if (X._bsontype === "BSONRegExp") F = sQ($, j, X, F); else if (X._bsontype === "Int32") F = Y4($, j, X, F); else if (X._bsontype === "MinKey" || X._bsontype === "MaxKey") F = rQ($, j, X, F); else if (typeof X._bsontype !== "undefined") throw new k(`Unrecognized or invalid _bsontype: ${String(X._bsontype)}`);
+				} else if (V === "function" && Z) F = q4($, j, X, F);
+			}
+		}
+
+		(W.delete(Q), $[F++] = 0);
+
+		let H = F - Y;
+
+		return (Y += f.setInt32LE($, Y, H), F);
+	}
+
+	function mZ($) {
+		return $ != null && typeof $ === "object" && "_bsontype" in $ && typeof $._bsontype === "string";
+	}
+
+	var BZ = {
+		$oid: j0,
+		$binary: o,
+		$uuid: o,
+		$symbol: n8,
+		$numberInt: u$,
+		$numberDecimal: O0,
+		$numberDouble: e0,
+		$numberLong: P,
+		$minKey: o8,
+		$maxKey: d8,
+		$regex: $$,
+		$regularExpression: $$,
+		$timestamp: W$
+	};
+
+	function pY($, Q = {}) {
+		if (typeof $ === "number") {
+			let Y = $ <= y6 && $ >= v6, q = $ <= zY && $ >= LY;
+
+			if (Q.relaxed || Q.legacy) return $;
+
+			if (Number.isInteger($) && !Object.is($, -0)) {
+				if (Y) return new u$($);
+
+				if (q) {
+					if (Q.useBigInt64) return BigInt($);
+
+					return P.fromNumber($);
+				}
+			}
+
+			return new e0($);
+		}
+
+		if ($ == null || typeof $ !== "object") return $;
+		if ($.$undefined) return null;
+
+		let J = Object.keys($).filter((Y) => Y.startsWith("$") && $[Y] != null);
+
+		for (let Y = 0; Y < J.length; Y++) {
+			let q = BZ[J[Y]];
+
+			if (q) return q.fromExtendedJSON($, Q);
+		}
+
+		if ($.$date != null) {
+			let Y = $.$date, q = new Date();
+
+			if (Q.legacy) if (typeof Y === "number") q.setTime(Y); else if (typeof Y === "string") q.setTime(Date.parse(Y)); else if (typeof Y === "bigint") q.setTime(Number(Y)); else throw new X5(`Unrecognized type for EJSON date: ${typeof Y}`); else if (typeof Y === "string") q.setTime(Date.parse(Y)); else if (P.isLong(Y)) q.setTime(Y.toNumber()); else if (typeof Y === "number" && Q.relaxed) q.setTime(Y); else if (typeof Y === "bigint") q.setTime(Number(Y)); else throw new X5(`Unrecognized type for EJSON date: ${typeof Y}`);
+
+			return q;
+		}
+
+		if ($.$code != null) {
+			let Y = Object.assign({}, $);
+
+			if ($.$scope) Y.$scope = pY($.$scope);
+
+			return l$.fromExtendedJSON($);
+		}
+
+		if (yY($) || $.$dbPointer) {
+			let Y = $.$ref ? $ : $.$dbPointer;
+
+			if (Y instanceof T$) return Y;
+
+			let q = Object.keys(Y).filter((K) => K.startsWith("$")),
+				Z = !0;
+
+			if ((
+				q.forEach((K) => {
+					if (["$ref", "$id", "$db"].indexOf(K) === -1) Z = !1;
+				}),
+				Z
+			)) return T$.fromExtendedJSON(Y);
+		}
+
+		return $;
+	}
+
+	function OZ($, Q) {
+		return $.map((J, Y) => {
+			Q.seenObjects.push({ propertyName: `index ${Y}`, obj: null });
+
+			try {
+				return C$(J, Q);
+			} finally {
+				Q.seenObjects.pop();
+			}
+		});
+	}
+
+	function UY($) {
+		let Q = $.toISOString();
+
+		return $.getUTCMilliseconds() !== 0 ? Q : Q.slice(0, -5) + "Z";
+	}
+
+	function C$($, Q) {
+		if ($ instanceof Map || V4($)) {
+			let J = Object.create(null);
+
+			for (let [Y, q] of $) {
+				if (typeof Y !== "string") throw new k("Can only serialize maps with string keys");
+
+				J[Y] = q;
+			}
+
+			return C$(J, Q);
+		}
+
+		if ((typeof $ === "object" || typeof $ === "function") && $ !== null) {
+			let J = Q.seenObjects.findIndex((Y) => Y.obj === $);
+
+			if (J !== -1) {
+				let Y = Q.seenObjects.map((j) => j.propertyName),
+					q = Y.slice(0, J).map((j) => `${j} -> `).join(""),
+					Z = Y[J],
+					K = " -> " + Y.slice(J + 1, Y.length - 1).map((j) => `${j} -> `).join(""),
+					W = Y[Y.length - 1],
+					F = (" ").repeat(q.length + Z.length / 2),
+					H = ("-").repeat(K.length + (Z.length + W.length) / 2 - 1);
+
+				throw new k(`Converting circular structure to EJSON:
+    ${q}${Z}${K}${W}
+    ${F}\\${H}/`);
+			}
+
+			Q.seenObjects[Q.seenObjects.length - 1].obj = $;
+		}
+
+		if (Array.isArray($)) return OZ($, Q);
+		if ($ === void 0) return Q.ignoreUndefined ? void 0 : null;
+
+		if ($ instanceof Date || b8($)) {
+			let J = $.getTime(),
+				Y = J > -1 && J < 253402318800000;
+
+			if (Q.legacy) return Q.relaxed && Y ? { $date: $.getTime() } : { $date: UY($) };
+
+			return Q.relaxed && Y
+				? { $date: UY($) }
+				: { $date: { $numberLong: $.getTime().toString() } };
+		}
+
+		if (typeof $ === "number" && (!Q.relaxed || !isFinite($))) {
+			if (Number.isInteger($) && !Object.is($, -0)) {
+				if ($ >= v6 && $ <= y6) return { $numberInt: $.toString() };
+				if ($ >= LY && $ <= zY) return { $numberLong: $.toString() };
+			}
+
+			return { $numberDouble: Object.is($, -0) ? "-0.0" : $.toString() };
+		}
+
+		if (typeof $ === "bigint") {
+			if (!Q.relaxed) return { $numberLong: BigInt.asIntN(64, $).toString() };
+
+			return Number(BigInt.asIntN(64, $));
+		}
+
+		if ($ instanceof RegExp || c8($)) {
+			let J = $.flags;
+
+			if (J === void 0) {
+				let q = $.toString().match(/[gimuy]*$/);
+
+				if (q) J = q[0];
+			}
+
+			return new $$($.source, J).toExtendedJSON(Q);
+		}
+
+		if ($ != null && typeof $ === "object") return _Z($, Q);
+
+		return $;
+	}
+
+	var SZ = {
+		Binary: ($) => new o($.value(), $.sub_type),
+		Code: ($) => new l$($.code, $.scope),
+		DBRef: ($) => new T$($.collection || $.namespace, $.oid, $.db, $.fields),
+		Decimal128: ($) => new O0($.bytes),
+		Double: ($) => new e0($.value),
+		Int32: ($) => new u$($.value),
+		Long: ($) => P.fromBits($.low != null ? $.low : $.low_, $.low != null ? $.high : $.high_, $.low != null ? $.unsigned : $.unsigned_),
+		MaxKey: () => new d8(),
+		MinKey: () => new o8(),
+		ObjectId: ($) => new j0($),
+		BSONRegExp: ($) => new $$($.pattern, $.options),
+		BSONSymbol: ($) => new n8($.value),
+		Timestamp: ($) => W$.fromBits($.low, $.high)
+	};
+
+	function _Z($, Q) {
+		if ($ == null || typeof $ !== "object") throw new k("not an object instance");
+
+		let J = $._bsontype;
+
+		if (typeof J === "undefined") {
+			let Y = {};
+
+			for (let q of Object.keys($)) {
+				Q.seenObjects.push({ propertyName: q, obj: null });
+
+				try {
+					let Z = C$($[q], Q);
+
+					if (q === "__proto__") Object.defineProperty(Y, q, { value: Z, writable: !0, enumerable: !0, configurable: !0 }); else Y[q] = Z;
+				} finally {
+					Q.seenObjects.pop();
+				}
+			}
+
+			return Y;
+		} else if ($ != null && typeof $ === "object" && typeof $._bsontype === "string" && $[u8] !== P8) throw new R8(); else if (mZ($)) {
+			let Y = $;
+
+			if (typeof Y.toExtendedJSON !== "function") {
+				let q = SZ[$._bsontype];
+
+				if (!q) throw new k("Unrecognized or invalid _bsontype: " + $._bsontype);
+
+				Y = q(Y);
+			}
+
+			if (J === "Code" && Y.scope) Y = new l$(Y.code, C$(Y.scope, Q)); else if (J === "DBRef" && Y.oid) Y = new T$(C$(Y.collection, Q), C$(Y.oid, Q), C$(Y.db, Q), C$(Y.fields, Q));
+
+			return Y.toExtendedJSON(Q);
+		} else throw new k("_bsontype must be a string, but was: " + typeof J);
+	}
+
+	function cY($, Q) {
+		let J = {
+			useBigInt64: Q?.useBigInt64 ?? !1,
+			relaxed: Q?.relaxed ?? !0,
+			legacy: Q?.legacy ?? !1
+		};
+
+		return JSON.parse($, (Y, q) => {
+			if (Y.indexOf("\x00") !== -1) throw new k(`BSON Document field names cannot contain null bytes, found: ${JSON.stringify(Y)}`);
+
+			return pY(q, J);
+		});
+	}
+
+	function bY($, Q, J, Y) {
+		if (J != null && typeof J === "object") (Y = J, J = 0);
+		if (Q != null && typeof Q === "object" && !Array.isArray(Q)) (Y = Q, Q = void 0, J = 0);
+
+		let q = Object.assign({ relaxed: !0, legacy: !1 }, Y, { seenObjects: [{ propertyName: "(root)", obj: null }] }),
+			Z = C$($, q);
+
+		return JSON.stringify(Z, Q, J);
+	}
+
+	function yZ($, Q) {
+		return (Q = Q || {}, JSON.parse(bY($, Q)));
+	}
+
+	function vZ($, Q) {
+		return (Q = Q || {}, cY(JSON.stringify($), Q));
+	}
+
+	var t8 = Object.create(null);
+
+	t8.parse = cY;
+	t8.stringify = bY;
+	t8.serialize = yZ;
+	t8.deserialize = vZ;
+	Object.freeze(t8);
+
+	var V0 = {
+		double: 1,
+		string: 2,
+		object: 3,
+		array: 4,
+		binData: 5,
+		undefined: 6,
+		objectId: 7,
+		bool: 8,
+		date: 9,
+		null: 10,
+		regex: 11,
+		dbPointer: 12,
+		javascript: 13,
+		symbol: 14,
+		javascriptWithScope: 15,
+		int: 16,
+		timestamp: 17,
+		long: 18,
+		decimal: 19,
+		minKey: 255,
+		maxKey: 127
+	};
+
+	function j4($, Q) {
+		try {
+			return f.getNonnegativeInt32LE($, Q);
+		} catch(J) {
+			throw new F$("BSON size cannot be negative", Q, { cause: J });
+		}
+	}
+
+	function X4($, Q) {
+		let J = Q;
+
+		for (; $[J] !== 0; J++) ;
+
+		if (J === $.length - 1) throw new F$("Null terminator not found", Q);
+
+		return J;
+	}
+
+	function gZ($, Q = 0) {
+		if ((Q ??= 0, $.length < 5)) throw new F$(`Input must be at least 5 bytes, got ${$.length} bytes`, Q);
+
+		let J = j4($, Q);
+
+		if (J > $.length - Q) throw new F$(`Parsed documentSize (${J} bytes) does not match input length (${$.length} bytes)`, Q);
+		if ($[Q + J - 1] !== 0) throw new F$("BSON documents must end in 0x00", Q + J);
+
+		let Y = [], q = Q + 4;
+
+		while (q <= J + Q) {
+			let Z = $[q];
+
+			if ((q += 1, Z === 0)) {
+				if (q - Q !== J) throw new F$("Invalid 0x00 type byte", q);
+
+				break;
+			}
+
+			let K = q, W = X4($, q) - K;
+
+			q += W + 1;
+
+			let F;
+
+			if (Z === V0.double || Z === V0.long || Z === V0.date || Z === V0.timestamp) F = 8; else if (Z === V0.int) F = 4; else if (Z === V0.objectId) F = 12; else if (Z === V0.decimal) F = 16; else if (Z === V0.bool) F = 1; else if (Z === V0.null || Z === V0.undefined || Z === V0.maxKey || Z === V0.minKey) F = 0; else if (Z === V0.regex) F = X4($, X4($, q) + 1) + 1 - q; else if (Z === V0.object || Z === V0.array || Z === V0.javascriptWithScope) F = j4($, q); else if (Z === V0.string || Z === V0.binData || Z === V0.dbPointer || Z === V0.javascript || Z === V0.symbol) {
+				if ((F = j4($, q) + 4, Z === V0.binData)) F += 1;
+				if (Z === V0.dbPointer) F += 12;
+			} else throw new F$(`Invalid 0x${Z.toString(16).padStart(2, "0")} type byte`, q);
+
+			if (F > J) throw new F$("value reports length larger than document", q);
+
+			(Y.push([Z, K, W, q, F]), q += F);
+		}
+
+		return Y;
+	}
+
+	var x6 = Object.create(null);
+
+	x6.parseToElements = gZ;
+	x6.ByteUtils = z;
+	x6.NumberUtils = f;
+	Object.freeze(x6);
+
+	var fY = 17825792, f$ = z.allocate(fY);
+
+	function xZ($) {
+		if (f$.length < $) f$ = z.allocate($);
+	}
+
+	function pZ($, Q = {}) {
+		let J = typeof Q.checkKeys === "boolean" ? Q.checkKeys : !1,
+			Y = typeof Q.serializeFunctions === "boolean" ? Q.serializeFunctions : !1,
+			q = typeof Q.ignoreUndefined === "boolean" ? Q.ignoreUndefined : !0,
+			Z = typeof Q.minInternalBufferSize === "number" ? Q.minInternalBufferSize : fY;
+
+		if (f$.length < Z) f$ = z.allocate(Z);
+
+		let K = g6(f$, $, J, 0, 0, Y, q, null),
+			W = z.allocateUnsafe(K);
+
+		return (W.set(f$.subarray(0, K), 0), W);
+	}
+
+	function cZ($, Q, J = {}) {
+		let Y = typeof J.checkKeys === "boolean" ? J.checkKeys : !1,
+			q = typeof J.serializeFunctions === "boolean" ? J.serializeFunctions : !1,
+			Z = typeof J.ignoreUndefined === "boolean" ? J.ignoreUndefined : !0,
+			K = typeof J.index === "number" ? J.index : 0,
+			W = g6(f$, $, Y, 0, 0, q, Z, null);
+
+		return (Q.set(f$.subarray(0, W), K), K + W - 1);
+	}
+
+	function bZ($, Q = {}) {
+		return xY(z.toLocalBufferType($), Q);
+	}
+
+	function fZ($, Q = {}) {
+		Q = Q || {};
+
+		let J = typeof Q.serializeFunctions === "boolean" ? Q.serializeFunctions : !1,
+			Y = typeof Q.ignoreUndefined === "boolean" ? Q.ignoreUndefined : !0;
+
+		return F5($, J, Y);
+	}
+
+	function lZ($, Q, J, Y, q, Z) {
+		let K = Object.assign({ allowObjectSmallerThanBufferSize: !0, index: 0 }, Z),
+			W = z.toLocalBufferType($),
+			F = Q;
+
+		for (let H = 0; H < J; H++) {
+			let j = f.getInt32LE(W, F);
+
+			(K.index = F, Y[q + H] = xY(W, K), F = F + j);
+		}
+
+		return F;
+	}
+
+	var j$ = Object.freeze({
+		__proto__: null,
+		BSONError: k,
+		BSONOffsetError: F$,
+		BSONRegExp: $$,
+		BSONRuntimeError: X5,
+		BSONSymbol: n8,
+		BSONType: $Z,
+		BSONValue: v0,
+		BSONVersionError: R8,
+		Binary: o,
+		ByteUtils: z,
+		Code: l$,
+		DBRef: T$,
+		Decimal128: O0,
+		Double: e0,
+		EJSON: t8,
+		Int32: u$,
+		Long: P,
+		MaxKey: d8,
+		MinKey: o8,
+		NumberUtils: f,
+		ObjectId: j0,
+		Timestamp: W$,
+		UUID: w0,
+		bsonType: k4,
+		calculateObjectSize: fZ,
+		deserialize: bZ,
+		deserializeStream: lZ,
+		onDemand: x6,
+		serialize: pZ,
+		serializeWithBufferAndIndex: cZ,
+		setInternalBufferSize: xZ
+	});
+
+	var k0,
+		a8 = new Map(),
+		p6 = !0,
+		A4 = 0,
+		T4 = !1,
+		E4 = !1;
+
+	function B6() {
+		let $ = Z0.url?.ws;
+
+		(
+			k0 = $
+				? new WebSocket(`${$}${$.includes("?") ? "&" : "?"}v=${VJ}`)
+				: N.ws.$ws(),
+			k0.binaryType = "arraybuffer",
+			p6 = !0,
+			k0.addEventListener("open", () => {
+				(
+					console.log("[WS] Connected"),
+					T4 = !1,
+					E4 = !1,
+					A4 = 0,
+					B2(),
+					uY(),
+					B8()
+				);
+			}),
+
+			k0.addEventListener("message", (Q) => {
+				let J = j$.deserialize(Q.data);
+
+				if ((P$ && console.debug("[WS] SERVER", J), a8.has(J.nonce))) {
+					let q = a8.get(J.nonce);
+
+					(a8.delete(J.nonce), q(J));
+				}
+
+				let Y = gQ.get(J.op);
+
+				if (!Y) {
+					console.error("[WS] Got an unexpected packet", J);
+
+					return;
+				}
+
+				Y(J);
+			}),
+
+			k0.addEventListener("close", (Q) => {
+				if ((
+					a8.clear(),
+					console.warn(`[WS] Disconnected (${Q.code})`),
+					Q.code == 4008
+				)) {
+					(p6 = !1, j2());
+
+					return;
+				}
+
+				if (!p6 || document.hidden) return;
+				if ((console.warn("[WS] Reconnecting..."), Q.code == 4004 && !I4)) g$();
+
+				let J = Math.random() * 2000;
+
+				if (Q.code == 4007) setTimeout(B6, 500 + J); else {
+					A4++;
+
+					let Y = Math.min(5000 * A4, 30000);
+
+					setTimeout(B6, Y + J);
+				}
+			})
+		);
+	}
+
+	function U2($) {
+		if ((p6 = !1, k0)) k0.close($);
+	}
+
+	var C4;
+
+	document.addEventListener("visibilitychange", () => {
+		if ((clearTimeout(C4), C4 = null, document.hidden)) {
+			C4 = setTimeout(
+				() => {
+					if (!document.hidden) return;
+
+					(
+						console.log("Tab has been inactive for over a minute, disconnecting from WS"),
+						k0?.close()
+					);
+				},
+				60000
+			);
+
+			return;
+		}
+
+		if (p6 && (!k0 || k0.readyState == WebSocket.CLOSED)) B6();
+	});
+
+	function K5() {
+		return k0 && k0.readyState == WebSocket.OPEN;
+	}
+
+	function lY($ = {}) {
+		if (!K5()) return (
+			delete $.token,
+			console.warn("Tried to send a packet while the connection is closed", $),
+			!0
+		);
+	}
+
+	var I4 = !1;
+
+	function B8() {
+		if (T4 || !K5()) return;
+		if (h$() && !(R.token && R.user)) return;
+
+		(I4 = !0, I6(2, { token: h$() ?? "viewer" }));
+	}
+
+	function b2() {
+		(E4 = !0, cQ());
+	}
+
+	function I6($, Q) {
+		if (lY(Q) || !k0) return !1;
+		if ($ != 2 && !E4) return !1;
+		if ($ == 2) (I4 = !1, T4 = !0);
+
+		(
+			P$ && console.debug("[WS] CLIENT", $, Q),
+			k0.send(j$.serialize({ op: $, ...Q ?? {} }))
+		);
+	}
+
+	function c$($, Q, J = 15000) {
+		return new Promise((Y, q) => {
+			if (lY(Q) || !k0) return q("Tried to send a packet while the connection is closed");
+
+			let Z = Date.now(),
+				K = setTimeout(
+					() => {
+						(a8.delete(Z), q(`Nonce ${Z} timed out after ${J}ms`));
+					},
+					J
+				);
+
+			(
+				a8.set(Z, (W) => {
+					(clearTimeout(K), Y(W));
+				}),
+				P$ && console.debug(`[WS] CLIENT (nonce=${Z})`, $, Q),
+				k0.send(j$.serialize({ op: $, nonce: Z, ...Q ?? {} }))
+			);
+		});
+	}
+
+	var U0 = new Map();
+
+	function f7() {
+		for (let [$, Q] of U0) e$($, Q, $ % b, Math.floor($ / b));
+	}
+
+	function e$($, Q, J, Y) {
+		if (J8) {
+			let q = q0[r0[$]];
+
+			if (q) U$(J, Y, ((q.u32 & 4278124286) >> 1) + ((Q.u32 & 4278124286) >> 1)); else U$(J, Y, PJ | Q.u24);
+		} else U$(J, Y, Q.u32);
+	}
+
+	function dY() {
+		(
+			R.localPaintIncrement = 0,
+			R.setPaintRemaining(R.paintRemaining)
+		);
+
+		for (let $ of U0.keys()) {
+			let Q = $ % b,
+				J = Math.floor($ / b),
+				Y = q0[r0[$]];
+
+			U$(Q, J, Y?.u32 ?? 0);
+		}
+
+		(U0.clear(), y7());
+	}
+
+	function uZ() {
+		dY();
+	}
+
+	async function oY($, Q = 0) {
+		if (Q >= 5) return (
+			console.error("Failed to submit the drawing after 5 tries."),
+			!1
+		);
+
+		let J = await nY($);
+
+		if (window[V7]) return !0;
+
+		try {
+			return (await tY(J), setTimeout(() => I6(0), 500), !0);
+		} catch(Y) {
+			return (
+				console.error("Error submitting the drawing:", Y),
+				await oY($, Q + 1)
+			);
+		}
+	}
+
+	async function dZ() {
+		let $ = [];
+
+		for (let [Q, J] of U0) ($.push([Q, J.idx]), N8(Q, J.idx));
+
+		if ((R.commitLocalPaint(), dY(), $.length === 0 || n1 || Z2)) {
+			F2();
+
+			return;
+		}
+
+		for (let Q = 0; Q < $.length; Q += X1) if (!await oY($.slice(Q, Q + X1))) return e("Something went wrong, sorry!", "Could not submit local drawing to the server after 5 tries");
+	}
+
+	function DQ($, Q) {
+		if (!P6($) || !P6(Q) || $ < 0 || Q < 0 || $ >= b || !o7($, Q)) return !1;
+
+		let J = R.paintRemaining + R.localPaintIncrement,
+			Y = X1 - F0 - 5,
+			q = J % F0 == 0 && R.localPaintIncrement < -Y;
+
+		if (!J || q) return (h4(), !1);
+
+		let Z = R.selectedColor, K = Q * b + $;
+
+		if (U0.has(K)) {
+			if (U0.get(K) == Z) return !1;
+		} else if (r0[K] == Z.idx) return !1;
+
+		if ((e$(K, Z, $, Q), !U0.has(K))) R.addLocalPaintIncrement(-1);
+
+		return (
+			s0.push({
+				x: $,
+				y: Q,
+				pos: K,
+				oldColor: U0.get(K)?.idx,
+				newColor: Z.idx
+			}),
+			U0.set(K, Z),
+			!0
+		);
+	}
+
+	async function g1() {
+		M$();
+
+		try {
+			(T6.classList.add("progress"), await dZ());
+		} finally {
+			T6.classList.remove("progress");
+		}
+	}
+
+	async function g7() {
+		if ((M$(), w4())) {
+			if (!await i("Are you sure you want to cancel your changes?")) return;
+		}
+
+		uZ();
+	}
+
+	function w4() {
+		return U0.size > 200 || B0.length > 0;
+	}
+
+	var M8 = ($) => C0(q6($ / F0), "spray can");
+
+	async function oZ($) {
+		if (!R.user) return;
+		if (U0.size || B0.length || R.localPaintIncrement) return e("You cannot share your paint while drawing! Submit or undo your changes.");
+		if (R.paintRemaining < 100) return e("You do not have enough paint");
+
+		let Q = Math.min(R.paintRemaining, F0 * 5),
+			J = G("p", { style: { maxWidth: "500px" } }),
+			Y = () => {
+				let K = parseInt(q.value),
+					W = Math.ceil(K / R.paintRemaining * 100);
+
+				if (A8 == 1) J.replaceChildren(G("b", `${W}%`), " of your paint (", G("b", M8(K)), ")"); else J.replaceChildren("You will spend ", G("b", `${W}%`), " of your paint (", G("b", M8(K)), ")", " to give them ", G("b", M8(K * A8)));
+			},
+			q = G("input", {
+				type: "range",
+				min: 100,
+				max: Q,
+				value: Math.min(F0, R.paintRemaining),
+				oninput: Y
+			}),
+			Z = G("datalist#fskjdhsad", Array.from({ length: Math.floor(Q / F0) }, (K, W) => G("option", { value: W * F0, label: W * F0 })));
+
+		(
+			q.setAttribute("list", "fskjdhsad"),
+			Y(),
+			new _("Share Paint", G("div.share-paint-modal", G("p", "How much paint do you want to give to ", G("b", $.username), "?"), q, Z, J, G("div.btn-container", G("button.btn", "Cancel", { onclick: () => x() }), G("button.primary.btn", "Share", {
+				async onclick() {
+					let K = parseInt(q.value);
+
+					if (K * A8 / F0 < 0.1) return e("That's too little!");
+
+					if (!await i(`Are you sure you want to ${A8 != 1
+						? `spend ${M8(K)} to give ${M8(K * A8)}`
+						: `give ${M8(K)}`} to ${$.username}?`)) return x();
+
+					K0();
+
+					let F = await N.user.sharePaint.$post({ json: { username: $.username, paint: K } });
+
+					if (!F.ok) return T0(F, "Could not sell cans");
+
+					let H = await F.json();
+
+					new _("Share Paint", G("p", `Gifted ${M8(H.sold)} to ${$.username}!`));
+				}
+			}))))
+		);
+	}
+
+	async function aY($) {
+		K0();
+
+		let Q = G("div.settings-modal", G("p.notice.noicon.user", G("span.name-container", $.clan_name && G("b", `${I$($.clan_name)} `), $.username), G("img", { src: b0($.cursor_sprite), draggable: !1, alt: "cursor" })));
+
+		if ($.clan_name && $.clan_id) {
+			let Y = await (await N.user.clan[":id"].$get({ param: { id: $.clan_id.toString() } })).json();
+
+			Q.append(G("p.c", "Clan"), L6(Y));
+		}
+
+		(
+			Q.append(G(
+				"div.btn-container.vertical",
+				G("button.btn", "Give Paint", {
+					onclick() {
+						oZ($);
+					}
+				}),
+				G("button.btn", "Jump to Cursor", {
+					onclick() {
+						y0({ connId: $.id, fallbackPos: $.lastPos, username: $.username });
+					}
+				}),
+				G("button.btn", "Report User", {
+					onclick() {
+						w7($.username);
+					}
+				}),
+				r$
+			)),
+			new _("User Info", Q)
+		);
+	}
+
+	var c6 = new Set(),
+		nZ = 10,
+		sY = 0.05,
+		tZ = 1e6,
+		rY = performance.now();
+
+	function iY($) {
+		let Q = ($ - rY) / 1000, J = 1 - Math.exp(-nZ * Q);
+
+		rY = $;
+
+		let Y = 0, q = X8 ? 100 : 500;
+
+		for (let Z of c6) {
+			if (Y++ >= q) break;
+
+			if (!Z.element) {
+				c6.delete(Z);
+
+				continue;
+			}
+
+			let K = Z.moveX - Z.x,
+				W = Z.moveY - Z.y,
+				F = K * K + W * W;
+
+			if (Math.abs(K) < sY && Math.abs(W) < sY || F > tZ) (Z.x = Z.moveX, Z.y = Z.moveY, c6.delete(Z)); else (Z.x += K * J, Z.y += W * J);
+
+			V5(Z, Z.x, Z.y);
+		}
+
+		requestAnimationFrame(iY);
+	}
+
+	function eY($, Q, J) {
+		let Y = R0.get($);
+
+		if (!Y) return;
+
+		if (EQ(Y.x, Y.y) && EQ(Q, J)) {
+			(V5(Y, Q, J), c6.delete(Y));
+
+			return;
+		}
+
+		(c6.add(Y), Y.moveX = Q, Y.moveY = J);
+	}
+
+	requestAnimationFrame(iY);
+
+	var R0 = new Map(),
+		U8 = G("div.cursors"),
+		b6 = G("div.cursor-overflow");
+
+	b6.style.display = "none";
+	U8.append(b6);
+
+	function f2($) {
+		if ($ > 0) (b6.textContent = `+${$} more here`, b6.style.display = ""); else b6.style.display = "none";
+	}
+
+	var aZ = 50,
+		f6 = new Set(),
+		s8 = new Set(),
+		Q3 = new Set(),
+		J3 = {
+			id: -1,
+			username: "",
+			cursor_sprite: 0,
+			x: 0,
+			y: 0,
+			moveX: 0,
+			moveY: 0,
+			partial: !0
+		};
+
+	function uY() {
+		for (let $ of R0.values()) if ($.element) $.element.remove();
+
+		R0.clear();
+	}
+
+	function xQ($) {
+		if (p.a11y.hideCursors) return;
+		if ($.username == R.user?.username || $.id == R.connectionId) return;
+
+		let Q = R0.get($.id),
+			J = !!Q && !Q.partial && (Q.cursor_sprite !== $.cursor_sprite || Q.clan_name !== $.clan_name || Q.username !== $.username),
+			Y = {
+				...J3,
+				...Q || {},
+				id: $.id,
+				username: $.username,
+				cursor_sprite: $.cursor_sprite,
+				clan_id: $.clan_id,
+				clan_name: $.clan_name,
+				partial: !1
+			};
+
+		if ((R0.set($.id, Y), Q?.element && Q.partial)) {
+			let q = Q.element.querySelector("img");
+
+			if ((Q.element.append(N4(Y)), q)) q.src = b0($.cursor_sprite);
+		} else if (Q?.element && J) sZ(Y);
+	}
+
+	function sZ($) {
+		if (!$.element) return;
+
+		let Q = $.element.querySelector("img");
+
+		if (Q) Q.src = b0($.cursor_sprite);
+
+		(
+			$.element.querySelector(".chat-bubble")?.remove(),
+			$.element.append(N4($))
+		);
+	}
+
+	function rZ($) {
+		if (R0.has($) || $ == R.connectionId) return;
+
+		let Q = { ...J3, id: $ };
+
+		return (pQ($), R0.set($, Q), Q);
+	}
+
+	function pQ($) {
+		if ($ === R.connectionId || R0.has($) || f6.has($) || s8.has($) || Q3.has($)) return;
+
+		f6.add($);
+	}
+
+	function S2() {
+		if (s8.size > 0 || f6.size === 0) return null;
+
+		let $ = [];
+
+		for (let Q of f6) {
+			if ($.length >= aZ) break;
+
+			$.push(Q);
+		}
+
+		for (let Q of $) (f6.delete(Q), s8.add(Q));
+
+		return $;
+	}
+
+	function l2($) {
+		for (let Q of $) (xQ(Q), s8.delete(Q.id));
+		for (let Q of s8) Q3.add(Q);
+
+		s8.clear();
+	}
+
+	function u2($) {
+		let Q = R0.get($);
+
+		if (!Q) return;
+		if (Q.element) Q.element.remove();
+
+		R0.delete($);
+	}
+
+	var $3 = 0;
+
+	function d2($, Q, J = !1) {
+		if (p.a11y.hideCursors) return;
+		if ($ == R.connectionId) return;
+
+		let Y = R0.get($) || rZ($);
+
+		if (!Y) return;
+
+		(Y.lastSeen = performance.now(), Y.lastPos = Q);
+
+		let q = Q % b, Z = Math.floor(Q / b);
+
+		if (!Y.element) (
+			Y.element = G("div.cursor", { dataset: { id: Y.id.toString() } }, G("img", { draggable: !1, src: b0(Y.cursor_sprite), alt: "⬉" }), !Y.partial && N4(Y)),
+			U8.append(Y.element),
+			Y.hidden = !1,
+			Y.element.style.zIndex = `${$3++}`
+		); else if (Y.hidden) (eZ(Y), Y.element.style.zIndex = `${$3++}`);
+
+		if (J) eY($, q, Z); else V5(Y, q, Z);
+	}
+
+	function V5($, Q, J) {
+		if (!$.element) return;
+
+		(
+			$.element.style.translate = `${Q}px ${J}px`,
+			$.x = Q,
+			$.y = J
+		);
+	}
+
+	function N4($) {
+		return G("div.chat-bubble", G("span", $.clan_name && G("b", I$($.clan_name)), $.username, {
+			onclick() {
+				aY($);
+			}
+		}));
+	}
+
+	function iZ($) {
+		if (!$.element || $.hidden) return;
+
+		($.element.style.opacity = "0", $.hidden = !0);
+	}
+
+	function eZ($) {
+		if (!$.element || !$.hidden) return;
+
+		($.element.style.opacity = "", $.hidden = !1);
+	}
+
+	var $K = 1e4, QK = 1000;
+
+	function JK() {
+		let $ = performance.now() - $K;
+
+		for (let Q of R0.values()) {
+			if (!Q.element || Q.hidden) continue;
+			if (Q.lastSeen === void 0 || Q.lastSeen < $) iZ(Q);
+		}
+	}
+
+	setInterval(JK, QK);
+
+	var YK = 300, GK = 1000, qK = Z0.url.api;
+
+	async function m4($) {
+		try {
+			let Q = await fetch(qK + $, { cache: "no-store" });
+
+			if (!Q.ok) return null;
+
+			return await Q.json();
+		} catch {
+			return null;
+		}
+	}
+
+	function l6($) {
+		if ($ == null) return "—";
+		if ($ < 1) return $.toFixed(2) + " ms";
+		if ($ < 100) return $.toFixed(1) + " ms";
+
+		return Math.round($) + " ms";
+	}
+
+	function Y3($) {
+		if ($ == null) return "—";
+		if ($ < 1024) return `${$} B`;
+		if ($ < 1048576) return `${($ / 1024).toFixed(1)} KB`;
+
+		return `${($ / 1024 / 1024).toFixed(1)} MB`;
+	}
+
+	function G3($) {
+		if ($ == null) return "—";
+
+		return $.toFixed(2) + "%";
+	}
+
+	function z8($, Q) {
+		if ($ == null) return "—";
+
+		return Q($);
+	}
+
+	var O4 = G("div.dev-overlay"),
+		h0 = {
+			active: !1,
+			fps: 0,
+			fpsFrameCount: 0,
+			fpsWindowStart: performance.now(),
+			wsState: "—",
+			panel: O4
+		};
+
+	function ZK($) {
+		return ({
+			[WebSocket.CONNECTING]: "CONNECTING",
+			[WebSocket.OPEN]: "OPEN",
+			[WebSocket.CLOSING]: "CLOSING",
+			[WebSocket.CLOSED]: "CLOSED"
+		})[$] || "—";
+	}
+
+	function KK() {
+		return `${~~(A.viewport.x2 - A.viewport.x)}x${~~(A.viewport.y2 - A.viewport.y)} px / ${F8.size} chunks`;
+	}
+
+	function FK() {
+		let $ = performance.memory;
+
+		if (!$) return "n/a";
+
+		let Q = $.usedJSHeapSize ?? 0,
+			J = $.totalJSHeapSize ?? 0;
+
+		return `${Y3(Q)} / ${Y3(J)}`;
+	}
+
+	function Z3() {
+		if (!h0.active) return;
+
+		h0.fpsFrameCount++;
+
+		let $ = performance.now(),
+			Q = $ - h0.fpsWindowStart;
+
+		if (Q >= 1000) (
+			h0.fps = Math.round(h0.fpsFrameCount * 1000 / Q),
+			h0.fpsFrameCount = 0,
+			h0.fpsWindowStart = $
+		);
+
+		requestAnimationFrame(Z3);
+	}
+
+	function E0($, Q) {
+		return G("div.dev-overlay-row", G("span.dev-overlay-label", $), G("span.dev-overlay-value", Q));
+	}
+
+	function P5($, ...Q) {
+		return G("div.dev-overlay-section", G("div.dev-overlay-section-title", $), ...Q);
+	}
+
+	var B4, q3 = 0;
+
+	async function WK() {
+		if (!P$) return "";
+
+		if (!B4 || q3 < Date.now()) (
+			q3 = Date.now() + GK,
+			B4 = await Promise.all([
+				m4("/metrics/loop-lag"),
+				m4("/metrics/sendbulk"),
+				m4("/metrics/canvas-density")
+			])
+		);
+
+		let [$, Q, J] = B4;
+
+		return P5("server", E0("loop lag p99 / max", `${z8($?.p99_ms, l6)} / ${z8($?.max_ms, l6)}`), E0("sendBulk last-10s cpu", z8(Q?.last_10s?.cpu_pct_of_window, G3)), E0("sendBulk p99 / max", `${z8(Q?.p99_call_ms, l6)} / ${z8(Q?.max?.call_ms, l6)}`), E0("sendBulk avg fanout", z8(Q?.avg_fanout, (Y) => Y.toFixed(0))), E0("canvas density", z8(J?.density_pct, G3)));
+	}
+
+	async function K3() {
+		if (!h0.active) return;
+
+		(
+			setTimeout(K3, YK),
+			h0.wsState = ZK(k0?.readyState),
+			h0.panel.replaceChildren(G("div.dev-overlay-title", "wall: dev"), await WK(), P5("ws", E0("state", h0.wsState), E0("connection id", String(R.connectionId)), E0("ping rtt", l6(R.debug.ping)), E0("identified", R.user ? "yes" : "no")), P5("client", E0("fps", String(h0.fps)), E0("memory (jsHeap)", FK()), E0("known users", String(R0.size)), E0("paint remaining", `${R.paintRemaining} (${Math.round(R.paintRemaining / F0)} cans)`)), P5("camera", E0("translation", `${A.x.toFixed(2)}, ${A.y.toFixed(2)}`), E0("zoom", `${A.zoom.toFixed(1)} client / ${A.normalizedZoom.toFixed(1)} normal`), E0("viewport", KK()), E0("cursor", `${R.cursorX}, ${R.cursorY}`)))
+		);
+	}
+
+	function R5() {
+		if (h0.active) return;
+
+		(
+			h0.active = !0,
+			document.body.append(O4),
+			requestAnimationFrame(Z3),
+			K3()
+		);
+	}
+
+	function F3() {
+		if (!h0.active) return;
+
+		(O4.remove(), h0.active = !1);
+	}
+
+	var X8 = !1;
+
+	function L8($, Q, J = "") {
+		let Y = `s_${$}`,
+			q = G("input", {
+				type: "checkbox",
+				id: Y,
+				checked: !!p.a11y[$],
+				onchange() {
+					if (q.checked) p.a11y[$] = !0; else delete p.a11y[$];
+
+					(u6(), m0());
+				}
+			});
+
+		return G("div.checkbox", q, G("label.tooltip", Q, { dataset: { tooltip: J }, htmlFor: Y }));
+	}
+
+	function M5() {
+		let $ = new _("Settings", G("div.settings-modal", G("h3", "Accessibility"), L8("darkTheme", "Dark Theme"), L8("performanceMode", "Performance Mode", `Attempts to reduce the amount of stutters.${p.flags.perfModeAutoEnabled ? " (Recommended)" : ""}`), L8("hideNameplates", "Hide Nameplates", "Shows cursors, but removes names/chat bubbles"), L8("hideCursors", "Hide Other Cursors", "Completely hides all cursors on the canvas"), L8("systemCursor", "Use System Cursor", "Local only. Use this if you have issues with our custom cursor"), L8("hideChatBubbles", "Hide Chat Bubbles", "Do not show chat bubbles next to users. Chat is still available."), L8("devOverlay", "Stats For Nerds"), R.user && k7())),
+			Q = $.titleElement.querySelector("button.icon");
+
+		if (Q) Q.onclick = () => $.close(!0);
+
+		return $;
+	}
+
+	function u6() {
+		let $ = p.a11y;
+
+		if ($.hideCursorKeybind) ($.hideCursorKeybind = !1, $.hideCursors = !1);
+		if ((X8 = !!$.performanceMode, $.lowQualityBg)) ($.performanceMode = !0, delete $.lowQualityBg);
+
+		if ((
+			document.body.classList.toggle("dark", !!$.darkTheme),
+			document.body.classList.toggle("hide-nameplates", !!$.hideNameplates),
+			$.hideCursors
+		)) U8.remove(); else X$.append(U8);
+
+		if ($.systemCursor) H6(); else m1();
+		if ($.performanceMode) X3(); else j3();
+		if ($.devOverlay) R5(); else F3();
+	}
+
+	function W3() {
+		if (!f0) return;
+		if (p.flags.perfModeAutoEnabled) return;
+
+		(
+			p.a11y.performanceMode = !0,
+			p.flags.perfModeAutoEnabled = !0,
+			m0()
+		);
+	}
+
+	async function nY($) {
+		let Q = new Uint8Array($.length * 5),
+			J = new DataView(Q.buffer),
+			Y = 0;
+
+		for (let q of $) if ((
+			J.setUint32(Y, q[0], !0),
+			J.setUint8(Y + 4, q[1]),
+			Y += 5,
+			X8 && Y % 2500 == 0
+		)) await q1();
+
+		return Q;
+	}
+
+	function tY($) {
+		if (!JQ) return;
+
+		return c$(7, { pixels: $ });
+	}
+
+	function i2() {
+		return c$(9, {}, 1e4);
+	}
+
+	function H3($) {
+		return c$(10, $, 5000);
+	}
+
+	var U5 = 160;
+
+	function S4($) {
+		let Q = $ % b, J = Math.floor($ / b);
+
+		_4(Q, J);
+	}
+
+	function _4($, Q) {
+		d6($ - U5 / 2, Q - U5 / 2, U5, U5);
+	}
+
+	async function y0($) {
+		let { connId: Q, userId: J, fallbackPos: Y, username: q } = $;
+
+		if (Q !== void 0 && Q === R.connectionId) return (N$("That's you!"), !1);
+
+		if (Q !== void 0) {
+			let Z = R0.get(Q);
+
+			if (Z && !Z.partial && Z.lastPos !== void 0) return (S4(Z.lastPos), !0);
+		}
+
+		if (Y !== void 0) return (S4(Y), !0);
+
+		if (Q !== void 0 || J !== void 0) try {
+			let Z = await H3({ connId: Q, userId: J });
+
+			if (Z.pos != null) return (S4(Z.pos), !0);
+		} catch {}
+
+		return (
+			N$(q
+				? `${q} isn't on the wall right now.`
+				: "That user isn't on the wall right now."),
+			!1
+		);
+	}
+
+	function V3() {
+		let $ = G("div.list.mod-list"),
+			Q = G("div.mod-status"),
+			J = G("div.btn-container"),
+			Y = null;
+
+		async function q(K) {
+			if (K) (Y = null, $.replaceChildren(), J.replaceChildren());
+
+			Q.replaceChildren("Loading...");
+
+			let W = await _J({ status: "open", cursor: Y ?? void 0, limit: 25 });
+
+			if (!W.ok) {
+				Q.replaceChildren(Y0(await d(W)));
+
+				return;
+			}
+
+			let { items: F, next_cursor: H } = await W.json();
+
+			if ((Q.replaceChildren(), K && !F.length)) $.replaceChildren(G("p.desc", "No open items.")); else for (let j of F) $.append(Z(j));
+
+			(
+				Y = H,
+				J.replaceChildren(Y
+					? G("button.btn", "Load more", {
+						onclick() {
+							q(!1);
+						}
+					})
+					: "")
+			);
+		}
+
+		function Z(K) {
+			let W = G("div.mod-action-msg"),
+				F = G("input.box", { type: "text", placeholder: "Notes (optional)" }),
+				H = G("div.item.box.outset.mod-review"),
+				j = (C, v, O) => G("button.btn", C, {
+					async onclick() {
+						if (!await i(O, C)) return;
+
+						let D = await yJ(K.id, v, F.value.trim() || void 0);
+
+						if (!D.ok) {
+							W.replaceChildren(G("p.error.noicon", `${C} failed: ${await d(D)}`));
+
+							return;
+						}
+
+						H.remove();
+					}
+				}),
+				X = K.details.user_id,
+				V = G("div.mod-flag-samples");
+
+			if (typeof X == "number") (async () => {
+				let C = await $7(X);
+
+				if (!C.ok) return;
+
+				let { samples: v } = await C.json();
+
+				if (!v.length) return;
+
+				let O = v.map((M) => ({
+					pixels: I1(new Uint8Array([...atob(M.pixels)].map((D) => D.charCodeAt(0)))),
+					label: p0(M.createdAt)
+				}));
+
+				V.replaceChildren(G("span.desc", "flagged draws:"), ...O.map((M, D) => {
+					let y = E8(M.pixels);
+
+					return (
+						y.title = `${M.label} (click to expand)`,
+						y.classList.add("mod-clickable-thumb"),
+						y.addEventListener("click", () => q7(O, D)),
+						y
+					);
+				}));
+			})();
+
+			let L = K.target_username,
+				U = typeof X == "number"
+					? G(
+						"div.mod-form-row.mod-review-target",
+						L
+							? G("span.mod-jump-name.tooltip", L, {
+								dataset: { tooltip: g.jumpTo },
+								async onclick() {
+									if (await y0({ userId: X, username: L })) (
+										x(),
+										w$({ label: "Review Queue", reopen: () => s("review") })
+									);
+								}
+							})
+							: "",
+						G("span.desc", `#${X}`),
+						K.target_discord ? G("span.desc", `discord: ${K.target_discord}`) : "",
+						G("button.btn", "View user", {
+							onclick() {
+								s("users", X, { label: "Review Queue", reopen: () => s("review") });
+							}
+						})
+					)
+					: "";
+
+			return (
+				H.append(G("div.mod-review-head", G("b", K.kind), G("span.mod-tag", `x${K.hit_count}`), G("span.desc", I0(K.created_at))), U, V, G("div.details", A1(K.details)), G("div.input", F), G("div.mod-form-row", j("Dismiss", "dismiss", `Dismiss review item #${K.id}?`), j("Mark clean", "mark_clean", `Mark item #${K.id} clean?`), j("Ban", "ban", `Perma-ban the target of item #${K.id}?`)), W),
+				H
+			);
+		}
+
+		return (
+			q(!0),
+			G(
+				"div.mod-review-tab",
+				G("div.btn-container.mod-toolbar", G("button.btn", "Refresh", {
+					onclick() {
+						q(!0);
+					}
+				})),
+				Q,
+				$,
+				J
+			)
+		);
+	}
+
+	function P3() {
+		let $ = G("div.mod-action-msg"),
+			Q = G("input.box", {
+				type: "text",
+				placeholder: "Title (optional)",
+				maxLength: 120
+			}),
+			J = G("textarea.box", {
+				placeholder: g.broadcast.placeholder,
+				rows: 4,
+				maxLength: 1000
+			}),
+			Y = G("input", { type: "checkbox", checked: !1, id: "eph" });
+
+		return G("div.mod-broadcast", G("p.desc", g.broadcast.desc), G("div.mod-form", G("div.input", Q), G("div.input", J), G("div.checkbox", Y, G("label", { htmlFor: "eph" }, g.broadcast.ephDesc)), $, G("div.mod-form-row", G("button.btn", g.broadcast.btn, {
+			async onclick() {
+				let q = J.value.trim();
+
+				if (!q) {
+					$.replaceChildren(Y0("Message can't be empty."));
+
+					return;
+				}
+
+				let Z = Q.value.trim();
+
+				if (!await i(g.broadcast.confirm, "Broadcast")) return;
+
+				let W = await SJ(q, Z || void 0, !Y.checked);
+
+				if (!W.ok) {
+					$.replaceChildren(Y0(`Broadcast failed: ${await d(W)}`));
+
+					return;
+				}
+
+				(
+					Q.value = "",
+					J.value = "",
+					$.replaceChildren(G("p.success.noicon", g.broadcast.ok))
+				);
+			}
+		}))));
+	}
+
+	var y4 = 10;
+
+	function R3($) {
+		if ($ <= 0) return 1.1;
+
+		let Q = Math.max(1, Math.min(10, $));
+
+		return Math.round((0.95 - (Q - 1) / 9 * 0.55) * 100) / 100;
+	}
+
+	function M3() {
+		let $ = G("div.mod-action-msg"),
+			Q = G("p.desc.mod-bot-mapping"),
+			J = G("p.desc"),
+			Y = G("input.box.mod-bot-slider", {
+				type: "range",
+				min: "0",
+				max: String(y4),
+				step: "1",
+				value: "0"
+			}),
+			q = (K) => {
+				if (K <= 0) return g.detection.off;
+
+				let W = Math.round(R3(K) * 100);
+
+				return t0(g.detection.current, K, y4, W);
+			},
+			Z = () => {
+				Q.replaceChildren(q(Number(Y.value)));
+			};
+
+		return (
+			Y.oninput = Z,
+			(async () => {
+				let K = await sJ();
+
+				if (!K.ok) {
+					$.replaceChildren(Y0(await d(K)));
+
+					return;
+				}
+
+				let { sensitivity: W, openBotFlags: F } = await K.json();
+
+				(
+					Y.value = String(W),
+					Z(),
+					J.replaceChildren(`${g.detection.flags} ${F}.`)
+				);
+			})(),
+
+			G("div.mod-bot-config", G("p.desc", g.detection.description.join(" ")), G("div.mod-form", G("div.mod-bot-slider-row", G("span.desc", g.detection.slider[0]), Y, G("span.desc", g.detection.slider[1])), Q, J, $, G("div.mod-form-row", G("button.btn", "Save", {
+				async onclick() {
+					let K = Number(Y.value), W = await rJ(K);
+
+					if (!W.ok) {
+						$.replaceChildren(Y0(`Save failed: ${await d(W)}`));
+
+						return;
+					}
+
+					$.replaceChildren(G("p.success.noicon", g.gwValSaved));
+				}
+			}))))
+		);
+	}
+
+	var U3 = 4, z5 = !1;
+
+	function z3($, Q, J, Y, q) {
+		let Z = Math.min($, J),
+			K = Math.min(Q, Y),
+			W = Math.max($, J),
+			F = Math.max(Q, Y);
+
+		(Z = Math.min(Z, b - 1), K = Math.min(K, D0 - 1));
+
+		let H = Math.min(W - Z, q, b - Z),
+			j = Math.min(F - K, q, D0 - K);
+
+		return (
+			H = Math.max(H, 1),
+			j = Math.max(j, 1),
+			{ x: Z, y: K, width: H, height: j }
+		);
+	}
+
+	function jK($) {
+		let Q = A.rect.width / G0.width,
+			J = A.rect.height / G0.height;
+
+		return {
+			left: A.rect.left + $.x * Q,
+			top: A.rect.top + $.y * J,
+			width: $.width * Q,
+			height: $.height * J
+		};
+	}
+
+	function L5($) {
+		if (z5) return;
+
+		(z5 = !0, R.setTool(0), O$(0));
+
+		let Q = $.maxRegion ?? Math.max(b, D0),
+			J = $.color ?? "#ff3b3b",
+			Y = G("div.pick-box", { style: { display: "none", outlineColor: J } }),
+			q = $.label ? G("div.pick-mode", $.label) : "",
+			Z = G("div.pick-readout", $.hint ?? "Click a pixel  ·  Shift+drag to select an area"),
+			K = G("div.pick-hint", "Esc or right-click to cancel"),
+			W = G("div.pick-overlay", Y, q, Z, K),
+			F = null;
+
+		if ($.dimUnpainted) (F = G("div.mod-paint-scrim"), j6.prepend(F));
+
+		let H = !1,
+			j = null,
+			X = null,
+			V = !1,
+			L = 0,
+			U = 0;
+
+		function C(T) {
+			let B = jK(T);
+
+			Object.assign(Y.style, {
+				display: "block",
+				left: `${B.left}px`,
+				top: `${B.top}px`,
+				width: `${B.width}px`,
+				height: `${B.height}px`
+			});
+		}
+
+		function v(T, B) {
+			C({ x: T, y: B, width: 1, height: 1 });
+		}
+
+		function O() {
+			if (!z5) return;
+
+			(
+				z5 = !1,
+				W.remove(),
+				F?.remove(),
+				z0.removeEventListener("pointerdown", y, !0),
+				z0.removeEventListener("pointermove", w, !0),
+				window.removeEventListener("pointerup", h, !0),
+				document.removeEventListener("keydown", M, !0),
+				z0.removeEventListener("contextmenu", D, !0),
+				$.onClose?.()
+			);
+		}
+
+		function M(T) {
+			if (T.key === "Escape") (T.preventDefault(), T.stopPropagation(), O());
+		}
+
+		function D(T) {
+			(T.preventDefault(), O());
+		}
+
+		function y(T) {
+			if (T.button === 2) {
+				O();
+
+				return;
+			}
+
+			if (T.button !== 0) return;
+
+			if (T.shiftKey && $.onRegion) {
+				(T.preventDefault(), T.stopPropagation(), H = !0);
+
+				let [B, m] = _0(T.clientX, T.clientY);
+
+				(
+					j = [B, m],
+					X = z3(B, m, B, m, Q),
+					C(X),
+					Z.textContent = `${X.width}×${X.height} px`
+				);
+
+				return;
+			}
+
+			(V = !!$.onPick, L = T.clientX, U = T.clientY);
+		}
+
+		function w(T) {
+			if (H && j) {
+				(T.preventDefault(), T.stopPropagation(), B1(T.x, T.y));
+
+				let [E, S] = _0(T.clientX, T.clientY);
+
+				(
+					X = z3(j[0], j[1], E, S, Q),
+					C(X),
+					Z.textContent = `${X.width}×${X.height} px`
+				);
+
+				return;
+			}
+
+			if (V && Math.hypot(T.clientX - L, T.clientY - U) > U3) V = !1;
+
+			let [B, m] = _0(T.clientX, T.clientY);
+
+			v(B, m);
+		}
+
+		function h(T) {
+			if (H) {
+				H = !1;
+
+				let B = X;
+
+				if ((X = null, j = null, O(), B && $.onRegion)) $.onRegion(B);
+
+				return;
+			}
+
+			if (V && T.button === 0) {
+				if ((V = !1, Math.hypot(T.clientX - L, T.clientY - U) <= U3)) {
+					let [B, m] = _0(T.clientX, T.clientY);
+
+					(O(), $.onPick?.(B, m));
+				}
+			}
+		}
+
+		(
+			z0.addEventListener("pointerdown", y, !0),
+			z0.addEventListener("pointermove", w, !0),
+			window.addEventListener("pointerup", h, !0),
+			document.addEventListener("keydown", M, !0),
+			z0.addEventListener("contextmenu", D, !0),
+			u("main").after(W)
+		);
+	}
+
+	var XK = 500;
+
+	function n6() {
+		if (!g0()) return;
+
+		L5({
+			label: "Tile Inspector",
+			hint: g.inspect.hint,
+			maxRegion: XK,
+			dimUnpainted: !0,
+			onPick: ($, Q) => void HK($, Q),
+			onRegion: ($) => void VK($.x, $.y, $.width, $.height)
+		});
+	}
+
+	async function HK($, Q) {
+		let J = Q * b + $, Y = await lJ(J);
+
+		if (!Y.ok) return new _("Tile inspector", G("div.modal", Y0(await d(Y)), R$));
+
+		L3(await Y.json(), $, Q);
+	}
+
+	function L3($, Q, J) {
+		let Y = G("div.modal.mod-tile");
+
+		if ((
+			Y.append(G("div.mod-kv", o6("Position", `${Q}, ${J}`), o6("Placed", $.placed_at ? p0($.placed_at) : "unknown"))),
+			!$.user
+		)) return (
+			Y.append(G("p.desc", g.inspect.none)),
+			Y.append(G("div.btn-container", v4())),
+			void new _("Tile inspector", Y)
+		);
+
+		let q = $.user, Z = !!q.banned_at;
+
+		(
+			Y.append(
+				G("div.mod-detail-head", G("h3", q.username), F6(q.role), G("span.desc", `#${q.id}`), q.discord_id ? G("span.mod-tag.discord", "Discord") : null),
+				Z
+					? G("p.warning.noicon", `Banned ${p0(q.banned_at)}.` + (q.banned_until ? ` Until ${p0(q.banned_until)}.` : " Permanent."))
+					: G("p.desc", "Not banned."),
+				G(
+					"div.btn-container",
+					G("button.btn", "View user", {
+						onclick() {
+							s("users", q.id, { label: "Tile inspector", reopen: () => L3($, Q, J) });
+						}
+					}),
+					v4()
+				)
+			),
+			new _("Tile inspector", Y)
+		);
+	}
+
+	async function VK($, Q, J, Y) {
+		let q = await uJ($, Q, J, Y);
+
+		if (!q.ok) return new _("Area breakdown", G("div.modal", Y0(await d(q)), R$));
+
+		D3(await q.json());
+	}
+
+	function D3($) {
+		let { region: Q, owned: J, total: Y, owners: q } = $,
+			Z = G("div.modal.mod-region");
+
+		if ((
+			Z.append(G("div.mod-kv", o6("Area", `${Q.width}×${Q.height} at ${Q.x},${Q.y}`), o6("Owned pixels", `${J} / ${Y}`), o6("Distinct owners", String(q.length)))),
+			!q.length
+		)) Z.append(G("p.desc", "No owned pixels in this area.")); else Z.append(G("div.list.mod-list", ...q.map((K) => G(
+			"div.item.box.outset.mod-region-row",
+			{
+				onclick() {
+					if (K.user_id) s("users", K.user_id, { label: "Area breakdown", reopen: () => D3($) });
+				}
+			},
+			G("b", K.username ?? `#${K.user_id}`),
+			G("span.mod-row-meta", `${K.pixels} px`, G("span.desc", `${Math.round(K.pixels / J * 100)}%`))
+		))));
+
+		(
+			Z.append(G("div.btn-container", v4())),
+			new _("Area breakdown", Z)
+		);
+	}
+
+	function v4() {
+		return G("button.btn", "Close", {
+			onclick() {
+				(x(), n6());
+			}
+		});
+	}
+
+	function o6($, Q) {
+		return G("div.mod-kv-row", G("span.mod-kv-label", $), G("span.mod-kv-value", Q));
+	}
+
+	function d$($, Q, J, Y) {
+		if (Q == null) return G("span.mod-audit-actor", G("span.desc", `${$}: -`));
+
+		return G(
+			"span.mod-audit-actor",
+			G("span.desc", `${$}:`),
+			J
+				? G("span.mod-jump-name.tooltip", J, {
+					dataset: { tooltip: g.jumpTo },
+					async onclick() {
+						if (await y0({ userId: Q, username: J })) (x(), w$(Y));
+					}
+				})
+				: "",
+			G("span.desc", `#${Q}`),
+			G("button.btn.mod-id-link", "View user", {
+				onclick() {
+					s("users", Q, Y);
+				}
+			})
+		);
+	}
+
+	function PK($) {
+		let Q = G("div.mod-wipe-audit");
+
+		if ($.thumbnail) {
+			let q = G("img.mod-wipe-thumb", {
+				src: $.thumbnail,
+				alt: "Cleared region",
+				title: "Click to enlarge"
+			});
+
+			(
+				q.addEventListener("click", () => RK($.thumbnail)),
+				Q.append(q)
+			);
+		}
+
+		let J = G("div.mod-wipe-info"),
+			Y = $.width != null ? ` · ${$.width}×${$.height} at ${$.x},${$.y}` : "";
+
+		if ((
+			J.append(G("div.desc", `${$.cleared ?? $.applied ?? 0} px cleared${Y}`)),
+			$.owners?.length
+		)) J.append(G("div.mod-wipe-owners", G("span.desc", "Cleared owners:"), ...$.owners.map((q) => G("button.btn.mod-id-link", `${q.username ?? "#" + q.user_id} (${q.pixels})`, {
+			onclick() {
+				s("users", q.user_id, { label: "Audit Log", reopen: () => s("audit") });
+			}
+		})))); else J.append(G("span.desc", g.noOwners));
+
+		return (Q.append(J), Q);
+	}
+
+	function RK($) {
+		let Q = () => {
+				(document.removeEventListener("keydown", J, !0), Y.remove());
+			},
+			J = (q) => {
+				if (q.key === "Escape") (q.stopPropagation(), Q());
+			},
+			Y = G("div.modal-bg.confirm-bg.mod-wipe-expand-bg", G("div.modal-container", G("div.modal-title", G("span", "Cleared region"), G("button.btn", "Close", { onclick: Q })), G("div.modal-content", G("img.mod-wipe-expand-img", { src: $, alt: "Cleared region" }))));
+
+		(
+			Y.addEventListener("click", (q) => {
+				if (q.target === Y) Q();
+			}),
+			document.addEventListener("keydown", J, !0),
+			document.body.append(Y)
+		);
+	}
+
+	function k3() {
+		let $ = G("div.list.mod-list"),
+			Q = G("div.mod-status"),
+			J = G("div.btn-container"),
+			Y = G("input.box", { type: "text", placeholder: g.searchAudit }),
+			q = G("select.box.outset", G("option", "All actions", { value: "" }), ...g.auditActions.map((j) => G("option", j, { value: j }))),
+			Z = G("select.box.outset", G("option", "Newest first", { value: "desc" }), G("option", "Oldest first", { value: "asc" })),
+			K = null;
+
+		async function W(j) {
+			if (j) (K = null, $.replaceChildren(), J.replaceChildren());
+
+			Q.replaceChildren("Loading...");
+
+			let X = Y.value.trim(),
+				V = await aJ({
+					before: K ?? void 0,
+					limit: 25,
+					action: q.value || void 0,
+					search: X || void 0,
+					order: Z.value === "asc" ? "asc" : "desc"
+				});
+
+			if (!V.ok) {
+				Q.replaceChildren(Y0(await d(V)));
+
+				return;
+			}
+
+			let { entries: L, next_cursor: U } = await V.json();
+
+			if ((Q.replaceChildren(), j && !L.length)) {
+				let C = !!X || !!q.value;
+
+				$.replaceChildren(G("p.desc", C
+					? "No audit entries match these filters."
+					: "No audit entries."));
+			} else for (let C of L) $.append(H(C));
+
+			(
+				K = U,
+				J.replaceChildren(K
+					? G("button.btn", "Load more", {
+						onclick() {
+							W(!1);
+						}
+					})
+					: "")
+			);
+		}
+
+		(q.onchange = () => void W(!0), Z.onchange = () => void W(!0));
+
+		let F;
+
+		(
+			Y.oninput = () => {
+				(clearTimeout(F), F = setTimeout(() => void W(!0), 300));
+			},
+
+			Y.onkeydown = (j) => {
+				if (j.key === "Enter") (clearTimeout(F), W(!0));
+			}
+		);
+
+		function H(j) {
+			let X = j.action === "wipe_canvas" ? PK(j.details) : G("div.details", A1(j.details)),
+				V = { label: "Audit Log", reopen: () => s("audit") };
+
+			return G("div.item.box.outset.mod-audit", G("div.mod-audit-head", G("b", j.action), G("span.desc", I0(j.created_at))), G("div.mod-audit-meta", d$("mod", j.mod_id, j.mod_username, V), d$("target", j.target_id, j.target_username, V)), X);
+		}
+
+		return (
+			W(!0),
+			G(
+				"div.mod-audit-tab",
+				G("div.btn-container.mod-toolbar.mod-audit-toolbar", G("div.input.mod-audit-search", Y), q, Z, G("button.btn", "Refresh", {
+					onclick() {
+						W(!0);
+					}
+				})),
+				Q,
+				$,
+				J
+			)
+		);
+	}
+
+	function A3() {
+		let $ = G("div.list.mod-list"),
+			Q = G("div.mod-status"),
+			J = G("div.btn-container"),
+			Y = 0,
+			q = G("select.input.box", G("option", { value: "report" }, "User Reports"), G("option", { value: "bug" }, "Bug Reports"), G("option", { value: "feedback" }, "Feedback"), G("option", { value: "suggestion" }, "Suggestions"), {
+				oninput() {
+					Z(!0);
+				}
+			});
+
+		async function Z(W) {
+			if (W) (Y = 0, $.replaceChildren(), J.replaceChildren());
+
+			Q.replaceChildren("Loading...");
+
+			let F = await vJ(q.value, Y);
+
+			if (!F.ok) {
+				Q.replaceChildren(Y0(await d(F)));
+
+				return;
+			}
+
+			let H = await F.json();
+
+			if ((Q.replaceChildren(), W && !H.length)) $.replaceChildren(G("p.desc", "No open items.")); else for (let j of H) $.append(K(j));
+
+			(
+				Y += H.length,
+				J.replaceChildren(H.length >= 20
+					? G("button.btn", "Load more", {
+						onclick() {
+							Z(!1);
+						}
+					})
+					: "")
+			);
+		}
+
+		function K(W) {
+			let F = G("div.mod-action-msg"),
+				H = G("input.box", { type: "text", placeholder: "Reply to User (optional)" }),
+				j = (C, v, O) => G("button.btn", C, {
+					async onclick() {
+						if (!await i(O, C)) return;
+
+						let D = await gJ(W.id, v, H.value.trim() || void 0);
+
+						if (!D.ok) {
+							F.replaceChildren(G("p.error.noicon", `${C} failed: ${await d(D)}`));
+
+							return;
+						}
+
+						if (v != "ignore") U.remove();
+						if (v == "prune") Z(!0);
+					}
+				}),
+				X = W.content.split("|"),
+				V = X.slice(4).join("|").trim(),
+				L = { label: "Feedback", reopen: () => s("feedback") },
+				U = G(
+					"div.item.box.outset.mod-review",
+					G("div.mod-review-head", G("b", W.kind)),
+					W.kind == "report"
+						? [
+							G("p.desc", d$("from", W.user_id, W.username, L), " ", d$("target", parseInt(X[1]), X[2], L)),
+							G("div.details.pre", G("b", X[3]), V && `// ${V}`)
+						]
+						: [
+							G("p.desc", d$("from", W.user_id, W.username, L)),
+							G("div.details.pre", W.content)
+						],
+					G("div.input", H),
+					G("div.mod-form-row", j("Resolve", "resolve", g.feedback.resolve), j("Ignore", "ignore", g.feedback.ignore), j("Prune", "prune", g.feedback.prune)),
+					F
+				);
+
+			return U;
+		}
+
+		return (
+			Z(!0),
+			G(
+				"div.mod-review-tab",
+				G("div.btn-container.mod-toolbar", q, G("button.btn", "Refresh", {
+					onclick() {
+						Z(!0);
+					}
+				})),
+				Q,
+				$,
+				J
+			)
+		);
+	}
+
+	var MK = 500;
+
+	function r8() {
+		if (!g0()) return;
+
+		L5({
+			label: "Wipe Canvas Selection",
+			hint: g.wipe.hint,
+			maxRegion: MK,
+			dimUnpainted: !0,
+			onRegion: async ($) => {
+				if (!await i(`Clear a ${$.width}×${$.height} px area at (${$.x}, ${$.y})? This wipes those pixels for everyone (you can undo right after).`, "Wipe area", "Wipe", "Cancel")) return void r8();
+
+				let J = await fJ($);
+
+				if (!J.ok) return T0(J, "Could not wipe the area");
+
+				let { applied: Y, chunks: q, undoToken: Z } = await J.json();
+
+				new _("Area wiped", G("div.modal", G("p", `Cleared ${Y} pixel(s) across ${q} chunk(s).`), G("p.desc", g.snapshotDisplayNote), G("div.btn-container", Z ? C1(Z) : "", G("button.btn", "Close", {
+					onclick() {
+						(x(), r8());
+					}
+				}))));
+			}
+		});
+	}
+
+	async function UK($, Q) {
+		let J = await nJ($, Q);
+
+		if (!J.ok) return null;
+
+		let Y = new Uint8Array(await J.arrayBuffer()),
+			q = j$.deserialize(Y),
+			Z = q.pixels instanceof Uint8Array ? q.pixels : q.pixels?.buffer ?? new Uint8Array(),
+			K = I1(Z);
+
+		return K.length ? K : null;
+	}
+
+	function zK($) {
+		document.querySelector(".mod-ghost-control")?.remove();
+
+		let Q = $.states.filter((W) => W === T1).length,
+			J = $.states.filter((W) => W === E1).length,
+			Y = [];
+
+		if (Q > 0) Y.push(`${Q} px overpainted (dim)`);
+		if (J > 0) Y.push(`${J} px removed by a moderator (red)`);
+
+		let q = G("button.btn", "‹ Prev", {
+			onclick() {
+				$.onPrev?.();
+			}
+		});
+
+		q.disabled = !$.onPrev;
+
+		let Z = G("button.btn", "Next ›", {
+			onclick() {
+				$.onNext?.();
+			}
+		});
+
+		Z.disabled = !$.onNext;
+
+		let K = G(
+			"div.mod-ghost-control",
+			G("span", Y.length
+				? `Submission ${$.position} · ${Y.join(" · ")}`
+				: `Submission ${$.position}`),
+			q,
+			Z,
+			G("button.btn", `↩ Back to ${$.username}`, { onclick: $.onBack }),
+			G("button.btn", "Clear", {
+				onclick() {
+					(e5(), K.remove());
+				}
+			})
+		);
+
+		document.body.append(K);
+	}
+
+	function C3($, Q) {
+		let J = G("div.list.mod-list.mod-ph-list"),
+			Y = G("div.mod-ph-more"),
+			q = null,
+			Z = !1,
+			K = [],
+			W = new Map();
+
+		async function F() {
+			if (Z) return;
+
+			(Z = !0, Y.replaceChildren(G("span.desc", "Loading…")));
+
+			let L = await oJ($, q ? { before: q } : {});
+
+			if ((Z = !1, !L.ok)) {
+				Y.replaceChildren(Y0(await d(L)));
+
+				return;
+			}
+
+			let { entries: U, next_cursor: C } = await L.json();
+
+			if (!U.length && !q) {
+				(
+					J.replaceChildren(G("p.desc", "No paint history (or pruned by retention).")),
+					Y.replaceChildren()
+				);
+
+				return;
+			}
+
+			for (let v of U) {
+				let O = K.length;
+
+				(K.push(v), J.append(V(v, O)));
+			}
+
+			(
+				q = C,
+				Y.replaceChildren(C
+					? G("button.btn.mod-ph-loadmore", "Load more", { onclick: () => void F() })
+					: G("span.desc", "End of history."))
+			);
+		}
+
+		async function H(L) {
+			let U = W.get(L.id);
+
+			if (U) return U;
+
+			let C = await UK($, L.id);
+
+			if (C) W.set(L.id, C);
+
+			return C;
+		}
+
+		async function j(L) {
+			let U = K[L];
+
+			if (!U) return;
+
+			let C = await H(U);
+
+			if (!C) {
+				N$("Could not load submission pixels.");
+
+				return;
+			}
+
+			let v = C.map(() => i5),
+				O = await dJ(C.map((y) => y.pos));
+
+			if (O.ok) {
+				let { owners: y, deleted: w } = await O.json();
+
+				v = y.map((h, T) => h === $ ? i5 : w?.[T] ? E1 : T1);
+			}
+
+			(x(), Y7(C, v));
+
+			let M = W6(C);
+
+			d6(M.x, M.y, M.width, M.height);
+
+			let D = L + 1 < K.length || !!q;
+
+			zK({
+				states: v,
+				username: Q,
+				position: `${L + 1} / ${K.length}${q ? "+" : ""}`,
+				onPrev: L > 0 ? () => void j(L - 1) : void 0,
+				onNext: D ? () => void X(L) : void 0,
+				onBack: () => {
+					(
+						e5(),
+						document.querySelector(".mod-ghost-control")?.remove(),
+						s("users", $)
+					);
+				}
+			});
+		}
+
+		async function X(L) {
+			if (L + 1 >= K.length && q) await F();
+			if (L + 1 < K.length) j(L + 1);
+		}
+
+		function V(L, U) {
+			let C = G("div.mod-ph-thumb-box", G("span.desc", "…")),
+				v = G("div.mod-ph-label", G("span", `${L.pixel_count} px`), G("span.desc", I0(L.created_at))),
+				O = G(
+					"div.item.box.outset.mod-ph-row",
+					{
+						onclick() {
+							j(U);
+						}
+					},
+					C,
+					v
+				);
+
+			return (
+				(async () => {
+					let M = await H(L);
+
+					if (!M) return;
+
+					let D = W6(M);
+
+					if ((C.replaceChildren(E8(M)), D)) v.append(G("span.desc", `@ ${D.x},${D.y}`));
+				})(),
+				O
+			);
+		}
+
+		return (F(), G("div.mod-ph", J, Y));
+	}
+
+	function LK($) {
+		if ($ === null || !Number.isFinite($) || $ < 0) return null;
+
+		let Q = $ % b, J = $ / b | 0;
+
+		return `@ ${Q},${J}`;
+	}
+
+	function T3($, Q) {
+		let J = G("div.list.mod-list.mod-ch-list"),
+			Y = G("div.mod-ch-more"),
+			q = null,
+			Z = !1;
+
+		function K(H) {
+			y0({ fallbackPos: H }).then((j) => {
+				if (!j) return;
+
+				(x(), w$({ label: Q, reopen: () => s("users", $) }));
+			});
+		}
+
+		async function W() {
+			if (Z) return;
+
+			(Z = !0, Y.replaceChildren(G("span.desc", "Loading…")));
+
+			let H = await tJ($, q ? { before: q } : {});
+
+			if ((Z = !1, !H.ok)) {
+				Y.replaceChildren(Y0(await d(H)));
+
+				return;
+			}
+
+			let { entries: j, next_cursor: X } = await H.json();
+
+			if (!j.length && !q) {
+				(
+					J.replaceChildren(G("p.desc", "No chat messages.")),
+					Y.replaceChildren()
+				);
+
+				return;
+			}
+
+			for (let V of j) J.append(F(V));
+
+			(
+				q = X,
+				Y.replaceChildren(X
+					? G("button.btn.mod-ch-loadmore", "Load more", { onclick: () => void W() })
+					: G("span.desc", "End of history."))
+			);
+		}
+
+		function F(H) {
+			let j = LK(H.pos),
+				X = j
+					? G("button.btn.mod-ch-loc.mod-jump-loc", j, { dataset: { tooltip: g.jumpSent }, onclick: () => K(H.pos) })
+					: "";
+
+			return G("div.item.box.outset.mod-ch-row", G("div.mod-ch-text", H.content ?? ""), G("div.mod-ch-meta", G("span.desc", I0(H.timestamp)), X));
+		}
+
+		return (W(), G("div.mod-ch", J, Y));
+	}
+
+	var t6 = null;
+
+	async function DK() {
+		if (t6) return t6;
+
+		return (t6 = await (await N.cursor.data.$get()).json(), t6);
+	}
+
+	function g4($) {
+		return t6?.find((Q) => Q.id === $)?.name ?? `#${$}`;
+	}
+
+	async function E3($ = {}) {
+		let Q = await DK();
+
+		return new Promise((J) => {
+			let Y = !1,
+				q = (F) => {
+					if (Y) return;
+
+					(
+						Y = !0,
+						document.removeEventListener("keydown", Z, !0),
+						W.remove(),
+						J(F)
+					);
+				},
+				Z = (F) => {
+					if (F.key == "Escape") (F.stopPropagation(), q(null));
+				},
+				K = new Set($.owned ?? []),
+				W = G("div.modal-bg.confirm-bg.cursor-pick-bg", G("div.modal-container", G("div.modal-title", G("span", $.title ?? "Select a cursor"), J$("close", { ariaLabel: "Close", onclick: () => q(null) })), G("div.modal-content", G("div.inventory.nopad", G("div.scroll.pad", G("div.items", Q.filter((F) => !F.free).map((F) => G(
+					"div.item.box.tooltip",
+					K.has(F.id) && { className: "owned" },
+					{
+						dataset: { tooltip: K.has(F.id) ? `${F.name} (owned)` : F.name },
+						onclick: () => q(F.id)
+					},
+					G("img", { src: b0(F.id), draggable: !1 })
+				))))))));
+
+			(
+				W.addEventListener("click", (F) => {
+					if (F.target == W) q(null);
+				}),
+				document.addEventListener("keydown", Z, !0),
+				document.body.append(W)
+			);
+		});
+	}
+
+	var H$ = b,
+		i8 = D0,
+		kK = "rgba(8,8,12,0.66)",
+		AK = "rgba(255,56,56,0.5)",
+		CK = 2,
+		TK = 256;
+
+	function I3($) {
+		let { ownedPositions: Q } = $,
+			J = new Uint8Array(s$ + 7 >> 3);
+
+		for (let I = 0; I < Q.length; I++) {
+			let c = Q[I];
+
+			J[c >> 3] |= 1 << (c & 7);
+		}
+
+		let Y = (I) => J[I >> 3] >> (I & 7) & 1,
+			q = G("canvas.mod-mask-layer", { width: H$, height: i8 }),
+			Z = G("canvas.mod-select-layer", { width: H$, height: i8 }),
+			K = q.getContext("2d"),
+			W = Z.getContext("2d");
+
+		(K.fillStyle = kK, K.fillRect(0, 0, H$, i8));
+
+		for (let I = 0; I < Q.length; I++) {
+			let c = Q[I];
+
+			K.clearRect(c % H$, c / H$ | 0, 1, 1);
+		}
+
+		(W.fillStyle = AK, X$.append(q, Z));
+
+		let F = G("div.mod-sel-hover", { style: { display: "none" } }),
+			H = G("div.mod-sel-rect", { style: { display: "none" } });
+
+		document.body.append(F, H);
+
+		let j = new Set(),
+			X = "rect",
+			V = 24,
+			L = !1,
+			U = 0,
+			C = 0,
+			v = !1,
+			O = null,
+			M = null,
+			D = () => $.onChange?.(j.size);
+
+		function y(I, c) {
+			if (I < 0 || I >= H$ || c < 0 || c >= i8) return;
+
+			let a = c * H$ + I;
+
+			if (!Y(a) || j.has(a)) return;
+
+			(j.add(a), W.fillRect(I, c, 1, 1));
+		}
+
+		function w(I, c) {
+			let a = Math.max(1, V >> 1), L0 = a * a;
+
+			for (let X0 = -a; X0 <= a; X0++) {
+				let M0 = c + X0;
+
+				if (M0 < 0 || M0 >= i8) continue;
+
+				for (let A0 = -a; A0 <= a; A0++) {
+					if (X === "circle" && A0 * A0 + X0 * X0 > L0) continue;
+
+					y(I + A0, M0);
+				}
+			}
+		}
+
+		function h(I, c, a, L0) {
+			let X0 = Math.hypot(a - I, L0 - c),
+				M0 = Math.max(1, V >> 1),
+				A0 = Math.max(1, Math.ceil(X0 / M0));
+
+			for (let N0 = 1; N0 <= A0; N0++) w(Math.round(I + (a - I) * N0 / A0), Math.round(c + (L0 - c) * N0 / A0));
+		}
+
+		function T() {
+			if (!O || !M) return;
+
+			let I = Math.min(O[0], M[0]),
+				c = Math.min(O[1], M[1]),
+				a = Math.max(O[0], M[0]),
+				L0 = Math.max(O[1], M[1]);
+
+			for (let X0 = 0; X0 < Q.length; X0++) {
+				let M0 = Q[X0], A0 = M0 % H$, N0 = M0 / H$ | 0;
+
+				if (A0 >= I && A0 <= a && N0 >= c && N0 <= L0) y(A0, N0);
+			}
+		}
+
+		function B() {
+			return {
+				b: A.rect,
+				sx: A.rect.width / G0.width,
+				sy: A.rect.height / G0.height
+			};
+		}
+
+		function m() {
+			if (!O || !M) {
+				H.style.display = "none";
+
+				return;
+			}
+
+			let { b: I, sx: c, sy: a } = B(),
+				L0 = Math.min(O[0], M[0]),
+				X0 = Math.min(O[1], M[1]),
+				M0 = Math.abs(M[0] - O[0]) + 1,
+				A0 = Math.abs(M[1] - O[1]) + 1;
+
+			Object.assign(H.style, {
+				display: "block",
+				left: `${I.left + L0 * c}px`,
+				top: `${I.top + X0 * a}px`,
+				width: `${M0 * c}px`,
+				height: `${A0 * a}px`
+			});
+		}
+
+		function E(I, c) {
+			if (X === "rect") {
+				F.style.display = "none";
+
+				return;
+			}
+
+			let { sx: a } = B(), L0 = Math.max(4, V * a);
+
+			Object.assign(F.style, {
+				display: "block",
+				left: `${I}px`,
+				top: `${c}px`,
+				width: `${L0}px`,
+				height: `${L0}px`,
+				borderRadius: X === "circle" ? "50%" : "0"
+			});
+		}
+
+		function S(I) {
+			if (I.button !== 0) return;
+
+			(I.preventDefault(), I.stopPropagation());
+
+			let [c, a] = _0(I.clientX, I.clientY);
+
+			if (X === "rect") (v = !0, O = [c, a], M = [c, a], m()); else (L = !0, U = c, C = a, w(c, a), D());
+		}
+
+		function n(I) {
+			if (v) {
+				(
+					I.preventDefault(),
+					I.stopPropagation(),
+					M = _0(I.clientX, I.clientY),
+					m()
+				);
+
+				return;
+			}
+
+			if (L) {
+				(I.preventDefault(), I.stopPropagation());
+
+				let [c, a] = _0(I.clientX, I.clientY);
+
+				(h(U, C, c, a), U = c, C = a, D());
+
+				return;
+			}
+
+			E(I.clientX, I.clientY);
+		}
+
+		function J0(I) {
+			if (v && I.button === 0) {
+				(
+					I.preventDefault(),
+					I.stopPropagation(),
+					v = !1,
+					T(),
+					H.style.display = "none",
+					O = M = null,
+					D()
+				);
+
+				return;
+			}
+
+			if (L && I.button === 0) (I.preventDefault(), I.stopPropagation(), L = !1);
+		}
+
+		function l(I) {
+			if (I.key !== "Escape") return;
+			if (document.querySelector(".modal-bg")) return;
+
+			(I.preventDefault(), I.stopPropagation(), t(), $.onExit?.());
+		}
+
+		let Q0 = (I) => I.preventDefault();
+
+		(
+			z0.addEventListener("mousedown", S, !0),
+			window.addEventListener("mousemove", n, !0),
+			window.addEventListener("mouseup", J0, !0),
+			document.addEventListener("keydown", l, !0),
+			z0.addEventListener("contextmenu", Q0, !0)
+		);
+
+		let P0 = !1;
+
+		function t() {
+			if (P0) return;
+
+			(
+				P0 = !0,
+				z0.removeEventListener("mousedown", S, !0),
+				window.removeEventListener("mousemove", n, !0),
+				window.removeEventListener("mouseup", J0, !0),
+				document.removeEventListener("keydown", l, !0),
+				z0.removeEventListener("contextmenu", Q0, !0),
+				q.remove(),
+				Z.remove(),
+				F.remove(),
+				H.remove()
+			);
+		}
+
+		return {
+			setTool(I) {
+				if ((X = I, I === "rect")) F.style.display = "none";
+			},
+
+			setBrushSize(I) {
+				V = Math.max(CK, Math.min(TK, Math.round(I)));
+			},
+
+			clearSelection() {
+				(j.clear(), W.clearRect(0, 0, H$, i8), D());
+			},
+			count: () => j.size,
+			positions: () => [...j],
+			destroy: t
+		};
+	}
+
+	async function h3($, Q = 0) {
+		let J = await wJ($, Q);
+
+		if (!J.ok) return null;
+
+		let Y = new Uint8Array(await J.arrayBuffer()),
+			q = j$.deserialize(Y),
+			W = ((q.positions instanceof Uint8Array ? q.positions : q.positions?.buffer) ?? new Uint8Array()).slice(),
+			F = new Uint32Array(W.buffer, 0, W.byteLength / 4 | 0);
+
+		return {
+			positions: F,
+			total: q.total ?? F.length,
+			truncated: !!q.truncated,
+			offset: q.offset ?? 0,
+			cap: q.cap ?? F.length
+		};
+	}
+
+	var N3 = [
+			{
+				group: "Drag a box",
+				tools: [{ tool: "rect", label: "Rectangle" }]
+			},
+
+			{
+				group: "Brush over pixels",
+				tools: [
+					{ tool: "circle", label: "Circle" },
+					{ tool: "square", label: "Square" }
+				]
+			}
+		],
+		w3 = N3[0].tools[0];
+
+	async function m3($, Q, J) {
+		if (!g0()) return;
+
+		J("Loading this user's pixels…", !0);
+
+		let Y;
+
+		try {
+			Y = await h3($);
+		} catch {
+			Y = null;
+		}
+
+		if (!Y) {
+			J("Could not load this user's pixels.", !1);
+
+			return;
+		}
+
+		if (Y.total === 0) {
+			J("This user owns no visible pixels.", !1);
+
+			return;
+		}
+
+		(x(), EK($, Q, Y));
+	}
+
+	function EK($, Q, J) {
+		let Y = J,
+			q = G("span.mod-sel-count"),
+			Z = G("button.btn.mod-sel-delete", "Delete selected"),
+			K = G("button.btn", "Clear selection"),
+			W = G("span.mod-sel-sizeout", "24px"),
+			F = G("input.mod-sel-size", { type: "range", min: "2", max: "256", value: "24" }),
+			H = G("div.mod-sel-brush", G("span", "Brush"), F, W);
+
+		H.style.display = "none";
+
+		let j = w3.tool,
+			X = 24,
+			V,
+			L = (l) => {
+				(
+					q.textContent = `${l} flagged`,
+					Z.textContent = l ? `Delete selected (${l})` : "Delete selected",
+					Z.disabled = l === 0,
+					K.disabled = l === 0
+				);
+			};
+
+		function U(l) {
+			let Q0 = I3({
+				ownedPositions: l.positions,
+				onChange: (P0) => L(P0),
+				onExit: () => C()
+			});
+
+			return (Q0.setTool(j), Q0.setBrushSize(X), Q0);
+		}
+
+		let C = () => {
+			(V.destroy(), J0.remove(), s("users", $));
+		};
+
+		(
+			V = U(Y),
+			F.oninput = () => {
+				(
+					X = Number(F.value),
+					V.setBrushSize(X),
+					W.textContent = `${F.value}px`
+				);
+			}
+		);
+
+		let v = G("p.mod-sel-desc", g.wipe.tools[w3.tool]),
+			O = [],
+			M = N3.map(({ group: l, tools: Q0 }) => {
+				let P0 = Q0.map(({ tool: t, label: I }) => {
+					let c = G("button.btn.mod-sel-tool", I);
+
+					return (
+						c.onclick = () => {
+							(j = t, V.setTool(t));
+
+							for (let a of O) a.classList.toggle("active", a === c);
+
+							(
+								H.style.display = t === "rect" ? "none" : "",
+								v.textContent = g.wipe.tools[t]
+							);
+						},
+						O.push(c),
+						c
+					);
+				});
+
+				return G("div.mod-sel-group", G("span.mod-sel-group-label", l), G("div.mod-sel-group-btns", ...P0));
+			});
+
+		O[0].classList.add("active");
+
+		let D = G("p.mod-sel-warn"),
+			y = G("div.mod-range-track"),
+			w = G("div.mod-range-thumb");
+
+		y.append(w);
+
+		let h = G("div.mod-range-label"),
+			T = Y.truncated ? G("div.mod-range", D, y, h) : "",
+			B = () => Math.max(0, Y.total - Y.cap);
+
+		function m(l) {
+			return Math.max(28, l * Math.min(1, Y.cap / Y.total));
+		}
+
+		function E(l) {
+			let Q0 = y.clientWidth || 260,
+				P0 = m(Q0),
+				t = Math.max(0, Q0 - P0),
+				I = B();
+
+			(
+				w.style.width = `${P0}px`,
+				w.style.left = `${I === 0 ? 0 : t * (l / I)}px`
+			);
+
+			let c = Math.min(Y.total, l + Y.cap);
+
+			h.textContent = `Viewing pixels ${(l + 1).toLocaleString()}–${c.toLocaleString()} of ${Y.total.toLocaleString()}`;
+		}
+
+		function S(l) {
+			let Q0 = y.clientWidth || 260,
+				P0 = Math.max(0, Q0 - m(Q0));
+
+			return P0 === 0 ? 0 : Math.round(l / P0 * B());
+		}
+
+		if (T) {
+			D.textContent = t0(g.wipe.warn, Y.total.toLocaleString(), Y.cap.toLocaleString());
+
+			let l = !1, Q0 = 0, P0 = 0;
+
+			(
+				w.onpointerdown = (I) => {
+					(
+						I.preventDefault(),
+						l = !0,
+						Q0 = I.clientX,
+						P0 = parseFloat(w.style.left || "0")
+					);
+
+					try {
+						w.setPointerCapture(I.pointerId);
+					} catch {}
+				},
+
+				w.onpointermove = (I) => {
+					if (!l) return;
+
+					let c = y.clientWidth || 260,
+						a = Math.max(0, c - m(c)),
+						L0 = Math.max(0, Math.min(a, P0 + (I.clientX - Q0)));
+
+					w.style.left = `${L0}px`;
+
+					let X0 = S(L0), M0 = Math.min(Y.total, X0 + Y.cap);
+
+					h.textContent = `Viewing pixels ${(X0 + 1).toLocaleString()}–${M0.toLocaleString()} of ${Y.total.toLocaleString()}`;
+				}
+			);
+
+			let t = (I) => {
+				if (!l) return;
+
+				l = !1;
+
+				try {
+					w.releasePointerCapture(I.pointerId);
+				} catch {}
+
+				n(S(parseFloat(w.style.left || "0")));
+			};
+
+			(
+				w.onpointerup = t,
+				w.onpointercancel = t,
+				setTimeout(() => E(Y.offset), 0)
+			);
+		}
+
+		async function n(l) {
+			if (l === Y.offset) return;
+
+			h.textContent = "Loading section…";
+
+			let Q0 = null;
+
+			try {
+				Q0 = await h3($, l);
+			} catch {}
+
+			if (!Q0) {
+				E(Y.offset);
+
+				return;
+			}
+
+			(Y = Q0, V.destroy(), V = U(Y), L(0), E(Y.offset));
+		}
+
+		(
+			Z.onclick = async () => {
+				let l = V.positions();
+
+				if (!l.length) return;
+				if (!await i(t0(g.wipe.confirm, l.length, Q), "Delete selected strokes", "Delete", "Cancel")) return;
+
+				let P0 = await hJ($, l);
+
+				if (!P0.ok) return e("Could not delete selected pixels", await d(P0));
+
+				let { pixelsWiped: t, undoToken: I } = await P0.json();
+
+				(
+					V.destroy(),
+					J0.remove(),
+					new _("Strokes deleted", G("div.modal", G("p", t0(g.wipe.removed, t, Q)), G("p.desc", g.snapshotDisplayNote), G(
+						"div.btn-container",
+						I ? C1(I) : "",
+						G("button.btn", `↩ Back to ${Q}`, {
+							onclick() {
+								(x(), s("users", $));
+							}
+						}),
+						G("button.btn.secondary", "Close", { onclick: () => x() })
+					)))
+				);
+			},
+			K.onclick = () => V.clearSelection()
+		);
+
+		let J0 = G("div.mod-select-overlay", G("div.mod-sel-head", `Deleting ${Q}'s pixels`), T, G("div.mod-sel-tools", ...M), v, H, G("div.mod-sel-info", q), G("div.mod-sel-actions", Z, K, G("button.btn", "Cancel", { onclick: () => C() })), G("p.mod-sel-hint", "Right-drag to pan · scroll to zoom · Esc to cancel"));
+
+		(L(0), document.body.append(J0));
+	}
+
+	function x4($, Q) {
+		let J = G("div.list", "Loading..."), Y = !1;
+
+		new _("Moderation", G("div.clans-modal", Q && p4(Q), L6($, !0), G(
+			"details.clan-member-list.box",
+			G("summary", "Members", {
+				async onclick() {
+					if (Y) return;
+
+					Y = !0;
+
+					let q = await bJ($.id);
+
+					if (!q.ok) return (Y = !1, J.replaceChildren(G("p.error.noicon", await d(q))));
+
+					let Z = await q.json();
+
+					J.replaceWith(G("div.list", Z.map((K, W, F) => [
+						G("a.link", K.username, {
+							onclick() {
+								s("users", K.id, { label: $.name, reopen: () => x4($, Q) });
+							}
+						}),
+						W < F.length - 1 && ", "
+					])));
+				}
+			}),
+			J
+		)));
+	}
+
+	var B3 = 50, IK = ["user", "moderator", "admin"];
+
+	function c4($) {
+		let Q = G("div.list.mod-list"),
+			J = G("div.mod-detail"),
+			Y = G("div.mod-status"),
+			q = "";
+
+		async function Z(M) {
+			(q = M, Y.replaceChildren("Searching..."));
+
+			let D = await kJ(M);
+
+			if (M != q) return;
+
+			if (!D.ok) {
+				Y.replaceChildren(Y0(await d(D)));
+
+				return;
+			}
+
+			let { users: y } = await D.json();
+
+			(Y.replaceChildren(), K(y));
+		}
+
+		function K(M) {
+			if (!M.length) {
+				Q.replaceChildren(G("p.desc", "No users found."));
+
+				return;
+			}
+
+			Q.replaceChildren(...M.map((D) => G(
+				"div.item.box.outset.mod-row",
+				{
+					onclick() {
+						W(D.id);
+					}
+				},
+				G("b", D.username),
+				G("span.mod-row-meta", `#${D.id}`, F6(D.role), D.ban && G("span.mod-tag.banned", "banned"), D.mute && G("span.mod-tag.muted", "muted"), Array.isArray(D.flagged) && G("span.mod-tag.flagged", D.flagged.length > 1 ? `flagged x${D.flagged.length}` : "flagged"))
+			)));
+		}
+
+		async function W(M, D, y = !1) {
+			J.replaceChildren(G("p.desc", "Loading..."));
+
+			let w = await AJ(M);
+
+			if (!w.ok) {
+				J.replaceChildren(Y0(await d(w)));
+
+				return;
+			}
+
+			let { user: h, cursors: T } = await w.json();
+
+			if ((H(h, T, D), y && h.username && v.value !== h.username)) (v.value = h.username, Z(h.username));
+		}
+
+		function F(M, D, y) {
+			M.replaceChildren(G(y ? "p.success.noicon" : "p.error.noicon", D));
+		}
+
+		function H(M, D, y) {
+			let w = M.id,
+				h = G("div.mod-action-msg"),
+				T = typeof M.ban == "object" ? M.ban : null,
+				B = typeof M.mute == "object" ? M.mute : null,
+				m = Array.isArray(M.flagged) ? M.flagged : null,
+				E = !!M.excluded_from_leaderboard,
+				S = (t) => W(w, t),
+				n = (t) => {
+					let I = G("button.btn.mod-undo", "Undo", {
+						async onclick() {
+							I.disabled = !0;
+
+							let c = await t();
+
+							if (!c.ok) {
+								(I.disabled = !1, F(h, `Undo failed: ${await d(c)}`, !1));
+
+								return;
+							}
+
+							await S({ text: "Reverted." });
+						}
+					});
+
+					return I;
+				};
+
+			if (y) {
+				if ((F(h, y.text, !0), y.undo)) h.append(n(y.undo));
+			}
+
+			let J0 = (t, I, c) => {
+					let a = G("input.box", { type: "text", placeholder: "Reason (optional)" }),
+						L0 = G("select.box.outset", r5.map((X0, M0) => G("option", X0.label, { value: String(M0), selected: M0 == 0 })));
+
+					return G("div.mod-form-sanction", G("div.input", a), G("div.mod-form-row", L0, G("button.btn", t, {
+						async onclick() {
+							let X0 = r5[Number(L0.value)],
+								M0 = X0.seconds == null ? "permanently" : `for ${X0.label}`;
+
+							if (!await i(`${t} ${M.username} ${M0}?`, `${t} user`)) return;
+
+							let N0 = await I(a.value.trim(), X0.seconds ?? void 0);
+
+							if (!N0.ok) {
+								F(h, `${t} failed: ${await d(N0)}`, !1);
+
+								return;
+							}
+
+							await S({ text: `${t} applied.`, undo: c });
+						}
+					})));
+				},
+				l = (t, I, c, a, L0) => G("button.btn", t, {
+					async onclick() {
+						if (!await i(I, t)) return;
+
+						let M0 = await c();
+
+						if (!M0.ok) {
+							F(h, `${t} failed: ${await d(M0)}`, !1);
+
+							return;
+						}
+
+						let A0 = "", N0;
+
+						try {
+							let S5 = await M0.clone().json();
+
+							if (typeof S5.pixelsCleared == "number") A0 = ` (${S5.pixelsCleared} pixels cleared)`;
+
+							N0 = S5.undoToken;
+						} catch {}
+
+						await S({
+							text: a + A0 + (L0 ? ` ${L0}` : ""),
+							undo: N0 ? () => D1(N0) : void 0
+						});
+					}
+				}),
+				Q0 = G("div.mod-sessions"),
+				P0 = a6();
+
+			J.replaceChildren(G(
+				"div.mod-detail-inner",
+				G(
+					"div.mod-detail-head",
+					G("h3.tooltip.mod-jump-name", M.username, {
+						dataset: { tooltip: "Click to jump to this user's cursor" },
+						async onclick() {
+							if (await y0({ userId: w, username: M.username })) (x(), w$({ label: M.username, reopen: () => s("users", w) }));
+						}
+					}),
+					F6(M.role),
+					G("span.desc", `#${M.id}`)
+				),
+				G(
+					"div.mod-kv",
+					C("Created At", I0(M.created_at)),
+					C("Country", P1(M.country_code || "")),
+					C("Paint", `${Math.floor(M.paint / F0)} cans (${M.paint} px)`),
+					C("Coins", `${Math.floor(M.coins)} \uD83E\uDE99`),
+					C("Px changed", String(M.stats.pixels_changed)),
+					C("Px visible", String(M.stats.paint_visible)),
+					M.discord_id
+						? C("Discord", G("a.link", M.discord_username || "<Unknown Name>", {
+							target: "_blank",
+							href: `https://discord.com/users/${M.discord_id}`
+						}))
+						: "",
+					M.clan && C("Clan", G("a.link", M.clan.name, {
+						onclick() {
+							x4(M.clan, { label: M.username, reopen: () => s("users", M.id) });
+						}
+					})),
+					"email" in M && C("Email", M.email || "-")
+				),
+				T
+					? G("p.warning.noicon", `Banned ${p0(T.at)} by #${T.by ?? "?"}. Reason: ${T.reason || "(none)"}. ` + (T.until ? `Until ${p0(T.until)}.` : "Permanent."))
+					: G("p.desc", "Not banned."),
+				B
+					? G("p.warning.noicon", `Muted ${p0(B.at)} by #${B.by ?? "?"}. Reason: ${B.reason || "(none)"}. ` + (B.until ? `Until ${p0(B.until)}.` : "Permanent."))
+					: G("p.desc", "Not muted."),
+				m
+					? G("div.mod-flagged-line", G("span.warning.noicon", "Flagged: " + m.map((t) => `${t.kind} (x${t.hits})`).join(", ") + "."), G("button.btn.mod-flagged-open", "Open review queue", {
+						onclick() {
+							s("review", void 0, { label: M.username, reopen: () => s("users", w) });
+						}
+					}))
+					: G("p.desc", "Not flagged."),
+				h,
+				G("div.mod-section", G("b", "Ban"), T
+					? l("Unban", `Unban ${M.username}?`, () => o5(w), "User unbanned.")
+					: J0("Ban", (t, I) => TJ(w, t, I), () => o5(w))),
+				G("div.mod-section", G("b", "Mute"), B
+					? l("Unmute", `Unmute ${M.username}?`, () => n5(w), "User unmuted.")
+					: J0("Mute", (t, I) => EJ(w, t, I), () => n5(w))),
+				G(
+					"div.mod-section",
+					G("b", "Leaderboard"),
+					E
+						? G("p.warning.noicon", "Hidden from the leaderboard.")
+						: G("p.desc.mod-hint", "Hides this user from the users board and from clan/country totals."),
+					E
+						? l("Show on leaderboard", `Show ${M.username} on the leaderboard again?`, () => t5(w, !1), "User restored to the leaderboard.")
+						: l("Hide from leaderboard", `Hide ${M.username} from the leaderboard?`, () => t5(w, !0), "User hidden from the leaderboard.")
+				),
+				G("div.mod-section", G("b", "Strokes"), G("p.desc.mod-hint", g.user.delete.desc), G("div.mod-form-row", l("Delete All User's Strokes", t0(g.user.delete.confirm, M.username), () => IJ(w), "Deleted the user's strokes.", g.snapshotDisplayNote), G("button.btn", "Select Strokes to Delete...", {
+					onclick() {
+						m3(w, M.username, (t, I) => U(h, t, I));
+					}
+				}))),
+				G("div.mod-section", G("b", "Paint history"), G("p.desc.mod-hint", g.user.draws), C3(M.id, M.username)),
+				G("div.mod-section", G("b", "Chat history"), G("p.desc.mod-hint", g.user.messages), T3(M.id, M.username)),
+				G("div.mod-section", G("b", "Paint"), X(M, h, S)),
+				G("div.mod-section", G("b", "Cursors"), V(M, D, h, S)),
+				G("div.mod-section", G("b", "Message"), j(M, h)),
+				P0 && G("div.mod-section", G("b", "Role"), L(M, h, S)),
+				P0 && G(
+					"div.mod-section",
+					G("b", "Sessions"),
+					G("button.btn", "Load sessions", {
+						async onclick() {
+							Q0.replaceChildren(G("p.desc", "Loading..."));
+
+							let t = await CJ(w);
+
+							if (!t.ok) {
+								Q0.replaceChildren(Y0(await d(t)));
+
+								return;
+							}
+
+							let I = await t.json();
+
+							if (!I.length) {
+								Q0.replaceChildren(G("p.desc", "No sessions."));
+
+								return;
+							}
+
+							Q0.replaceChildren(G("div.list.mod-list", ...I.map((c) => G("div.item.box.outset.mod-session", G("span", `#${c.id}`), G("span", c.ip || "no ip"), G("span.desc", "seen ", I0(c.last_verified_at))))));
+						}
+					}),
+					Q0
+				)
+			));
+		}
+
+		function j(M, D) {
+			let y = G("textarea.box", {
+				placeholder: `Message to ${M.username}...`,
+				rows: 2,
+				maxLength: 1000
+			});
+
+			return G("div.mod-form", G("div.input", y), G("div.mod-form-row", G("button.btn", "Send message", {
+				async onclick() {
+					let w = y.value.trim();
+
+					if (!w) {
+						U(D, "Message can't be empty.", !1);
+
+						return;
+					}
+
+					let h = await OJ(M.id, w);
+
+					if (!h.ok) {
+						U(D, `Message failed: ${await d(h)}`, !1);
+
+						return;
+					}
+
+					(y.value = "", U(D, "Message sent.", !0));
+				}
+			})));
+		}
+
+		function X(M, D, y) {
+			let w = G("input.box", { type: "number", min: "1", max: String(B3), value: "10" }),
+				h = (T) => G("button.btn", `Reset ${T}`, {
+					async onclick() {
+						if (!await i(`Reset ${M.username}'s ${T}? (current: ${Math.floor(M[T])})`)) return;
+
+						let m = await mJ(M.id, T);
+
+						if (!m.ok) return U(D, await d(m), !1);
+
+						await y({ text: `Reset ${T}.` });
+					}
+				});
+
+			return G(
+				"div.mod-form-row",
+				w,
+				G("button.btn", "Give Cans", {
+					async onclick() {
+						let T = Math.max(1, Math.min(B3, Math.floor(Number(w.value) || 0)));
+
+						if ((
+							w.value = String(T),
+							!await i(`Give ${T} can${T > 1 ? "s" : ""} to ${M.username}?`, "Give cans")
+						)) return;
+
+						let m = await NJ(M.id, T);
+
+						if (!m.ok) {
+							U(D, `Give cans failed: ${await d(m)}`, !1);
+
+							return;
+						}
+
+						await y({ text: `Gave ${T} can${T > 1 ? "s" : ""}.` });
+					}
+				}),
+				h("paint"),
+				h("coins")
+			);
+		}
+
+		function V(M, D, y, w) {
+			let h = D.length ? D.map((T) => g4(T)).join(", ") : "None unlocked.";
+
+			return G("div", G("p.desc.mod-hint", `Unlocked: ${h}`), G("div.mod-form-row", G("button.btn", "Give a cursor...", {
+				async onclick() {
+					let T = await E3({ title: `Give a cursor to ${M.username}`, owned: D });
+
+					if (T == null) return;
+
+					let B = g4(T);
+
+					if (!await i(`Give the "${B}" cursor to ${M.username}?`, "Give cursor")) return;
+
+					let E = await BJ(M.id, T);
+
+					if (!E.ok) {
+						U(y, `Give cursor failed: ${await d(E)}`, !1);
+
+						return;
+					}
+
+					let S = {};
+
+					try {
+						S = await E.clone().json();
+					} catch {}
+
+					await w({
+						text: S.granted === !1
+							? `${M.username} already has the "${B}" cursor.`
+							: `Gave the "${B}" cursor.`
+					});
+				}
+			})));
+		}
+
+		function L(M, D, y) {
+			let w = M.role,
+				h = G("select.box.outset", IK.map((T) => G("option", T, { value: T, selected: T == M.role })));
+
+			return G("div.mod-form-row", h, G("button.btn", "Set role", {
+				async onclick() {
+					let T = h.value;
+
+					if (T == M.role) return;
+
+					if (!await i(`Change ${M.username}'s role to "${T}"?`, "Change role")) {
+						h.value = M.role;
+
+						return;
+					}
+
+					let m = await a5(M.id, T);
+
+					if (!m.ok) {
+						(
+							U(D, `Role change failed: ${await d(m)}`, !1),
+							h.value = M.role
+						);
+
+						return;
+					}
+
+					await y({ text: `Role set to ${T}.`, undo: () => a5(M.id, w) });
+				}
+			}));
+		}
+
+		function U(M, D, y) {
+			M.replaceChildren(G(y ? "p.success.noicon" : "p.error.noicon", D));
+		}
+
+		function C(M, D) {
+			return G("div.mod-kv-row", G("span.mod-kv-label", M), G("span.mod-kv-value", D));
+		}
+
+		let v = G("input.box", { type: "text", placeholder: "Search by username..." }),
+			O;
+
+		if ((
+			v.oninput = () => {
+				(
+					clearTimeout(O),
+					O = setTimeout(() => void Z(v.value.trim()), 250)
+				);
+			},
+
+			v.onkeydown = (M) => {
+				if (M.key == "Enter") (clearTimeout(O), Z(v.value.trim()));
+			},
+			Z(""),
+			$ !== void 0
+		)) W($, void 0, !0);
+
+		return G("div.mod-users", G("div.mod-users-left", G("div.input.mod-search", v), Y, Q), J);
+	}
+
+	var wK = ($) => ({
+		onclick() {
+			s("users", $, { label: "Referrals", reopen: () => s("referrals") });
+		}
+	});
+
+	function O3() {
+		let $ = G("div.list.mod-list"),
+			Q = G("div.mod-status"),
+			J = G("div.btn-container"),
+			Y = 0;
+
+		async function q(K) {
+			if (K) (Y = 0, $.replaceChildren(), J.replaceChildren());
+
+			Q.replaceChildren("Loading...");
+
+			let W = await pJ(Y);
+
+			if (!W.ok) {
+				Q.replaceChildren(Y0(await d(W)));
+
+				return;
+			}
+
+			let F = await W.json();
+
+			if ((Q.replaceChildren(), K && !F.length)) $.replaceChildren(G("p.desc", "No referrals.")); else for (let H of F) $.append(Z(H));
+
+			(
+				Y += F.length,
+				J.replaceChildren(F.length >= 20
+					? G("button.btn", "Load more", {
+						onclick() {
+							q(!1);
+						}
+					})
+					: "")
+			);
+		}
+
+		function Z(K) {
+			let W = { label: "Referrals", reopen: () => s("referrals") },
+				F = G("div.mod-action-msg"),
+				H = G(
+					"div.item.box.outset.mod-review",
+					G("div.mod-review-head", G("b", K.code), !K.verified && G("span.mod-tag.flagged", "Not verified"), K.flagged && G("span.mod-tag.banned", "Flagged"), I0(K.created_at)),
+					G("p.desc", d$("created by", K.user_id, K.username, W), ` · ${K.uses} uses`),
+					G(
+						"div.mod-form-row",
+						G("button.btn", "List Users", {
+							async onclick() {
+								let j = await (await cJ(K.user_id)).json();
+
+								(
+									j.sort((X, V) => V.created_at - X.created_at),
+									F.replaceChildren(G("div.details.pre", !j.length && "None", j.map((X, V) => [
+										G("span", `${X.country_code} `, G("a.link", X.username, wK(X.id)), " (", I0(X.created_at, RJ(X.created_at)), ")"),
+										V < j.length - 1 && "; "
+									])))
+								);
+							}
+						}),
+						!K.verified && G("button.btn", "Verify", {
+							async onclick() {
+								if (!await i(t0(g.referral.confirmVerify, K.username))) return;
+
+								let X = await s5(K.code, "verify");
+
+								if (!X.ok) {
+									F.replaceChildren(G("p.error.noicon", await d(X)));
+
+									return;
+								}
+
+								(K.verified = !0, K.flagged = !1, H.replaceWith(Z(K)));
+							}
+						}),
+						G("button.btn", "Delete", {
+							async onclick() {
+								if (!await i(t0(g.referral.confirmDelete, K.username))) return;
+
+								let X = await s5(K.code, "delete");
+
+								if (!X.ok) {
+									F.replaceChildren(G("p.error.noicon", await d(X)));
+
+									return;
+								}
+
+								H.remove();
+							}
+						})
+					),
+					F
+				);
+
+			return H;
+		}
+
+		return (
+			q(!0),
+			G(
+				"div.mod-review-tab",
+				G("p", g.referral.desc),
+				G("div.btn-container.mod-toolbar", G("button.btn", "Refresh", {
+					onclick() {
+						q(!0);
+					}
+				})),
+				Q,
+				$,
+				J
+			)
+		);
+	}
+
+	function S3() {
+		let $ = G("div.mod-action-msg"),
+			Q = G("p.desc.mod-bot-mapping"),
+			J = G("input.box.mod-bot-slider", { type: "range", min: "-1", max: "120", step: "1", value: "0" }),
+			Y = (Z) => {
+				if (Z === -1) return "Global chat is disabled (-1 / inf)";
+				if (Z === 0) return "Global chat has no cooldown";
+
+				return `Global chat has ${C0(Z, "second")} of cooldown`;
+			},
+			q = () => {
+				Q.replaceChildren(Y(Number(J.value)));
+			};
+
+		return (
+			J.oninput = q,
+			(async () => {
+				let Z = await iJ();
+
+				if (!Z.ok) {
+					$.replaceChildren(Y0(await d(Z)));
+
+					return;
+				}
+
+				(
+					J.value = String(Math.floor(Number(await Z.text()) / 1000)),
+					q()
+				);
+			})(),
+
+			G("div.mod-misc-config", G("p.desc", "Configure the global delay required between global user chat messages."), G("div.mod-form", G("div.mod-bot-slider-row", G("span.desc", "inf"), J, G("span.desc", "120s")), Q, $, G("div.mod-form-row", G("button.btn", "Save", {
+				async onclick() {
+					let Z = Number(J.value), K = await eJ(Z);
+
+					if (!K.ok) {
+						$.replaceChildren(Y0(await d(K)));
+
+						return;
+					}
+
+					$.replaceChildren(G("p.success.noicon", g.gwValSaved));
+				}
+			}))))
+		);
+	}
+
+	var g = {}, b4 = !1;
+
+	async function v3() {
+		if (b4 || !g0()) return;
+
+		b4 = !0;
+
+		let $ = await N.mod.locale.$get();
+
+		if (!$.ok) return (b4 = !1, T0($, "Could not load mod locale"));
+
+		let Q = await $.json();
+
+		for (let J in Q) g[J] = Q[J];
+	}
+
+	function g0() {
+		let $ = R.user?.role;
+
+		return $ === "moderator" || $ === "admin";
+	}
+
+	function a6() {
+		return R.user?.role === "admin";
+	}
+
+	var hK = new Set(["review", "broadcast", "botconfig"]);
+
+	function _3($) {
+		if ($ === "inspect") return (x(), n6(), !0);
+		if ($ === "wipe") return (x(), r8(), !0);
+
+		return !1;
+	}
+
+	function y3($) {
+		switch ($) {
+			case "users":
+				return c4();
+
+			case "review":
+				return V3();
+
+			case "audit":
+				return k3();
+
+			case "feedback":
+				return A3();
+
+			case "referrals":
+				return O3();
+
+			case "broadcast":
+				return P3();
+
+			case "botconfig":
+				return M3();
+
+			case "misc":
+				return S3();
+
+			case "inspect":
+
+			case "wipe":
+				throw new Error(`mod tool tab "${$}" has no panel`);
+		}
+	}
+
+	function p4($) {
+		return G("div.mod-back", G("button.btn.mod-back-btn", `↩ Back to ${$.label}`, {
+			onclick() {
+				$.reopen();
+			}
+		}));
+	}
+
+	async function g3($) {
+		let Q = await N.mod.users.idFromName.$get({ query: { name: $ } });
+
+		if (!Q.ok) return T0(Q, "Could not fetch user");
+
+		let J = await Q.json();
+
+		s("users", J.id);
+	}
+
+	function s($ = "users", Q, J) {
+		if (!g0()) return;
+		if ((Z6(), _3($))) return;
+
+		let Y = G("div.pad.mod-body");
+
+		if (J) Y.append(p4(J));
+
+		Y.append($ === "users" ? c4(Q) : y3($));
+
+		let q = Object.keys(g.tabLabels).filter((j) => a6() || !hK.has(j)),
+			Z = D5(q.map((j) => ({
+				label: g.tabLabels[j],
+				active: j == $,
+				action() {
+					if (_3(j)) return;
+
+					(W(j), Y.replaceChildren(y3(j)));
+				}
+			}))),
+			K = Array.from(Z.querySelectorAll(".abtn"));
+
+		function W(j) {
+			q.forEach((X, V) => K[V]?.classList.toggle("active", X == j));
+		}
+
+		let F = q.indexOf("feedback"),
+			H = F >= 0 ? K[F] : void 0;
+
+		if (H) (async () => {
+			try {
+				let j = await xJ();
+
+				if (!j.ok) return;
+
+				let { total: X } = await j.json();
+
+				if (X > 0) H.append(G("span.mod-tab-dot.tooltip", {
+					dataset: { tooltip: `${X} open feedback item${X === 1 ? "" : "s"}` }
+				}));
+			} catch {}
+		})();
+
+		new _("Moderation", G("div.mod-modal.nopad", Z, Y));
+	}
+
+	var NK = ($) => Math.max(Math.min($ * 50 + 1500, 1e4), 2000);
+
+	function p3($, Q) {
+		let J = $ ? e8 : s6;
+
+		if ((J.prepend(Q), J.childElementCount >= 200)) J.children[200]?.remove();
+	}
+
+	function o2($, Q, J, Y, q, Z = !1, K) {
+		let W = $ == R.connectionId,
+			F = Y ?? R.user.username,
+			H = G(
+				"p.box",
+				{
+					ondblclick: () => f4(F),
+					onclick: (X) => {
+						if (X.shiftKey) f4(F);
+					}
+				},
+				G(
+					"b.tooltip",
+					q && G("b", I$(q)),
+					F,
+					g0()
+						? {
+							dataset: { tooltip: "Click to open mod panel" },
+							onclick: () => void g3(Y)
+						}
+						: {
+							dataset: { tooltip: "Click to jump to the user!" },
+							onclick: () => void y0({ connId: $, fallbackPos: J, username: F })
+						},
+					W && { className: "self" }
+				),
+				G("span", Q)
+			);
+
+		if (Q.split(/\s+/).includes(R.user.username)) H.classList.add("important");
+		if (K !== void 0) H.dataset.uid = String(K);
+
+		p3(Z, H);
+	}
+
+	function n2($) {
+		for (let Q of [s6, e8]) n0(`p.box[data-uid="${$}"]`, Q).forEach((J) => J.remove());
+	}
+
+	function x3($, Q, ...J) {
+		p3(Q, G("p.box.local", $ && { className: "error" }, G("span", J)));
+	}
+
+	function t2($, Q) {
+		if (!$.element || p.a11y.hideChatBubbles) return;
+
+		let J = G("p", Q);
+
+		(
+			$.element.querySelector(".chat-bubble")?.append(J),
+			setTimeout(() => J.remove(), NK(Q.length))
+		);
+	}
+
+	async function c3($, Q) {
+		let J = await c$(6, { message: $, isGlobal: Q }, 5000);
+
+		if ("error" in J) {
+			let Y = J;
+
+			if (Y.error == "muted") x3(!0, Q, `You are muted. (expires: ${R1(Y.until || null)})`); else if (Y.error == "chatCooldown") (
+				k5(Y.until),
+				x3(!0, Q, Y.until
+					? "Global chat is on cooldown!"
+					: "Global chat is disabled.")
+			);
+		}
+
+		if (!J.message) return;
+		if (J.cooldown !== void 0) k5(J.cooldown);
+
+		W7(J.message);
+	}
+
+	function b3() {
+		if (A.normalizedZoom <= D8) return (e("You need to zoom in to chat locally!"), !0);
+
+		return !1;
+	}
+
+	var $6 = !1,
+		s6 = G("div.list"),
+		e8 = G("div.list"),
+		f3 = G("div.top-bar"),
+		k6 = G("div.chat-log", f3, e8),
+		l4 = !1,
+		r6 = !1;
+
+	function g8() {
+		(
+			f3.replaceChildren(G("p#player-count", `${C0(R.onlinePlayers + R.onlineViewers, "player")} online`), G(
+				"div.box.tabs",
+				G("button.btn.tooltip", "Local", $6 && { className: "active" }, {
+					dataset: { tooltip: "Nearby Cursors Only" },
+					onclick: () => {
+						(l4 = !1, l3());
+					}
+				}),
+				G("button.btn.tooltip", "Global", !$6 && { className: "active" }, {
+					dataset: { tooltip: "All Online Users" },
+					onclick: () => {
+						(l4 = !0, u3());
+					}
+				}),
+				G("button#pin-chat-btn.btn.tooltip", G("img", { src: "/static/icon/tool/pin.png", draggable: !1, alt: "Pin" }), r6 && { className: "primary" }, {
+					onclick() {
+						r6 = !r6;
+
+						let $ = k6.parentElement;
+
+						if (r6) $.style.setProperty("display", "block", "important"); else $.style.removeProperty("display");
+
+						g8();
+					},
+
+					dataset: {
+						tooltip: r6
+							? "Chat is pinned (stays on screen)"
+							: "Chat is not pinned (auto-hides)"
+					}
+				})
+			)),
+
+			n0("div.chat-input-box").forEach(($) => {
+				$.classList.toggle("global", !$6);
+			})
+		);
+	}
+
+	function l3() {
+		if (b3()) return;
+
+		($6 = !0, e8.replaceWith(s6), g8());
+	}
+
+	function u3() {
+		($6 = !1, s6.replaceWith(e8), g8());
+	}
+
+	function d3() {
+		if (l4) return;
+		if (A.normalizedZoom <= D8) u3(); else l3();
+	}
+
+	var i6 = 0;
+
+	function mK($) {
+		if ($ === void 0) $ = 0;
+		if ((i6 = $, !$)) return $;
+
+		let Q = Math.round(($ - Date.now()) / 1000);
+
+		if (Q <= 0) return (i6 = 0, 0);
+
+		return (i6 = $, Q);
+	}
+
+	function k5($) {
+		let Q = mK($), J = Q === null ? "inf" : `${Q}s`;
+
+		n0("div.chat-input-box").forEach((Y) => {
+			if (Q == 0) delete Y.dataset.cooldown; else Y.dataset.cooldown = J;
+		});
+	}
+
+	setInterval(
+		() => {
+			if (i6) k5(i6);
+		},
+		500
+	);
+
+	var BK = /^can i ha[sz] cursor pl[zs]\??$/i;
+
+	function KQ($ = !1) {
+		let Q = !1,
+			J,
+			Y = G("input#chat-input-field.input.box", {
+				type: "text",
+				spellcheck: !1,
+				maxLength: H1,
+				placeholder: window.innerWidth < 1200 ? "Message..." : "Type here to send a message!",
+				onfocus() {
+					if (!$) return;
+
+					J = setInterval(
+						() => {
+							Y.scrollIntoView({ block: "end" });
+						},
+						500
+					);
+				},
+
+				onblur() {
+					(clearInterval(J), J = null);
+				},
+
+				onkeypress(K) {
+					if (K.key == "Enter") q.click(); else if (K.key == "Escape") (Y.value = "", Y.blur());
+				}
+			}),
+			q = J$("tool/send", {
+				id: "tool-send-btn",
+				ariaLabel: "Send Message",
+				async onclick() {
+					let K = Y.value.slice(0, H1).trim();
+
+					if (!K || Q) return;
+
+					try {
+						if ((
+							Q = !0,
+							Y.readOnly = !0,
+							Z.style.opacity = "0.5",
+							BK.test(K) && !p.flags.plzCursor
+						)) {
+							if (!await p$({ code: "CAN_I_HAS_CURSOR" })) {
+								(
+									new _("plz?", G("p", "yes u may haz cursor")),
+									p.flags.plzCursor = !0,
+									m0()
+								);
+
+								return;
+							}
+						}
+
+						(await c3(K, !$6), Y.value = "");
+					} finally {
+						(
+							await G1(500),
+							Q = !1,
+							Y.readOnly = !1,
+							Z.style.opacity = "1"
+						);
+					}
+				}
+			}),
+			Z = G("div.chat-input-box", Y, q);
+
+		return Z;
+	}
+
+	function $2() {
+		return (
+			g8(),
+			G("div.input.chat-box.container", G("div.popup.box.outset.chat-log-wrapper", k6), KQ())
+		);
+	}
+
+	function f4($, Q = !0) {
+		let J = u("input#chat-input-field");
+
+		if (!J) return;
+
+		let Y = J.value, q = Y && Y.at(-1) != " ";
+
+		if ((J.value = `${Y}${q ? " " : ""}${$} `.slice(0, H1), Q)) J.focus();
+	}
+
+	var c1 = 1.5,
+		D8 = 0.8,
+		G0 = G("canvas", { width: b, height: D0 }),
+		o3 = "/static/brick-background.jpg",
+		OK = "/static/brick-background-hi.webp",
+		o4 = G("img.canvas-background", { fetchPriority: "high", src: o3, draggable: !1 }),
+		V$ = null,
+		e6 = !1,
+		SK = 0.8;
+
+	function n3() {
+		if (V$ || p.a11y.performanceMode || f0) return;
+
+		(V$ = new Image(), V$.decoding = "async", V$.src = OK);
+	}
+
+	var t3 = window.requestIdleCallback ?? (($) => setTimeout($, 800));
+
+	t3(n3);
+
+	function _K() {
+		if (e6) return;
+		if (A.zoom < SK) return;
+		if (!V$ || !V$.complete || V$.naturalWidth === 0) return;
+
+		(o4.src = V$.src, e6 = !0);
+	}
+
+	var j3 = () => e6 || V$ || t3(n3);
+
+	function X3() {
+		if (!e6) return;
+
+		(o4.src = o3, e6 = !1, V$ = null);
+	}
+
+	var j6 = G("div.paint-layers", N6, G5, G0),
+		X$ = G("div.canvas-container", o4, j6),
+		z0 = G("div.canvas-wrapper", X$),
+		Y8 = G0.getContext("2d");
+
+	Y8.imageSmoothingEnabled = !1;
+
+	var A = {
+			x: 0,
+			y: 0,
+			zoom: 1,
+			normalizedZoom: 1,
+			rect: G0.getBoundingClientRect(),
+			viewport: { x: 0, y: 0, x2: 0, y2: 0 }
+		},
+		yK = 1920;
+
+	function vK() {
+		A.zoom = Math.max(A.zoom, Q6());
+
+		let $ = b * A.zoom,
+			Q = D0 * A.zoom,
+			J = window.innerWidth - $,
+			Y = window.innerHeight - Q;
+
+		(
+			A.x = $ >= window.innerWidth
+				? Math.min(Math.max(A.x, J), 0)
+				: window.innerWidth / 2 - $ / 2,
+
+			A.y = Q >= window.innerHeight
+				? Math.min(Math.max(A.y, Y), 0)
+				: window.innerHeight / 2 - Q / 2
+		);
+	}
+
+	function S$() {
+		if ((
+			vK(),
+			X$.style.setProperty("--zoom", A.zoom.toString()),
+			X$.style.transform = `translate(${A.x}px, ${A.y}px) scale(${A.zoom})`,
+			A.rect = G0.getBoundingClientRect(),
+			X$.style.imageRendering = "pixelated",
+			A.normalizedZoom = A.zoom / (window.innerWidth / yK),
+			d3(),
+			A.normalizedZoom <= D8
+		)) document.body.classList.remove("cursors-visible"); else document.body.classList.add("cursors-visible");
+
+		(
+			c2({
+				x: A.rect.left,
+				y: A.rect.top,
+				w: window.innerWidth,
+				h: window.innerHeight,
+				zoom: A.rect.width / G0.width
+			}),
+			_K(),
+			A.viewport = TQ(),
+			p.camera.zoom = A.zoom,
+			p.camera.x = A.x,
+			p.camera.y = A.y,
+			m0()
+		);
+	}
+
+	var u4 = null;
+
+	function o$() {
+		if (u4) return;
+
+		u4 = requestAnimationFrame(() => {
+			(u4 = null, S$());
+		});
+	}
+
+	function Q6() {
+		return Math.max(window.innerWidth / G0.width, window.innerHeight / G0.height);
+	}
+
+	function a3() {
+		if (p.camera.zoom != 0) {
+			(
+				A.zoom = p.camera.zoom,
+				A.x = p.camera.x,
+				A.y = p.camera.y,
+				S$()
+			);
+
+			return;
+		}
+
+		(
+			A.zoom = Q6(),
+			S$(),
+			A.x = window.innerWidth / 2 - A.rect.width / 2,
+			A.y = window.innerHeight / 2 - A.rect.height / 2,
+			S$()
+		);
+	}
+
+	function d6($, Q, J, Y, q = 0.6) {
+		let Z = Math.min(window.innerWidth * q / Math.max(J, 1), window.innerHeight * q / Math.max(Y, 1)),
+			K = Math.min(Math.max(Z, Q6()), 40);
+
+		(A.zoom = K, S$());
+
+		let W = A.rect.width / G0.width,
+			F = A.rect.left + ($ + J / 2) * W,
+			H = A.rect.top + (Q + Y / 2) * W;
+
+		(
+			A.x += window.innerWidth / 2 - F,
+			A.y += window.innerHeight / 2 - H,
+			S$()
+		);
+	}
+
+	var d4 = !1;
+
+	async function s3($, Q, J = 60, Y = 160) {
+		if (d4) return !1;
+
+		d4 = !0;
+
+		let q = A.viewport.x2 - A.viewport.x,
+			Z = A.viewport.y2 - A.viewport.y,
+			K = A.viewport.x + q / 2,
+			W = A.viewport.y + Z / 2,
+			F = (H) => H == 0
+				? 0
+				: H == 1
+					? 1
+					: H < 0.5
+						? Math.pow(2, 20 * H - 10) / 2
+						: (2 - Math.pow(2, -20 * H + 10)) / 2;
+
+		for (let H = 0; H <= J; H++) {
+			let j = F(H / J),
+				X = K + ($ - K) * j,
+				V = W + (Q - W) * j,
+				L = q + (Y - q) * j,
+				U = Z + (Y - Z) * j;
+
+			(
+				d6(X - L / 2, V - U / 2, L, U, 1),
+				await G1(16.666666666666668)
+			);
+		}
+
+		return (d4 = !1, !0);
+	}
+
+	window.addEventListener("resize", o$);
+
+	var r3 = {
+			stat_pixels_changed: "Pixels Changed",
+			stat_paint_visible: "Paint Visible",
+			stat_member_count: "User Count"
+		},
+		n4 = { users: "Users", clans: "Clans", countries: "Countries" },
+		t4 = {
+			users: ["stat_paint_visible", "stat_pixels_changed"],
+			clans: [
+				"stat_paint_visible",
+				"stat_pixels_changed",
+				"stat_member_count"
+			],
+			countries: [
+				"stat_paint_visible",
+				"stat_pixels_changed",
+				"stat_member_count"
+			]
+		};
+
+	var gK = {
+			users: "You're",
+			clans: "Your clan is",
+			countries: "Your country is"
+		},
+		xK = {
+			stat_member_count: H0,
+			stat_pixels_changed: H0,
+			stat_paint_visible: V1
+		},
+		pK = {
+			users: ($, Q) => [
+				G("b.box", $.clan_name && G("b.clan-label", I$($.clan_name)), $.name),
+				G("span.box", Q)
+			],
+			clans: ($, Q) => [G("b.box", $.name), G("span.box", Q)],
+			countries: ($, Q) => [G("b.box", P1($.name)), G("span.box", Q)]
+		};
+
+	async function $1($, Q, J = 0) {
+		K0();
+
+		let Y = await N.leaderboard.$get({ query: { category: $, stat: Q, page: (J || 0).toString() } });
+
+		if (!Y.ok) return T0(Y, "Could not load the leaderboard");
+
+		let q = await Y.json();
+
+		new _("Leaderboard", G(
+			"div.leaderboard-modal.nopad",
+			D5(Object.keys(n4).map((Z) => ({
+				label: n4[Z],
+				active: Z == $,
+				action() {
+					$1(Z, t4[Z][0]);
+				}
+			}))),
+			G(
+				"div.pad",
+				G(
+					"select.box.outset",
+					{
+						oninput(Z) {
+							let K = Z.target.value;
+
+							$1($, K, J);
+						}
+					},
+					t4[$].map((Z) => G("option", r3[Z], { value: Z, selected: Q == Z }))
+				),
+				typeof q.position == "number" && q.ownValue !== 0 && G("p.desc", `${gK[$]} #${H0(q.position + 1)}!`),
+				G("div.list", q.leaderboard.map((Z, K) => G("div.item.box.outset", G("div.box", `${K + 1 + J * 10}`), pK[$](Z, xK[Q](Z.value))))),
+				G(
+					"div.btn-container",
+					G("a.link", "<<", {
+						onclick() {
+							if (J == 0) return;
+
+							$1($, Q, J - 1);
+						}
+					}),
+					G("b", `Page ${H0(J + 1)}`),
+					G("a.link", ">>", {
+						onclick() {
+							if (q.leaderboard.length < 10) return;
+
+							$1($, Q, J + 1);
+						}
+					})
+				)
+			)
+		));
+	}
+
+	function i3() {
+		$1("users", "stat_paint_visible", 0);
+	}
+
+	function A5($, Q) {
+		let J = () => {
+				(
+					Y.classList.remove("zoom"),
+					Y.style.width = Y.style.height = ""
+				);
+			},
+			Y = G("div.img", G("img", { src: $, alt: Q }), {
+				onmouseleave: J,
+				onclick() {
+					let q = Y.getBoundingClientRect();
+
+					if ((
+						Y.style.width = `${q.width}px`,
+						Y.style.height = `${q.height}px`,
+						!Y.classList.toggle("zoom")
+					)) J();
+				}
+			});
+
+		return Y;
+	}
+
+	var C5 = [
+			{
+				name: "Welcome",
+				title: "Welcome to The Wall.",
+				content: [
+					G("p.notice.noicon", "Filian has been gone for months. No one knows where. No one knows why. What we have is this wall, these cans, and each other. Leave something behind. Maybe she will find it. Maybe we will."),
+					G("p", "Read this short guidebook to learn what we know.")
+				]
+			},
+
+			{
+				name: "Draw Together",
+				content: [
+					G("p.notice.noicon", "You can see cursors moving in real-time on the canvas! Zoom in, find cursors, chat with people, ", "and draw together, all on the same canvas, with thousands of players!"),
+					A5("/static/img/tutorial_cursors.png", "An image of three cursors chatting on the canvas")
+				]
+			},
+
+			{
+				name: "Drawing",
+				title: "Drawing Mechanic",
+				content: [
+					G("p", "The paint mechanic works like real spray paint: move fast to make thin lines, move slowly and the paint starts dripping."),
+					A5("/static/img/tutorial_drawing.png", "An image of the spray can mechanic in-action"),
+					G("p", "When you draw, your changes are only visible to you. You can undo, redo, and edit freely without affecting others."),
+					G("p", "Click ", G("span.box.inline", "Submit"), " in the toolbar to publish your drawing so everyone can see it instantly!")
+				]
+			},
+
+			{
+				name: "Spray Cans",
+				content: [
+					G("p", "Each user starts with a set number of spray cans for drawing on the canvas. Every spray can contains the same amount of paint."),
+					A5("/static/img/tutorial_spray_cans.png", "An image of the spray paint bar on the toolbar, with the amount of extra spray cans to the right of it"),
+					G("p", G("b", "Drawing consumes paint!"), " When one spray can runs out, the next one is used automatically.", " If you use all your spray cans, a few minute timer starts, after which your paint gets refilled."),
+					G("p", "You can also earn extra paint by inviting your friends to ", G("b", "The Wall"), "! ", G("br"), "Go to ", G("span.box.inline", "User > Share Webiste"), " in the action bar to get your own personalized link!")
+				]
+			},
+
+			{
+				name: "Toolbar",
+				content: [
+					A5("/static/img/tutorial_hotbar.png", "An image of the website's toolbar, containing text and arrows describing each component"),
+					G("p", "Use the ", G("span.box.inline", "Hand Tool"), " to move around the canvas and the ", G("span.box.inline", "Spray Tool"), " to paint. The center bar shows how much paint you have left and matches your selected color."),
+					G("p", "When the bar runs out, one spray can is used and the bar refills.", " The number next to the bar shows how many spray cans you have remaining, excluding the current one!"),
+					G("p", "Enable ", G("span.box.inline", "Compare Mode"), " to make your local changes semi-transparent ", "so you can compare them with the live canvas")
+				]
+			},
+
+			{
+				name: "End",
+				title: "Happy Drawing!",
+				content: [
+					G("p.success", "You've made it to the end, congratulations! Time to start drawing!"),
+					G("p", "You can read this guidebook at any time again later by going to ", G("span.box.inline", "Info > Guidebook"), " in the action bar", { style: { fontSize: "0.8em" } }),
+					G("br")
+				]
+			}
+		],
+		e3 = C5.length - 1;
+
+	function J6($ = 0) {
+		let Q = C5[$],
+			J = C5[$ - 1],
+			Y = C5[$ + 1],
+			q = $ + 1,
+			Z = q <= e3 ? `Guidebook [${q}/${e3}]` : "Guidebook";
+
+		if (!p.seenGuidebook) (p.seenGuidebook = !0, m0());
+
+		new _(Z, G("div.info.tutorial", G("h3", Q.title || Q.name), Q.content, G("div.btn-container", J && G("a.link.prev", `<< ${J.name}`, { onclick: () => J6($ - 1) }), G("a.link.next", `${Y?.name || "Continue"} >>`, { onclick: () => Y ? J6($ + 1) : x() })))).onClose(() => {
+			if (!Y) p$({ code: "READ_GUIDEBOOK" });
+		});
+	}
+
+	function $G() {
+		let $ = window.innerWidth <= 800;
+
+		new _("Keybinds", G(
+			"div.info.keybinds",
+			$ && G("p.warning.noicon", "These are probably not helpful if you're on mobile..."),
+			G("div.section", G("p", "Canvas"), G("div.box.outset", G("div.box", "Move"), G("div.box", "WASD / Right Click")), G("div.box.outset", G("div.box", "Move (hand only)"), G("div.box", "Left Click")), G("div.box.outset", G("div.box", "Zoom"), G("div.box", "Wheel / +-"))),
+			G("div.section", G("p", "Tools"), G("div.box.outset", G("div.box", "Hand Tool"), G("div.box", "H")), G("div.box.outset", G("div.box", "Brush Tool"), G("div.box", "B or X")), G("div.box.outset", G("div.box", "Chat"), G("div.box", "T or Enter"))),
+			G("div.section", G("p", "Drawing"), G("div.box.outset", G("div.box", "Compare Mode"), G("div.box", "M")), G("div.box.outset", G("div.box", "Undo"), G("div.box", "Ctrl+Z")), G("div.box.outset", G("div.box", "Redo"), G("div.box", "Ctrl+Y")), G("div.box.outset", G("div.box", "Pick Color"), G("div.box", "P")), G("div.box.outset", G("div.box", "Last Used Color"), G("div.box", "1, 2, 3, ...")), G("div.box.outset", G("div.box", "Color Palette"), G("div.box", "C"))),
+			G("div.section", G("p", "Other"), G("div.box.outset", G("div.box", "Hide Cursors"), G("div.box", "K")), G("div.box.outset", G("div.box", "Reply To User (chat)"), G("div.box", "Shift+Click / Dblclick")), !$ && !p.flags.konamiCursor && R.user && Math.random() > 0.8 && G("div.box.outset", G("div.box", "Konami Code"), G("div.box", "↑↑↓↓←→←→BA", {
+				style: { fontWeight: "bold", lineHeight: "34px", letterSpacing: "1px" }
+			}))),
+			R$
+		));
+	}
+
+	var T5 = [
+		{
+			label: "[S]ocial",
+			shortcut: "S",
+			menu: [
+				{ label: "[O]nline Users", action: () => a2() },
+				{ label: "[L]eaderboard", action: () => i3() }
+			]
+		},
+
+		{
+			label: "[H]elp",
+			shortcut: "H",
+			menu: [
+				{ label: "[G]uidebook", action: () => J6() },
+				{ label: "[K]eybinds", action: () => $G() },
+				{ label: "[F]eedback / Bug Reporting", action: () => h7() },
+				{
+					label: "[P]rivacy Policy & ToS",
+					action: () => {
+						window.open("/privacy.html", "_blank");
+					}
+				}
+			]
+		}
+	];
+
+	var Q1 = !1,
+		QG = () => [
+			{
+				label: "[U]ser",
+				shortcut: "U",
+				menu: [
+					{ label: `Hi, ${R.user?.username}!` },
+					{},
+					{ label: "[S]ettings", shortcut: "S", action: M5 },
+					{ label: "[C]lan Settings", shortcut: "C", action: D6 },
+					{ label: "Cursor [I]nventory", shortcut: "I", action: y8 },
+					{ label: "Share [W]ebsite", shortcut: "W", action: A6 },
+					{},
+					{
+						label: "[L]ogout",
+						shortcut: "l",
+						async action() {
+							if (await i("Are you sure you want to log out?")) L2();
+						}
+					}
+				]
+			},
+
+			{
+				label: "[A]ction",
+				shortcut: "A",
+				menu: [
+					{ label: "[U]ndo", keybindText: `${YQ}+Z`, action: () => x1() },
+					{
+						label: "[R]edo",
+						keybindText: `${YQ}+${M6 ? "Shift+Z" : "Y"}`,
+						action: () => p1()
+					}
+				]
+			},
+			...T5,
+			...g0()
+				? [
+					{
+						label: "[M]od",
+						shortcut: "M",
+						menu: () => [
+							{ label: "Users", action: () => s("users") },
+							{ label: "Audit Log", action: () => s("audit") },
+							...a6()
+								? [
+									{ label: "Review Queue", action: () => s("review") },
+									{ label: "Broadcast", action: () => s("broadcast") }
+								]
+								: [],
+							{},
+							{ label: "Tile Inspector", action: () => n6() },
+							{ label: "Wipe Canvas Selection", action: () => r8() },
+							{},
+							{
+								label: `[${Q1 ? "ON" : "OFF"}] Hide Own Cursor`,
+								action() {
+									(R.cursorX = 0, R.cursorY = 0, Q1 = !Q1);
+								}
+							}
+						]
+					}
+				]
+				: []
+		];
+
+	var l0 = !1,
+		L$ = 0,
+		D$ = 0,
+		JG = [0, 2, 3, 4],
+		t$ = !1,
+		s4 = !1,
+		cK = "1234567890";
+
+	document.body.addEventListener("keydown", ($) => {
+		if (W0 || $.target != document.body) return;
+
+		if ((M6 ? $.metaKey : $.ctrlKey) && ($.key == "z" || $.key == "Z" || $.key == "y" || $.key == "u")) {
+			if ((
+				$.preventDefault(),
+				l0 = !1,
+				$.key == "z" || $.key == "Z" && !$.shiftKey
+			)) x1(); else p1();
+
+			return !1;
+		} else if ($.key == "h") u("#tool-hand").click(); else if ($.key == "x" || $.key == "b") u("#tool-spray").click(); else if ($.key == "c") l1(); else if ($.key == "-") i4(1, 0.2); else if ($.key == "=") i4(-1, 0.2); else if ($.key == "m") u("#tool-preview").click(); else if ($.key == "k") {
+			let J = p.a11y;
+
+			if ((J.hideCursors = !J.hideCursors, u6(), J.hideCursors)) J.hideCursorKeybind = !0;
+
+			m0();
+		} else if ($.key == "t" || $.key == "Enter") setTimeout(
+			() => {
+				let J = u("#tool-chat");
+
+				if (J.checkVisibility()) J.click(); else u(".chat-box input").focus();
+			},
+			10
+		); else if (cK.includes($.key)) {
+			let J = parseInt($.key) || 10;
+
+			r7(J);
+		} else if ($.key == "p") {
+			let J = d7(..._0(L$, D$));
+
+			if (J) G8(J, !0);
+		} else if (bK.has($.key.toLowerCase())) (l0 = !1, n$.add($.key.toLowerCase()), lK());
+	});
+
+	var bK = new Set(["w", "a", "s", "d"]),
+		fK = 900,
+		n$ = new Set(),
+		I5 = null,
+		r4 = 0;
+
+	function lK() {
+		if (I5 != null) return;
+
+		(r4 = performance.now(), I5 = requestAnimationFrame(qG));
+	}
+
+	function uK() {
+		(n$.clear(), t$ = !1);
+	}
+
+	function qG($) {
+		if (W0 || !n$.size) {
+			I5 = null;
+
+			return;
+		}
+
+		let Q = Math.min($ - r4, 100) / 1000;
+
+		r4 = $;
+
+		let J = fK * A.zoom * Q, Y = 0, q = 0;
+
+		if (n$.has("w")) q += 1;
+		if (n$.has("s")) q -= 1;
+		if (n$.has("a")) Y += 1;
+		if (n$.has("d")) Y -= 1;
+
+		if (Y || q) {
+			let Z = Math.hypot(Y, q);
+
+			(A.x += Y / Z * J, A.y += q / Z * J, l0 = !1, o$());
+		}
+
+		I5 = requestAnimationFrame(qG);
+	}
+
+	document.body.addEventListener("keyup", ($) => {
+		n$.delete($.key.toLowerCase());
+	});
+
+	window.addEventListener("blur", uK);
+
+	window.addEventListener("beforeunload", ($) => {
+		if (w4()) return ($.preventDefault(), $.returnValue = !0, !1);
+	});
+
+	function YG($, Q) {
+		if (R.activeTool != 1 || A.normalizedZoom < c1) return;
+		if (R.openAt && Date.now() + R.clockOffset < R.openAt) return;
+		if (R.paintRemaining + R.localPaintIncrement <= 0) return h4();
+
+		(l0 = !0, L$ = $, D$ = Q);
+	}
+
+	function a4($, Q) {
+		if (t$ || A.normalizedZoom < D8) return;
+		if (p.a11y.hideCursors || Q1) return;
+
+		let [J, Y] = _0($, Q);
+
+		(R.cursorX = J, R.cursorY = Y);
+	}
+
+	function GG($, Q) {
+		(t$ = !0, L$ = $, D$ = Q);
+	}
+
+	function ZG($, Q) {
+		if (t$) (A.x += $ - L$, A.y += Q - D$, o$());
+
+		(L$ = $, D$ = Q);
+	}
+
+	var KG = 200;
+
+	function i4($, Q = 0.1) {
+		let J = A.zoom,
+			Y = A.zoom + Q * -Math.sign($) * A.zoom;
+
+		(
+			A.zoom = Math.max(Math.min(Y, KG), Q6()),
+			FG(A.zoom / J, L$, D$)
+		);
+	}
+
+	function FG($, Q, J) {
+		(
+			l0 = !1,
+			A.x = Q - (Q - A.x) * $,
+			A.y = J - (J - A.y) * $,
+			o$(),
+			a0()
+		);
+	}
+
+	function e4() {
+		if (s4) {
+			if (R.paintRemaining > 0) S7(); else v1();
+
+			s4 = !1;
+		}
+
+		if (l0 && s0.length) _7();
+
+		(t$ = !1, l0 = !1, E5 = null);
+	}
+
+	document.body.addEventListener("mousemove", ($) => ZG($.x, $.y));
+
+	var E5 = null;
+
+	document.body.addEventListener("touchmove", ($) => {
+		if ($.touches.length == 1) {
+			if (w5) return;
+
+			ZG($.touches[0].clientX, $.touches[0].clientY);
+		} else if ($.touches.length == 2) {
+			(
+				$.preventDefault(),
+				$.stopImmediatePropagation(),
+				l0 = !1,
+				t$ = !1
+			);
+
+			let Q = $.touches[0],
+				J = $.touches[1],
+				Y = Math.hypot(J.clientX - Q.clientX, J.clientY - Q.clientY);
+
+			if (E5 != null) {
+				let q = Y / E5, Z = A.zoom * q;
+
+				(
+					A.zoom = Math.max(Math.min(Z, KG), Q6()),
+					FG(q, (Q.clientX + J.clientX) / 2, (Q.clientY + J.clientY) / 2)
+				);
+			}
+
+			return (E5 = Y, !1);
+		}
+	});
+
+	document.body.addEventListener("mouseup", e4);
+	document.body.addEventListener("touchend", e4);
+	document.body.addEventListener("touchcancel", e4);
+
+	function h4() {
+		s4 = !0;
+	}
+
+	function WG() {
+		(
+			G0.addEventListener("mousedown", ($) => {
+				if ($.button == 0) YG($.x, $.y);
+			}),
+
+			G0.addEventListener(
+				"touchstart",
+				($) => {
+					if ($.touches.length == 1) YG($.touches[0].clientX, $.touches[0].clientY);
+				},
+				{ passive: !0 }
+			),
+			z0.addEventListener("mousemove", ($) => a4($.x, $.y)),
+			z0.addEventListener(
+				"touchmove",
+				($) => {
+					if ($.touches.length == 1) a4($.touches[0].clientX, $.touches[0].clientY); else if ($.touches.length == 2) $.preventDefault();
+				},
+				{ passive: !1 }
+			),
+
+			z0.addEventListener("mousedown", ($) => {
+				if ($.button != 0 || JG.includes(R.activeTool)) GG($.x, $.y);
+			}),
+
+			z0.addEventListener(
+				"touchstart",
+				($) => {
+					if ($.touches.length == 1 && JG.includes(R.activeTool)) {
+						let Q = $.touches[0].clientX,
+							J = $.touches[0].clientY;
+
+						(a4(Q, J), GG(Q, J));
+					} else if ($.touches.length == 2) $.preventDefault();
+				},
+				{ passive: !1 }
+			),
+
+			z0.addEventListener(
+				"wheel",
+				($) => {
+					if ($.ctrlKey) $.preventDefault();
+
+					(l0 = !1, i4($.deltaY, 0.1));
+				},
+				{ passive: !1 }
+			),
+
+			z0.addEventListener("dblclick", async ($) => {
+				if (A.zoom > 1) return;
+
+				let [Q, J] = _0($.x, $.y);
+
+				s3(Q, J);
+			})
+		);
+	}
+
+	function jG() {
+		(
+			a3(),
+			K2(),
+			WG(),
+			setTimeout(
+				() => {
+					requestAnimationFrame(f1);
+				},
+				1000
+			)
+		);
+	}
+
+	var a$ = !1,
+		HG = Math.min(window.innerWidth, window.innerHeight) <= 800 && window.matchMedia("(pointer: coarse)").matches && document.fullscreenEnabled,
+		dK = 25000000;
+
+	function oK($, Q, J, Y, q) {
+		if (typeof Q != "string" || !Q?.length) return "Missing name";
+		if (typeof J != "string" || !J?.length) return "Missing location";
+		if ($ && $.length > 127) return "Identification is too long";
+		if (Q.length > 255) return "Name is too long";
+		if (J.length > 255) return "Location is too long";
+		if (!Y || !q) return "Missing file";
+		if (!Y.startsWith("image/")) return "Invalid file type (expected an image)";
+		if (q > dK) return `File is too large (max 25MB; got ${Math.floor(q / 1000 / 1000)}MB)`;
+	}
+
+	var k8 = -1;
+
+	function nK() {
+		let $ = u("input#s__id").value,
+			Q = u("input#s__name").value,
+			J = u("input#s__location").value,
+			Y = u("input#s__upload").files,
+			q = Y ? Y.item(0) : null,
+			Z = oK($, Q, J, q?.type, q?.size);
+
+		if (Z) return (alert(Z), !1);
+	}
+
+	function tK($) {
+		let Q = new Intl.DateTimeFormat([], { day: "2-digit", month: "2-digit", year: "numeric" }).format($.submitted_at),
+			J = G("div.image");
+
+		if ($.image_file.match(/\.(mp4|webm|ogg|mov)$/i)) J.append(G("video", {
+			style: { width: "100%", height: "100%" },
+			controls: !0,
+			src: `${Z0.url.signalArchive}/static/uploads/${$.image_file}`,
+			autoplay: !1,
+			preload: "none",
+			loop: !1,
+			muted: !1
+		})); else (
+			J.style.backgroundImage = `url(${Z0.url.signalArchive}/static/uploads/${$.image_file})`,
+			J.style.imageRendering = "auto"
+		);
+
+		return G("div.window.wpost", G("div.title", G("p", `SIGNAL #${$.num_id}`), G("div.buttons", G("button", G("img", { src: "/static/icon/archive/close.png", alt: "x" })))), G("div.content", J, G("div.info", G("p", G("span.label", "SIGNAL NAME"), G("b", $.name)), G("p", G("span.label", "LOCATION"), G("b", $.location)), G("p", G("span.label", "TRANSMITTED"), G("b", Q)))));
+	}
+
+	async function VG() {
+		(k8 = 0, await Promise.all([aK(), PG()]));
+	}
+
+	var $J = !1;
+
+	async function PG() {
+		if ($J) return;
+
+		$J = !0;
+
+		let $ = G("div.f", "Loading...");
+
+		u(".sightings .posts").append($);
+
+		let J = await (await fetch(`${Z0.url.signalArchive}/fetch?tag=&after=${k8}&limit=${k8 ? 10 : 4}&at=${Date.now()}`)).json();
+
+		if ((
+			u(".sightings .posts").append(...J.map(tK)),
+			k8 += J.length,
+			$.remove(),
+			$J = !1,
+			!J.length
+		)) (
+			u(".sightings .posts").append(G("div.f", k8 ? "You have reached the end." : "Nothing here yet...")),
+			u(".sightings .more").style.display = "none"
+		); else u(".sightings .more").style.display = "";
+	}
+
+	async function aK() {}
+
+	async function sK() {
+		let $ = u(".preview"),
+			Q = u("input#s__upload").files?.item(0);
+
+		if (!Q) {
+			$.hidden = !0;
+
+			return;
+		}
+
+		let J = URL.createObjectURL(new Blob([await Q.arrayBuffer()]));
+
+		($.hidden = !1, $.style.backgroundImage = `url(${J})`);
+	}
+
+	var RG = G("div.info-container", G("div.window.winfo", G("div.title", G("p", "filian_is_lost.txt"), G("div.buttons", G("button.icon", G("img", { src: "/static/icon/archive/minimize.png", alt: "_" })), G("button.icon", G("img", { src: "/static/icon/archive/maximize.png", alt: "⌷" })), G("button.icon", G("img", { src: "/static/icon/archive/close.png", alt: "x" })))), G("div.content", G("h1", "FILIAN IS LOST."), G("p", "She went dark months ago. No posts. No streams. No signals. But we know she's listening. She always is."), G("p", G("b", "The Wall"), " is her frequency. Every mark you leave gets archived: a permanent record of everyone, everywhere, who showed up when she went quiet."), G("p", "Paint something. Make noise. Leave your mark in the archive."), G("p", "Bring her back.")))),
+		Y6 = G(
+			"div.main",
+			RG,
+			G("div.terminal", G("p", G("span", "C:\\SIGNAL_ARCHIVE>"), " signal_archive.exe"), G("p", "Loading the signal archive...")),
+			G("div.header", G("h1", "SIGNAL ARCHIVE"), G("p", "RECENTLY TRANSMITTED")),
+			G("div.post-container", G("div.posts"), G("div.more", G("button", "LOAD MORE", { onclick: PG }))),
+			G("div.terminal", G("p", G("span", "C:\\SIGNAL_ARCHIVE>"), " submit_signal.exe"), G("p", "Loading submission form...")),
+			G("div.window.wsubmit", G("div.title", G("p", "submit_signal.exe")), G("div.content", G("h1", "DID YOU FIND SOMETHING?"), G("p", "Submit a signal to the archive"), G(
+				"form",
+				{
+					action: `${Z0.url.signalArchive}/submit`,
+					method: "post",
+					enctype: "multipart/form-data"
+				},
+				G("label", { htmlFor: "id" }, "Identification (optional)"),
+				G("input#s__id", {
+					type: "text",
+					name: "id",
+					placeholder: "Twitter, Discord, etc",
+					maxlength: "127"
+				}),
+				G("label", { htmlFor: "name" }, "Signal Name"),
+				G("input#s__name", {
+					type: "text",
+					name: "name",
+					placeholder: "Enter signal name...",
+					required: !0,
+					maxlength: "255"
+				}),
+				G("label", { htmlFor: "location" }, "Location"),
+				G("input#s__location", {
+					type: "text",
+					name: "location",
+					placeholder: "City, Country",
+					required: !0,
+					maxlength: "255"
+				}),
+				G("label", { htmlFor: "s__upload" }, "Upload Image"),
+				G("label.input.upload", { htmlFor: "s__upload" }, G("div#file_preview.preview", { hidden: !0 }), G("span", "DRAG FILE HERE OR CLICK TO BROWSE")),
+				G("input#s__upload", {
+					type: "file",
+					name: "image",
+					accept: "image/*",
+					required: !0,
+					onchange: sK
+				}),
+				G(
+					"div.buttons",
+					G("input", {
+						type: "submit",
+						onclick: () => nK(),
+						value: "Transmit Signal"
+					}),
+					G(
+						"a.button",
+						{
+							onclick: () => {
+								let $ = ["id", "name", "location", "tag", "upload"];
+
+								for (let Q of $) document.getElementById(`s__${Q}`).value = "";
+
+								u(".preview").hidden = !0;
+							}
+						},
+						"Cancel"
+					)
+				)
+			))),
+			G("p", G("a", "Discord", { href: "https://discord.gg/Wjgs9JAbT2", target: "_blank" }), " · ", G("a", "Twitter", { href: "https://x.com/THE_W4LL_", target: "_blank" }), " · ", G("a", "Reddit", {
+				href: "https://www.reddit.com/r/THE_WALL_/",
+				target: "_blank"
+			}))
+		),
+		N5 = G("img", { src: "/static/icon/arrow-down.png", draggable: !1 });
+
+	function rK() {
+		if (a$) LG(); else zG();
+
+		N5.style.transform = a$ ? "rotate(180deg)" : "";
+	}
+
+	var h5 = G("div.sightings", G("div.mobile-scroll-btn", { onclick: rK }, G("button", N5)), Y6);
+
+	function MG($, Q) {
+		let J = $ + Q;
+
+		return J > 0 ? `${H0(J)} online` : "";
+	}
+
+	function QY($, Q) {
+		let J = u("#wall-online-count");
+
+		if (J) J.textContent = MG($, Q);
+	}
+
+	var w5 = !1;
+
+	function UG($ = !1) {
+		(
+			sessionStorage.setItem("wall:view", $ ? "wall" : "archive"),
+			document.body.append(h5),
+			Y6.inert = !0
+		);
+
+		let Q = u("main");
+
+		if ((
+			Q.prepend(G("div.modal-title.wall-title", G("span", G("h3", "the_wall.exe"), G("span.wall-online#wall-online-count", MG(R.onlinePlayers, R.onlineViewers))), G("button.btn", "Full Screen", { style: { color: "var(--text)" }, onclick: XG }))),
+			!f0
+		)) (
+			Q.addEventListener("mouseenter", LG),
+			h5.addEventListener("mouseenter", zG)
+		); else Q.classList.add("mobile");
+
+		if (!$) QJ(); else XG();
+	}
+
+	function zG() {
+		if (a$) return;
+		if ((a$ = !0, !f0)) (document.body.classList.remove("noscroll"), Y6.inert = !1);
+
+		if ((
+			RG.scrollIntoView({ behavior: f0 ? "auto" : "smooth", block: "center" }),
+			k8 < 0
+		)) VG();
+	}
+
+	function LG() {
+		if (!a$) return;
+		if ((a$ = !1, !f0)) (document.body.classList.add("noscroll"), Y6.inert = !0);
+
+		u("main").scrollIntoView({ behavior: f0 ? "auto" : "smooth", block: "center" });
+	}
+
+	function XG() {
+		if ((
+			w5 = !1,
+			sessionStorage.setItem("wall:view", "wall"),
+			u("main").classList.remove("minimized"),
+			h5.style.display = "none",
+			o$(),
+			f0
+		)) (
+			document.body.classList.add("noscroll"),
+			Y6.inert = !0,
+			a$ = !1,
+			N5.style.transform = ""
+		);
+
+		if (HG) document.documentElement.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+	}
+
+	function QJ() {
+		if ((
+			w5 = !0,
+			u("main").classList.add("minimized"),
+			sessionStorage.setItem("wall:view", "archive"),
+			h5.style.display = "",
+			o$(),
+			f0
+		)) {
+			if ((
+				document.body.classList.remove("noscroll"),
+				Y6.inert = !1,
+				a$ = !1,
+				N5.style.transform = "",
+				k8 < 0
+			)) VG();
+		}
+
+		if (HG) document.exitFullscreen().catch(() => {});
+	}
+
+	var JJ = G("div.actionbar", { role: "toolbar" });
+
+	function DG($) {
+		let Q = G("button.abtn.btn.action", Z1($.label), { ariaLabel: $.label.replace(/[\[\]]/g, "") });
+
+		if ($.active) Q.classList.add("active");
+
+		let J = () => {
+			if (!$.menu) return;
+
+			let Y = Q.getBoundingClientRect(),
+				q = typeof $.menu == "function" ? $.menu() : $.menu;
+
+			jJ(q, Y.x, Y.y + Y.height);
+		};
+
+		return (
+			Q.onclick = () => {
+				if (!p5()) J();
+				if ($.action) $.action();
+			},
+
+			Q.onmouseover = () => {
+				if ($.action) E$();
+				if (p5()) J();
+				if (document.activeElement) document.activeElement.blur();
+			},
+			Q
+		);
+	}
+
+	function YJ($) {
+		JJ.replaceChildren(...$.map(DG), G("div.right-side", G("b.fil", "FILIAN IS LOST"), G(
+			"button.btn.icon.minimize-btn",
+			{
+				ariaLabel: "Minimize",
+				onclick() {
+					QJ();
+				}
+			},
+			G("img", { src: "/static/icon/close.png", draggable: !1 })
+		)));
+	}
+
+	function D5($) {
+		return G("div.navbar.custom", G("div.actionbar.custom", $.map(DG)));
+	}
+
+	var Q$ = null, J1 = null, m5 = "";
+
+	function iK($, Q, J) {
+		if (!$) return;
+		if (Q$) B5();
+
+		let Y = G("div#tooltip-text.tooltip-popup", { textContent: $, role: "tooltip" });
+
+		(document.body.append(Y), Q$ = Y, kG(Q, J));
+	}
+
+	function kG($, Q) {
+		if (!Q$) return;
+
+		let J = Q$.getBoundingClientRect(),
+			Y = $ + J.width > window.innerWidth ? window.innerWidth - J.width : $,
+			q = Q + J.height > window.innerHeight ? window.innerHeight - J.height : Q;
+
+		(Q$.style.left = `${Y}px`, Q$.style.top = `${q}px`);
+	}
+
+	function B5() {
+		if (!Q$) return;
+		if (J1) J1.removeAttribute("aria-describedby");
+
+		(Q$.remove(), Q$ = null, J1 = null, m5 = "");
+	}
+
+	function O5($, Q, J) {
+		if (!$.classList || !$.classList.contains("tooltip")) return;
+
+		let Y = $.dataset.tooltip;
+
+		if (!Y) return;
+
+		let q = typeof Q == "number" && typeof J == "number";
+
+		if (!q) {
+			let Z = $.getBoundingClientRect();
+
+			(Q = Z.x, J = Z.y);
+		}
+
+		if (Q$) {
+			if (J1 != $) return (B5(), O5($, Q, J));
+			if (m5 != Y) (Q$.textContent = Y, m5 = Y);
+			if (q) kG(Q, J);
+
+			return;
+		}
+
+		(
+			iK(Y, Q, J),
+			J1 = $,
+			m5 = Y,
+			$.setAttribute("aria-describedby", "tooltip-text")
+		);
+	}
+
+	document.addEventListener("mouseover", ($) => O5($.target, $.x, $.y));
+	document.addEventListener("mousemove", ($) => O5($.target, $.x, $.y));
+	document.addEventListener("focusin", ($) => O5($.target));
+	window.addEventListener("mouseout", B5);
+	window.addEventListener("click", B5);
+
+	var AG = [
+		{
+			label: "[L]og In",
+			shortcut: "L",
+			action() {
+				Z8();
+			}
+		},
+		{ label: "[S]ettings", shortcut: "S", action: M5 },
+		...T5
+	];
+
+	var CG = G("div.hotbar.login-bar", G(
+		"p",
+		G("a.link", "Log in", {
+			tabIndex: 1,
+			onclick() {
+				Z8();
+			}
+		}),
+		" to draw & chat with ",
+		G("b#online-player-counter", "[...]"),
+		"+ players!"
+	));
+
+	var eK = "G-XXXXXXXXXX", TG = !1;
+
+	function EG() {
+		let $ = Z0.gaMeasurementId;
+
+		if (TG || !$ || $ === eK) return;
+
+		let Q = location.hostname;
+
+		if (Q === "localhost" || Q === "127.0.0.1") return;
+
+		(
+			TG = !0,
+			document.head.append(G("script", {
+				src: `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent($)}`,
+				async: !0
+			})),
+			window.dataLayer = window.dataLayer || [],
+			window.gtag = function J() {
+				window.dataLayer.push(arguments);
+			},
+			window.gtag("js", new Date()),
+			window.gtag("set", "allow_ad_personalization_signals", !1),
+			window.gtag("config", $, { allow_google_signals: !1 })
+		);
+	}
+
+	async function $F() {
+		return await (await N.canvas.snapshot.bson.$get({ query: { at: Math.floor(Date.now() / 1000) } })).arrayBuffer();
+	}
+
+	function IG() {
+		if (Z0.url?.ws) return;
+
+		let $ = $F(), Q = new Image();
+
+		(
+			Q.decoding = "async",
+			Q.crossOrigin = "anonymous",
+			Q.onload = async () => {
+				(
+					Y8.clearRect(0, 0, G0.width, G0.height),
+					Y8.drawImage(Q, 0, 0)
+				);
+
+				let J = j$.deserialize(new Uint8Array(await $));
+
+				for (let Y of J.changes) N8(Y.pos, Y.color);
+			},
+
+			Q.src = N.canvas.snapshot.png.$url({
+				query: { at: Math.floor(Date.now() / Z0.canvas.snapshotInterval) }
+			}).toString()
+		);
+	}
+
+	var wG = "";
+
+	function hG() {
+		let $ = A.viewport.x2 - A.viewport.x,
+			Q = A.viewport.y2 - A.viewport.y,
+			J = Math.floor(A.viewport.x + $ / 2),
+			Y = Math.floor(A.viewport.y + Q / 2);
+
+		return [J, Y];
+	}
+
+	function QF() {
+		if (t$) return;
+
+		let [$, Q] = hG(), J = new URL(location.href);
+
+		if ((J.hash = `${$},${Q}`, J.hash != wG)) (history.replaceState(null, "", J), wG = J.hash);
+	}
+
+	function JF() {
+		if (!location.hash) return;
+
+		let [$, Q] = location.hash.slice(1).split(",").map(Number);
+
+		if (!Number.isSafeInteger($) || !Number.isSafeInteger(Q)) return;
+		if ($ < 0 || Q < 0 || $ >= b || Q >= D0) return;
+
+		let [J, Y] = hG();
+
+		if ($ != J || Q != Y) _4($, Q);
+	}
+
+	function NG() {
+		(JF(), setInterval(QF, 1000));
+	}
+
+	var mG = [
+			"ArrowUp",
+			"ArrowUp",
+			"ArrowDown",
+			"ArrowDown",
+			"ArrowLeft",
+			"ArrowRight",
+			"ArrowLeft",
+			"ArrowRight",
+			"b",
+			"a"
+		],
+		Y1 = 0;
+
+	document.addEventListener("keydown", async ($) => {
+		if (p.flags.konamiCursor || !R.user) return;
+
+		if ($.key == mG[Y1]) {
+			if ((Y1++, Y1 >= mG.length)) {
+				Y1 = 0;
+
+				let Q = await p$({ code: "SUPER_SECRET_KONAMI_CODE" });
+
+				if (Q) return e(Q);
+
+				(
+					new _("Code Activated", G("p", "Enjoy your free cursor!")),
+					p.flags.konamiCursor = !0,
+					m0()
+				);
+			}
+		} else Y1 = 0;
+	});
+
+	window.addEventListener("load", () => {
+		(
+			window.redHerring = () => {
+				location.href = "https://cdn.zptr.cc/f/iegttnyqutp4ldirr1detrwz/red-herring.png";
+			},
+
+			console.log(
+				`%c
+ F I L I A N   I S   L O S T . 
+
+`,
+				"background:#000;color:#fff;font-size:5em;font-weight:bold"
+			)
+		);
+	});
+
+	EG();
+	$Y();
+
+	async function YF() {
+		let $ = new URLSearchParams(location.search);
+
+		if ((
+			X$.append(U8),
+			document.body.append(m$, G("main", JJ, z0, LQ)),
+			jG(),
+			IG(),
+			u6(),
+			NG(),
+			W3(),
+			await z2(),
+			R.user
+		)) {
+			if ((YJ(QG()), B8(), Z$.seed(R.user), e7(), !p.seenGuidebook)) setTimeout(J6, 1000);
+			if (g0()) v3();
+		} else if ((R.setTool(3), YJ(AG), o1(CG), g$(), B8(), $.has("ssu"))) R2($.get("ssu"));
+
+		let Q = $.has("wall") || sessionStorage.getItem("wall:view") === "wall";
+
+		if ((UG(Q), $.has("debug"))) R5();
+	}
+
+	var BG = () => YF().catch(($) => console.error("boot failed", $));
+
+	if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", BG); else BG();
+})();
