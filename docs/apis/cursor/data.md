@@ -8,10 +8,125 @@ It only supports one HTTP method: `GET`.
 This method does not require authentication.
 This returns a stringified JSON array with an object the name, id, tier, if it's free, as well as unlock conditions.
 
-## History
+## Schema
 
-### `GET` (3/06/2026)
+The response from this appears to satisfy the following schema:
 
 ```json
-[{"id":0,"tier":0,"free":true,"name":"Default #0: White"},{"id":1,"tier":0,"free":true,"name":"Default #7: Blue"},{"id":2,"tier":0,"free":true,"name":"Default #1: Dark"},{"id":3,"tier":0,"free":true,"name":"Default #4: Yellow"},{"id":4,"tier":0,"free":true,"name":"Default #5: Green"},{"id":5,"tier":0,"free":true,"name":"Default #3: Orange"},{"id":6,"tier":0,"free":true,"name":"Default #9: Pink"},{"id":7,"tier":0,"free":true,"name":"Default #8: Purple"},{"id":8,"tier":0,"free":true,"name":"Default #2: Red"},{"id":9,"tier":0,"free":true,"name":"Default #6: Sky Blue"},{"id":10,"tier":1,"name":"Asexual Pride","unlock":{"kind":"purchase","cost":20}},{"id":11,"tier":1,"name":"Bisexual Pride","unlock":{"kind":"purchase","cost":20}},{"id":12,"tier":1,"name":"Blue Butterfly","unlock":{"kind":"purchase","cost":15}},{"id":13,"tier":1,"name":"Christmas Tree","unlock":{"kind":"purchase","cost":10}},{"id":14,"tier":1,"name":"Diamond Sword","unlock":{"kind":"purchase","cost":15}},{"id":15,"tier":1,"name":"Fireblaze","unlock":{"kind":"purchase","cost":10}},{"id":16,"tier":1,"name":"Gay Pride","unlock":{"kind":"purchase","cost":20}},{"id":17,"tier":1,"name":"Genderfluid Pride","unlock":{"kind":"purchase","cost":20}},{"id":18,"tier":1,"name":"Golden Arrow","unlock":{"kind":"purchase","cost":15}},{"id":19,"tier":1,"name":"Golden","unlock":{"kind":"purchase","cost":10}},{"id":20,"tier":1,"name":"Lesbian Pride","unlock":{"kind":"purchase","cost":20}},{"id":21,"tier":1,"name":"Nonbinary Pride","unlock":{"kind":"purchase","cost":20}},{"id":22,"tier":1,"name":"Pansexual Pride","unlock":{"kind":"purchase","cost":20}},{"id":23,"tier":1,"name":"Party Hat 2","unlock":{"kind":"purchase","cost":10}},{"id":24,"tier":1,"name":"Party Hat 3","unlock":{"kind":"purchase","cost":10}},{"id":25,"tier":1,"name":"Party Hat 4","unlock":{"kind":"purchase","cost":10}},{"id":26,"tier":1,"name":"Party Hat","unlock":{"kind":"purchase","cost":10}},{"id":27,"tier":1,"name":"Moderator Hat","unlock":{"kind":"manual","tooltip":"This is a mod cursor only"}},{"id":28,"tier":1,"name":"Pink Cursor","unlock":{"kind":"purchase","cost":15}},{"id":29,"tier":1,"name":"Pulsing Blue","unlock":{"kind":"purchase","cost":15}},{"id":30,"tier":1,"name":"Spinning Circle","unlock":{"kind":"purchase","cost":10}},{"id":31,"tier":1,"name":"Transgender Pride","unlock":{"kind":"purchase","cost":20}},{"id":32,"tier":1,"name":"WinXP","unlock":{"kind":"purchase","cost":10}},{"id":33,"tier":2,"name":"420"},{"id":34,"tier":2,"name":"AK-47"},{"id":35,"tier":2,"name":"America Cursor"},{"id":36,"tier":2,"name":"Bluegem Blue","unlock":{"kind":"purchase","cost":40}},{"id":37,"tier":2,"name":"Bluegem Green","unlock":{"kind":"purchase","cost":40}},{"id":38,"tier":2,"name":"Bluegem","unlock":{"kind":"purchase","cost":40}},{"id":39,"tier":2,"name":"Chainsaw","unlock":{"kind":"purchase","cost":67}},{"id":40,"tier":2,"name":"Chroma","unlock":{"kind":"purchase","cost":40}},{"id":41,"tier":2,"name":"Bone","unlock":{"kind":"purchase","cost":25}},{"id":42,"tier":2,"name":"Dinosaur","unlock":{"kind":"purchase","cost":21}},{"id":43,"tier":2,"name":"Yoda Lightsaber"},{"id":44,"tier":3,"name":"Chihuahua","unlock":{"kind":"purchase","cost":21}},{"id":45,"tier":3,"name":"Earth","unlock":{"kind":"purchase","cost":40}},{"id":46,"tier":3,"name":"EXE 1"},{"id":47,"tier":3,"name":"Flipping the Bird"},{"id":48,"tier":3,"name":"Gold Orb"},{"id":49,"tier":3,"name":"Labradoodle","unlock":{"kind":"purchase","cost":21}},{"id":50,"tier":3,"name":"Lineage 2 Sword"},{"id":51,"tier":3,"name":"Lineage 2 Arm"},{"id":52,"tier":3,"name":"Pink Heart","unlock":{"kind":"purchase","cost":25}},{"id":53,"tier":3,"name":"Pug","unlock":{"kind":"purchase","cost":21}},{"id":54,"tier":3,"name":"Konami Cursor","unlock":{"kind":"code"}},{"id":55,"tier":3,"name":"Swords - Claim Solais"},{"id":56,"tier":3,"name":"Swords - Elements"},{"id":57,"tier":3,"name":"Unicorn"},{"id":58,"tier":3,"name":"Wand","unlock":{"kind":"purchase","cost":10}},{"id":59,"tier":3,"name":"WIB"},{"id":60,"tier":3,"name":"Working in Background"},{"id":61,"tier":4,"name":"Support Bird","unlock":{"kind":"stat","stat":"invites","gte":5}},{"id":62,"tier":4,"name":"Blue Jack-o-Lantern"},{"id":63,"tier":4,"name":"Dark Jack-o-Lantern"},{"id":64,"tier":4,"name":"Ghost Face","unlock":{"kind":"purchase","cost":67}},{"id":65,"tier":4,"name":"Gun"},{"id":66,"tier":4,"name":"Ovaley","unlock":{"kind":"purchase","cost":25}},{"id":67,"tier":4,"name":"Pink Jack-o-Lantern"},{"id":68,"tier":4,"name":"plz","unlock":{"kind":"code","tooltip":"can i haz cursor plz"}},{"id":69,"tier":4,"name":"Gun 2","unlock":{"kind":"purchase","cost":67}},{"id":70,"tier":4,"name":"Gun 3"},{"id":71,"tier":5,"name":"Tutorial Bird","unlock":{"kind":"client","tooltip":"Awarded for reading the Guidebook"}},{"id":72,"tier":5,"name":"Flame Black","unlock":{"kind":"purchase","cost":30}},{"id":73,"tier":5,"name":"Flame Aqua","unlock":{"kind":"purchase","cost":30}},{"id":74,"tier":5,"name":"Flame Black Blue","unlock":{"kind":"purchase","cost":30}},{"id":75,"tier":5,"name":"Flame Black Red","unlock":{"kind":"purchase","cost":30}},{"id":76,"tier":5,"name":"Flame Blue","unlock":{"kind":"purchase","cost":30}},{"id":77,"tier":5,"name":"Flame Cyan","unlock":{"kind":"purchase","cost":30}},{"id":78,"tier":5,"name":"Flame Green","unlock":{"kind":"purchase","cost":30}},{"id":79,"tier":5,"name":"Flame Red","unlock":{"kind":"purchase","cost":30}},{"id":80,"tier":5,"name":"Flame","unlock":{"kind":"purchase","cost":30}},{"id":81,"tier":5,"name":"Flaming Pointer"},{"id":82,"tier":5,"name":"Gandalf"},{"id":83,"tier":5,"name":"Glow"},{"id":84,"tier":5,"name":"Gun 4","unlock":{"kind":"purchase","cost":25}},{"id":85,"tier":5,"name":"Rainbow Sketch","unlock":{"kind":"stat","stat":"pixels_changed","gte":20000}},{"id":86,"tier":5,"name":"Dark Blue"},{"id":87,"tier":5,"name":"Pink Heart","unlock":{"kind":"purchase","cost":25}},{"id":88,"tier":5,"name":"Spray Can","unlock":{"kind":"stat","stat":"pixels_changed","gte":10000}},{"id":89,"tier":5,"name":"Trancebear","unlock":{"kind":"purchase","cost":67}},{"id":90,"tier":5,"name":"Blue Sparks","unlock":{"kind":"stat","stat":"pixels_changed","gte":33333}},{"id":91,"tier":6,"name":"Pink Sword","unlock":{"kind":"purchase","cost":25}},{"id":92,"tier":6,"name":"Knife"},{"id":93,"tier":6,"name":"???"},{"id":94,"tier":6,"name":"TAMMY","unlock":{"kind":"purchase","cost":67}},{"id":95,"tier":6,"name":"Water"},{"id":96,"tier":6,"name":"Dust"},{"id":97,"tier":7,"name":"Basketball","unlock":{"kind":"purchase","cost":67}},{"id":98,"tier":7,"name":"Paw","unlock":{"kind":"purchase","cost":40}},{"id":99,"tier":7,"name":"Dancing Banana","unlock":{"kind":"purchase","cost":67}},{"id":100,"tier":7,"name":"Ghost Hand"},{"id":101,"tier":7,"name":"Ghost Cursor"},{"id":102,"tier":7,"name":"Frog","unlock":{"kind":"purchase","cost":67}},{"id":103,"tier":8,"name":"Blue Clouds"},{"id":104,"tier":8,"name":"Cursed Diamond Sword"},{"id":105,"tier":8,"name":"Purple Electric","unlock":{"kind":"purchase","cost":150}},{"id":106,"tier":8,"name":"Fractal Starburst"},{"id":107,"tier":8,"name":"Dark Electric","unlock":{"kind":"purchase","cost":150}},{"id":108,"tier":4,"name":"cow"},{"id":109,"tier":5,"name":"Angel","unlock":{"kind":"purchase","cost":100}},{"id":110,"tier":5,"name":"Cigarette","unlock":{"kind":"purchase","cost":100}},{"id":111,"tier":5,"name":"doggi","unlock":{"kind":"purchase","cost":100}},{"id":112,"tier":5,"name":"Humming","unlock":{"kind":"purchase","cost":100}},{"id":113,"tier":6,"name":"GlitterFire","unlock":{"kind":"purchase","cost":500}},{"id":114,"tier":6,"name":"peng","unlock":{"kind":"purchase","cost":500}},{"id":115,"tier":7,"name":"GlitterSkull","unlock":{"kind":"purchase","cost":1000}},{"id":116,"tier":7,"name":"RainTrail","unlock":{"kind":"purchase","cost":1000}},{"id":117,"tier":7,"name":"SmokingUni","unlock":{"kind":"purchase","cost":1000}},{"id":118,"tier":7,"name":"YY","unlock":{"kind":"purchase","cost":1000}},{"id":119,"tier":6,"name":"DOLLA","unlock":{"kind":"manual","tooltip":"Awarded to the best of the best"}}]
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "description": "The ID of the cursor."
+      },
+      "tier": {
+        "type": "integer",
+        "description": "The cursor's tier."
+      },
+      "name": {
+        "type": "string",
+        "description": "The cursor's name."
+      },
+      "free": {
+        "default": false,
+        "description": "If true, the cursor is unlocked immediately without any requirement on the user.",
+        "type": "boolean"
+      },
+      "unlock": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "const": "client"
+                  },
+                  {
+                    "type": "string",
+                    "const": "code"
+                  },
+                  {
+                    "type": "string",
+                    "const": "manual"
+                  }
+                ],
+                "description": "These unlock methods rely on either specific client-side detection, or manual intervetion by mods."
+              },
+              "tooltip": {
+                "type": "string",
+                "description": "A string to display on hovering over the cursor in the inventory. If omitted, will simply say \"You do not own this cursor!\""
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "purchase",
+                "description": "Purchase from the cursor shop for a certain amount of coins."
+              },
+              "cost": {
+                "type": "integer",
+                "description": "The amount of coins it takes to buy the cursor."
+              }
+            },
+            "required": [
+              "kind",
+              "cost"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "stat",
+                "description": "Grind up your stats for unlocking these cursors. If you've already passed these stats by the time these conditions were added, it should automatically unlock."
+              },
+              "stat": {
+                "type": "string",
+                "enum": [
+                  "pixels_changed",
+                  "shared",
+                  "invites"
+                ],
+                "description": "The stat that is being tracked. pixels_changed denotes pixels painted, shared denotes sharing the canvas (images or invites?) and invites is amount of people invited through your invite link."
+              },
+              "gte": {
+                "type": "integer",
+                "description": "The value at which the condition is met."
+              }
+            },
+            "required": [
+              "kind",
+              "stat",
+              "gte"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "description": "Cursor unlock conditions. If the object is omitted, that means there is no unlock condition for them yet."
+      }
+    },
+    "required": [
+      "id",
+      "tier",
+      "name",
+      "free"
+    ],
+    "additionalProperties": false
+  }
+}
 ```

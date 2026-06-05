@@ -8,7 +8,8 @@
     "diff": "tsx src/diff.ts",
     "get-chunk": "tsx src/fetch-chunk.ts",
     "workflow": "tsx src/workflow-fetch.ts",
-    "bson-decode": "tsx src/bson-decode.ts"
+    "bson-decode": "tsx src/bson-decode.ts",
+    "schema": "tsx src/schema-builder.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,9 @@
     "file-type": "^22.0.1",
     "jsdom": "^29.1.1",
     "oxc-parser": "^0.133.0",
-    "oxc-resolver": "^11.20.0"
+    "oxc-resolver": "^11.20.0",
+    "tinyclip": "^0.1.14",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/jsdom": "^28.0.3",
