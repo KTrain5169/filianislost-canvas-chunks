@@ -1,4 +1,4 @@
-import { deserialize } from 'bson';
+import { decodeBase64ToBson } from './modules/bson.js';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -26,20 +26,6 @@ function printUsage() {
     console.log('  tsx src/bson-decode.ts "SGVsbG8=" output.json');
     console.log('  tsx src/bson-decode.ts --file encoded.txt');
     console.log('  tsx src/bson-decode.ts --file encoded.txt decoded.json');
-}
-
-function decodeBase64ToBson(base64String: string): any {
-    try {
-        // Decode Base64 to Buffer
-        const buffer = Buffer.from(base64String, 'base64');
-
-        // Deserialize BSON
-        const decoded = deserialize(buffer);
-
-        return decoded;
-    } catch (error) {
-        throw new Error(`Failed to decode BSON: ${error instanceof Error ? error.message : String(error)}`);
-    }
 }
 
 function main() {

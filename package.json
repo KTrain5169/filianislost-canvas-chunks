@@ -9,7 +9,8 @@
     "get-chunk": "tsx src/fetch-chunk.ts",
     "workflow": "tsx src/workflow-fetch.ts",
     "bson-decode": "tsx src/bson-decode.ts",
-    "schema": "tsx src/schema-builder.ts"
+    "schema": "tsx src/schema-builder.ts",
+    "ws": "tsx --env-file=.env server/index.ts"
   },
   "keywords": [],
   "author": "",
